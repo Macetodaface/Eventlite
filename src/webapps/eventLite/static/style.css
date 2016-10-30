@@ -1,0 +1,21 @@
+.center {
+    margin: auto;
+    text-align: center;
+    padding: 10px;
+}
+
+.buffer-top {
+    margin-top: 10%;
+}
+
+.login-input {
+    width: 10%;
+}
+
+.login-btn {
+    width: 10%
+}
+
+.login-form {
+    margin-top: 5%
+}
