@@ -7,6 +7,7 @@
 {% load static %}
 <script src="{% static 'libs/jquery-3.1.1.js' %}"></script>
 <script src="{% static 'libs/bootstrap-3.3.7-dist/js/bootstrap.min.js' %}"></script>
+<script src="{% static 'facebook.js' %}"></script>
 <link rel="stylesheet" type="text/css" href="{%  static 'libs/bootstrap-3.3.7-dist/css/bootstrap.min.css' %}">
 <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
 <body>
@@ -21,9 +22,13 @@
             <input class="btn btn-primary login-btn" type="submit" value="Log in">
         </form>
         <br>
-        <input class="btn btn-success login-btn" type="submit" value="Log in with Facebook">
-        <input class="btn btn-warning login-btn" type="submit" value="Log in with Google+">
-
+        <fb:login-button
+                id="facebook-login"
+                scope="public_profile,email"
+                onlogin="checkLoginState();">
+        </fb:login-button>
+        <div id="status">
+        </div>
     </div>
 </body>
 </html>

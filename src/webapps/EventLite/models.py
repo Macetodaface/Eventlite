@@ -9,6 +9,7 @@ class UserDetail(models.Model):
      icon = models.ImageField(upload_to = 'icons', blank = True)
      bio = models.CharField(max_length = 420, default = '', blank = True)
      email = models.EmailField()
+     social_login = models.BooleanField()
 
 class Seller(models.Model):
     eventsHosting = models.ForeignKey("Event")
