@@ -3,7 +3,7 @@
     Post an Event!
 {% endblock %}
 {% block center-content %}
-    <h3>Post an Event: </h3>
+    <h3>Post an Event: </h3><br>
     <form action="{% url 'post-event' %}" method="post">
         <div class="post-event-field col-xs-3">
             Name:
@@ -20,7 +20,7 @@
         <input class="medium-input" name="seat-layout" type="text"><br>
         <div class="post-event-field col-xs-3">
             Price:</div>
-        <input class="eve-input" name="description" type="text"><br>
+        <input class="short-input" name="description" type="text"><br>
         <div class="post-event-field col-xs-3">
             Total Tickets:</div>
         <input class="short-input" name="total-tickets" type="text"><br>

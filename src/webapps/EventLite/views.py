@@ -13,3 +13,7 @@ def base(request):
 
 def post_event(request):
     return render(request, 'post-event.html', {})
+
+
+def registration(request):
+    return render(request, 'registration.html', {})

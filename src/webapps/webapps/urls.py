@@ -22,4 +22,5 @@ urlpatterns = [
     url(r'^$', views.index),
     url(r'^base', views.base, name='base'),
     url(r'^post-event', views.post_event, name='post-event'),
+    url(r'^registration', views.registration, name='registration'),
 ]

@@ -1,16 +1,5 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Welcome</title>
-</head>
-{% load static %}
-<script src="{% static 'libs/jquery-3.1.1.js' %}"></script>
-<script src="{% static 'libs/bootstrap-3.3.7-dist/js/bootstrap.min.js' %}"></script>
-<script src="{% static 'facebook.js' %}"></script>
-<link rel="stylesheet" type="text/css" href="{%  static 'libs/bootstrap-3.3.7-dist/css/bootstrap.min.css' %}">
-<link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
-<body>
+{% extends 'header.html' %}
+{% block body %}
     <div class="center buffer-top">
         <h1>Welcome to EventLite</h1><br>
         <span>The place for all your ticket needs.</span>
@@ -31,4 +20,4 @@
         </div>
     </div>
 </body>
-</html>
+{% endblock %}

@@ -12,6 +12,13 @@
     margin-left: 2%;
 }
 
+.register-input {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    width: 10%;
+    min-width: 150px;
+}
+
 .well-content {
     width: 100%;
     margin-left: auto;
@@ -19,16 +26,15 @@
 }
 
 .short-input {
-    margin-top: 10px;
     margin-bottom: 10px;
     width: 20px;
-    min-width: 10px;
+    min-width: 20px;
 }
 
 .medium-input {
     margin-bottom: 10px;
     width: 10%;
-    min-width: 150px;
+    min-width: 200px;
 }
 
 .long-input {
