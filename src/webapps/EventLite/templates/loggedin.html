@@ -1,0 +1,8 @@
+<html>
+<body>
+    {% if user and not user.is_anonymous %}
+    <a>Hello {{ user.get_full_name|default:user.username }}!</a>
+    {% endif %}
+    <h1> Successfully logged in, now what? </h1>
+</body>
+</html>

@@ -17,3 +17,7 @@ def post_event(request):
 
 def registration(request):
     return render(request, 'registration.html', {})
+
+
+def login_next(request):
+    return render(request, 'loggedin.html', {})

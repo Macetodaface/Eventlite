@@ -13,14 +13,16 @@ Including another URLconf
     1. Import the include() function: from django.conf.urls import url, include
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
-from django.conf.urls import url
+from django.conf.urls import include, url
 from django.contrib import admin
 from EventLite import views
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^$', views.index),
+    url('', include('social.apps.django_app.urls', namespace='social')),
     url(r'^base', views.base, name='base'),
     url(r'^post-event', views.post_event, name='post-event'),
     url(r'^registration', views.registration, name='registration'),
+    url(r'^loggedin', views.login_next, name='loggedin'),
 ]
