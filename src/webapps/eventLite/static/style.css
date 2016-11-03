@@ -8,6 +8,43 @@
     margin-top: 10%;
 }
 
+.buffer-left {
+    margin-left: 2%;
+}
+
+.well-content {
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.short-input {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    width: 20px;
+    min-width: 10px;
+}
+
+.medium-input {
+    margin-bottom: 10px;
+    width: 10%;
+    min-width: 150px;
+}
+
+.long-input {
+    margin-bottom: 10px;
+    width: 30%;
+    min-width: 200px;
+    min-height: 100px;
+}
+
+.longer-input {
+    margin-bottom: 10px;
+    width: 30%;
+    min-width: 200px;
+    min-height: 150px;
+}
+
 .login-input {
     width: 10%;
 }

@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block title %}
+    Post an Event!
+{% endblock %}
+{% block center-content %}
+    <h3>Post an Event: </h3>
+    <form action="{% url 'post-event' %}" method="post">
+        <div class="post-event-field col-xs-3">
+            Name:
+        </div>
+        <input class="medium-input" name="name" type="text"><br>
+        <div class="post-event-field col-xs-3">
+            Description:</div>
+        <input class="long-input" name="description" type="text"><br>
+        <div class="post-event-field col-xs-3">
+            Location:</div>
+        <input class="medium-input" name="location" type="text"><br>
+        <div class="post-event-field col-xs-3">
+            Seat Layout:</div>
+        <input class="medium-input" name="seat-layout" type="text"><br>
+        <div class="post-event-field col-xs-3">
+            Price:</div>
+        <input class="eve-input" name="description" type="text"><br>
+        <div class="post-event-field col-xs-3">
+            Total Tickets:</div>
+        <input class="short-input" name="total-tickets" type="text"><br>
+        <div class="post-event-field col-xs-3">
+            Contact:</div>
+        <input class="medium-input" name="contact" type="text"><br>
+        <div class="post-event-field col-xs-3">
+            Cancellation:</div>
+        <input class="long-input" name="cancellation" type="text"><br>
+        <div class="post-event-field col-xs-3">
+            Videos:</div>
+        <input name="videos" type="file"><br>
+        <div class="post-event-field col-xs-3">
+            Images:</div>
+        <input name="images" type="file"><br>
+        <input class="btn btn-primary" type="submit" value="Post Event"><br>
+        {% csrf_token %}
+    </form>
+{% endblock %}

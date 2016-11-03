@@ -20,5 +20,6 @@ from EventLite import views
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^$', views.index),
-    url(r'^base', views.base),
+    url(r'^base', views.base, name='base'),
+    url(r'^post-event', views.post_event, name='post-event'),
 ]
