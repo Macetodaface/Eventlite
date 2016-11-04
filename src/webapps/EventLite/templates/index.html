@@ -1,5 +1,10 @@
 {% extends 'header.html' %}
 {% block body %}
+    {% if user and not user.is_anonymous %}
+     Hello {{ user.get_full_name|default:user.username }}!
+   {% else %}
+     I don’t think we’ve met before.
+   {% endif %}
     <div class="center buffer-top">
         <h1>Welcome to EventLite</h1><br>
         <span>The place for all your ticket needs.</span>

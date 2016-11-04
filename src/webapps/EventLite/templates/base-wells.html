@@ -1,18 +1,24 @@
-{% extends base.html %}
+{% extends 'base.html' %}
 {% block content %}
 <div class="col-xs-2">
+    {% block left-well %}
     <div class="well well-content">
-    {% block left-content %}{% endblock %}
+        {% block left-content %}{% endblock %}
     </div>
+    {% endblock %}
 </div>
 <div class="col-xs-8">
+    {% block center-well %}
     <div class="well well-content">
         {% block center-content %}{% endblock %}
     </div>
+    {% endblock %}
 </div>
 <div class="col-xs-2">
+    {% block right-well %}
     <div class="well well-content">
         {% block right-content %}{% endblock %}
     </div>
+    {% endblock %}
 </div>
 {% endblock %}

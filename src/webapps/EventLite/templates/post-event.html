@@ -1,9 +1,11 @@
-{% extends "base.html" %}
+{% extends "base-wells.html" %}
 {% block title %}
     Post an Event!
 {% endblock %}
+{% block left-well %}
+{% endblock %}
 {% block center-content %}
-    <h3>Post an Event: </h3><br>
+    <h3 class="well white-background">Post an Event: </h3><br>
     <form action="{% url 'post-event' %}" method="post">
         <div class="post-event-field col-xs-3">
             Name:
@@ -39,4 +41,6 @@
         <input class="btn btn-primary" type="submit" value="Post Event"><br>
         {% csrf_token %}
     </form>
+{% endblock %}
+{% block right-well %}
 {% endblock %}
