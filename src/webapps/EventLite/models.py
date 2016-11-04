@@ -4,19 +4,18 @@ from django.utils import timezone
 
 class UserDetail(models.Model):
      user = models.OneToOneField(User, on_delete = models.CASCADE)
-     seller = models.OneToOneField("Seller", blank=True)
-     buyer = models.OneToOneField("Buyer", blank=True)
-     icon = models.ImageField(upload_to = 'icons', blank = True)
-     bio = models.CharField(max_length = 420, default = '', blank = True)
-     email = models.EmailField()
+     seller = models.OneToOneField("Seller", blank=True,null=True)
+     buyer = models.OneToOneField("Buyer", blank=True,null=True)
+     icon = models.ImageField(upload_to = 'icons', blank = True,null=True)
+     bio = models.CharField(max_length = 420, default = '', blank = True,null=True)
      social_login = models.BooleanField()
 
 class Seller(models.Model):
-    eventsHosting = models.ForeignKey("Event")
+    eventsHosting = models.ForeignKey("Event",blank=True,null=True)
 
 class Buyer(models.Model):
-    eventsInterested = models.ForeignKey("Event")
-    ticketsPurchased = models.ForeignKey("Ticket")
+    ticketsPurchased = models.ForeignKey("Ticket",blank=True,null=True)
+    eventsInterested = models.ForeignKey("Event",blank=True,null=True)
     points = models.IntegerField(default = 0)
 
 class Event(models.Model):

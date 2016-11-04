@@ -1,5 +1,5 @@
 from django.shortcuts import render
-
+from EventLite.models import *
 # Create your views here.
 
 
@@ -18,6 +18,14 @@ def post_event(request):
 def registration(request):
     return render(request, 'registration.html', {})
 
-
+# social login aftermath
+# need to handle case where user hasn't activated account
 def login_next(request):
+    if(UserDetail.objects.filter(user=request.user).count()==0):
+        print 'no user exists'
+
+        newProfile = UserDetail(user=request.user,social_login=True)
+        newProfile.save()
+    else:
+        print 'user exists'
     return render(request, 'loggedin.html', {})
