@@ -30,6 +30,11 @@ ALLOWED_HOSTS = []
 #Facebook Authentication
 SOCIAL_AUTH_FACEBOOK_KEY = "1600673143291618"
 SOCIAL_AUTH_FACEBOOK_SECRET = "bc29299e4346e60c63bf13218adbafa8"
+SOCIAL_AUTH_FACEBOOK_SCOPE = ['email']
+SOCIAL_AUTH_FACEBOOK_PROFILE_EXTRA_PARAMS = {
+  'locale': 'ru_RU',
+  'fields': 'name, email, age_range'
+}
 
 #Google  Authentication
 SOCIAL_AUTH_GOOGLE_OAUTH2_KEY= '606003363932-oh0s25eh3h3babctrum0o4njvfniqfrd'
