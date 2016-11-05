@@ -24,10 +24,10 @@ def registration(request):
 # 
 def login_next(request):
     if(UserDetail.objects.filter(user=request.user).count()==0):
-        print 'no user exists'
+        print('no user exists')
 
         newProfile = UserDetail(user=request.user,social_login=True)
         newProfile.save()
     else:
-        print 'user exists'
+        print('user exists')
     return render(request, 'loggedin.html', {})

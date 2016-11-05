@@ -18,7 +18,9 @@
         </fb:login-button>
         <div id="status">
         </div>
-
+        <a href="{% url 'social:begin' 'facebook' %}?next={% url 'loggedin' %}">
+            Login with Facebook
+        </a>
         <a href="{% url 'social:begin' 'google-oauth2' %}?next={% url 'loggedin' %}">
             Login with Google
         </a>
