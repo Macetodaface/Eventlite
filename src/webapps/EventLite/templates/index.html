@@ -1,6 +1,5 @@
 {% extends 'header.html' %}
 {% load static %}
-<script src="{% static 'facebook.js' %}"></script>
 {% block body %}
     <div class="center buffer-top">
     {% block messages %}
@@ -18,11 +17,6 @@
             <input class="btn btn-primary login-btn" type="submit" value="Log in">
         </form>
         <br>
-        <fb:login-button
-                id="facebook-login"
-                scope="public_profile,email"
-                onlogin="checkLoginState();">
-        </fb:login-button>
         <div id="status">
         </div>
         <a href="{% url 'social:begin' 'facebook' %}?next={% url 'loggedin' %}">
