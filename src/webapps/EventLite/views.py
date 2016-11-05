@@ -2,6 +2,10 @@ from django.shortcuts import render
 from EventLite.models import *
 from django.contrib.auth.models import User
 from sys import stderr
+from EventLite.forms import *
+from random import choice
+from string import ascii_uppercase
+from django.core.mail import send_mail
 
 
 # Create your views here.
@@ -25,20 +29,21 @@ def registration(request):
     context = {}
 
     if request.method == 'GET':
+
         return render(request, url, context)
 
     form = UserForm(request.POST)
-
+    context['form'] = form
     # Validate the form
     if not form.is_valid():
         return render(request, url, context)
 
-    new_user = User(username=form.cleaned_data['username'],
-                    password=form.cleaned_data['password1'],
-                    first_name=form.cleaned_data['first_name'],
-                    last_name=form.cleaned_data['last_name'],
-                    email=form.cleaned_data['email'],
-                    is_active=False)
+    new_user = User.objects.create(username=form.cleaned_data['username'],
+                                  password=form.cleaned_data['password1'],
+                                  first_name=form.cleaned_data['first_name'],
+                                  last_name=form.cleaned_data['last_name'],
+                                  email=form.cleaned_data['email'],
+                                  is_active=False)
 
     new_user.save()
 
@@ -63,7 +68,7 @@ def registration(request):
     send_mail(subject="EventLite Verification",
               message="Go to {} to activate your EventLite account"
               .format(activation_url),
-              from_email="cgrabows@andrew.cmu.edu",
+              from_email="noreply@EventLite.com",
               recipient_list=[form.cleaned_data['email']])
 
     context = {"messages": ['An activation email has been sent.']}
@@ -99,8 +104,10 @@ def get_random_key():
 
 
 def new_password(request, key):
+    context = {'key': key}
+    print(key, file=stderr)
     try:
-        user_detail = UserDetail.objects.get(reset_key=key)
+        user_detail = UserDetail.objects.get(recovery_key=key)
     except:
         return render(request, 'index.html', {'messages': ['Invalid Key']})
     if request.method == 'GET':
@@ -113,7 +120,8 @@ def new_password(request, key):
         user.set_password(password)
         user.save()
     else:
-        return render(request, 'new_password.html', {'errors':forms.errors})
+        context['errors'] = form.errors
+        return render(request, 'new_password.html', context)
 
     return render(request, 'index.html', {'mesasges':
                                     ['Your password has been reset']})
@@ -125,8 +133,9 @@ def recover_password(request):
 
     form = RecoveryForm(request.POST)
 
+    context = {'form': form}
     if not form.is_valid():
-        return render(request, 'recover-password.html', {'errors': form.non_field_errors()})
+        return render(request, 'recover-password.html', context)
 
     else:
         user = form.get_user()
@@ -136,7 +145,7 @@ def recover_password(request):
             return render(request, 'recover-password.html', {'errors': 'Cannot find user details.'})
 
         random_key = get_random_key()
-        while UserDetail.objects.filter(recovery_key=random_key).size() > 0:
+        while UserDetail.objects.filter(recovery_key=random_key).count() > 0:
             random_key = get_random_key()
 
         user_detail.recovery_key = random_key
@@ -146,6 +155,6 @@ def recover_password(request):
                   message="Go to {} to reset your password".format(reset_url),
                   from_email="noreply@EventLite.com",
                   recipient_list=[user.email])
-    return render(request, 'index.html', {'messages': ['An email has been sent' +
+        return render(request, 'index.html', {'messages': ['An email has been sent ' +
                                                        'with instructions to ' +
                                                        'reset your password']})

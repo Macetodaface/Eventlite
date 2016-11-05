@@ -28,6 +28,9 @@
     min-width: 20px;
 }
 
+.error {
+    color: red;
+}
 .medium-input {
     margin-bottom: 10px;
     width: 25%;
@@ -64,8 +67,9 @@
     margin-left: 10px;
 }
 
-.login-btn {
-    width: 10%
+.login-btn, .recover-btn {
+    width: 10%;
+    min-width: 200px;
 }
 
 .indent {
