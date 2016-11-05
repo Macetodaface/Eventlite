@@ -50,6 +50,18 @@
 
 .login-input {
     width: 10%;
+    min-width: 200px;
+}
+
+.recover-well {
+    width: 50%;
+    min-width:300px;
+}
+
+.recover-input {
+    width: 10%;
+    min-width: 200px;
+    margin-left: 10px;
 }
 
 .login-btn {
@@ -60,7 +72,7 @@
     margin-left: 10px;
 }
 
-.login-form {
+.login-form, .password-form {
     margin-top: 5%
 }
 

@@ -9,7 +9,9 @@ class UserDetail(models.Model):
      buyer = models.OneToOneField("Buyer", blank=True,null=True)
      icon = models.ImageField(upload_to = 'icons', blank = True,null=True)
      bio = models.CharField(max_length = 420, default = '', blank = True,null=True)
-     social_login = models.BooleanField()
+     joined = models.DateTimeField()
+     activation_key = models.CharField(max_length=100)
+     recovery_key = models.CharField(max_length=100, blank=True)
 
 class Seller(models.Model):
     earnings = models.FloatField(default=0.0)

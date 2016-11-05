@@ -3,7 +3,7 @@
     <div class="center buffer-top">
         <h1>Welcome to EventLite</h1><br>
         <span>The place for all your ticket needs.</span>
-        <form class="login-form" action="">
+        <form class="login-form" action="/login/">
             Username: <input class="login-input" type="text" name="username">
             <br><br>
             Password: <input class="login-input" type="text" name="password">
@@ -11,11 +11,6 @@
             <input class="btn btn-primary login-btn" type="submit" value="Log in">
         </form>
         <br>
-        <fb:login-button
-                id="facebook-login"
-                scope="public_profile,email"
-                onlogin="checkLoginState();">
-        </fb:login-button>
         <div id="status">
         </div>
         <a href="{% url 'social:begin' 'facebook' %}?next={% url 'loggedin' %}">
@@ -24,6 +19,8 @@
         <a href="{% url 'social:begin' 'google-oauth2' %}?next={% url 'loggedin' %}">
             Login with Google
         </a>
+        <a href="{% url 'registration' %}" %}>Register</a>
+        <a href="{% url 'recover-password' %}">Forgot Password?</a>
     </div>
 </body>
 {% endblock %}
