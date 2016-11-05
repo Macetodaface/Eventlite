@@ -112,6 +112,7 @@ def social_login(request):
         newProfile.save()
     else:
         print('user exists')
+
         # check activation
         userDetail = UserDetail.objects.get(user__email=request.user.email)
         print userDetail
@@ -125,5 +126,7 @@ def social_login(request):
             userDetail.user.save()
             userDetail.save()
 
-
     return render(request, 'view-events.html', {})
+
+def forgot_password(request):
+    return render(request, 'index.html', {})

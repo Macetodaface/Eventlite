@@ -26,4 +26,6 @@ urlpatterns = [
     url(r'^view-events', views.view_events, name='view-events'),
     url(r'^loggedin', views.social_login, name='loggedin'),
     url(r'^logout', views.logoutUser, name='logout'),
+    url(r'^forgot-password', views.forgot_password, name='forgot-password')
+
 ]

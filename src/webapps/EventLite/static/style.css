@@ -57,7 +57,8 @@
 }
 
 .login-btn {
-    width: 10%
+    width: 10%;
+    min-width: 200px;
 }
 
 .indent {
