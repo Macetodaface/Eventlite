@@ -157,6 +157,7 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 STATIC_ROOT = BASE_DIR + 'static/'
 
 #define login urls
+LOGIN_URL = '/login/'
 LOGIN_REDIRECT_URL = '/'
 
 

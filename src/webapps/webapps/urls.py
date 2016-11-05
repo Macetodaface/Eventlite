@@ -15,17 +15,22 @@ Including another URLconf
 """
 from django.conf.urls import include, url
 from django.contrib import admin
+import django.contrib.auth.views
+
 from EventLite import views
 
 urlpatterns = [
-    url(r'^$', views.index),
+    url(r'^$', views.view_events),
     url('', include('social.apps.django_app.urls', namespace='social')),
     url(r'^base', views.base, name='base'),
     url(r'^post-event', views.post_event, name='post-event'),
     url(r'^registration', views.registration, name='registration'),
     url(r'^view-events', views.view_events, name='view-events'),
+    url(r'^login/$', views.manual_login, name='login'),
     url(r'^loggedin', views.social_login, name='loggedin'),
     url(r'^logout', views.logoutUser, name='logout'),
-    url(r'^forgot-password', views.forgot_password, name='forgot-password')
+    url(r'^forgot-password', views.forgot_password, name='forgot-password'),
+    url(r'^activate$', views.activate, name='activate'),
+
 
 ]

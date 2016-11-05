@@ -10,13 +10,17 @@
     {% endblock %}
         <h1>Welcome to EventLite</h1><br>
         <span>The place for all your ticket needs.</span>
-        <form class="login-form" action="">
-            Username: <input class="login-input" type="text" name="username">
+        <form class="login-form" action="{% url 'login' %}" method="post">
+            Username: {{ form.username }}
             <br><br>
-            Password: <input class="login-input" type="text" name="password">
+            Password:  {{ form.password }}
             <br><br>
             <input class="btn btn-primary login-btn" type="submit" value="Log in">
+            <br>
+            <input type="hidden" name="next" value="{{ next }}" >
+            {% csrf_token %}
         </form>
+
         <br>
         <fb:login-button
                 id="facebook-login"

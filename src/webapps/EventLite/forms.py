@@ -33,7 +33,15 @@ class UserForm(forms.Form):
 
     def clean_password1(self):
         password1 = self.cleaned_data.get('password1')
-        password2 = self.cleaned_data.get('password1')
+        password2 = self.cleaned_data.get('password2')
         if not password1 == password2:
             raise forms.ValidationError('Passwords do not match.')
         return password1
+
+class LoginForm(forms.Form):
+    username = forms.CharField(max_length=40, label='Username')
+    password = forms.CharField(max_length=40, label='Password:',
+                                widget=forms.PasswordInput)
+    def clean(self):
+        cleaned_data= super(LoginForm,self).clean()
+        return cleaned_data
