@@ -1,6 +1,13 @@
 {% extends 'header.html' %}
+{% load static %}
+<script src="{% static 'facebook.js' %}"></script>
 {% block body %}
     <div class="center buffer-top">
+    {% block messages %}
+        {% for message in messages %}
+            {{ message }}
+        {% endfor %}
+    {% endblock %}
         <h1>Welcome to EventLite</h1><br>
         <span>The place for all your ticket needs.</span>
         <form class="login-form" action="">
@@ -19,10 +26,10 @@
         <div id="status">
         </div>
         <a href="{% url 'social:begin' 'facebook' %}?next={% url 'loggedin' %}">
-            Login with Facebook
+            <img class="login-img" src="{% static 'media/fb-login.png' %}">
         </a>
         <a href="{% url 'social:begin' 'google-oauth2' %}?next={% url 'loggedin' %}">
-            Login with Google
+            <img class="login-img" src="{% static 'media/g+-login.png' %}">
         </a>
     </div>
 </body>

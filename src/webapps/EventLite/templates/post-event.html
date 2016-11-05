@@ -7,23 +7,20 @@
 {% block center-content %}
     <h3 class="well white-background">Post an Event: </h3><br>
     <form action="{% url 'post-event' %}" method="post">
-        <div class="post-event-field col-xs-3">
+        <div class="col-xs-2">
             Name:
         </div>
         <input class="medium-input" name="name" type="text"><br>
-        <div class="post-event-field col-xs-3">
+        <div class="col-xs-2">
             Description:</div>
         <input class="long-input" name="description" type="text"><br>
-        <div class="post-event-field col-xs-3">
+        <div class="col-xs-2">
             Location:</div>
         <input class="medium-input" name="location" type="text"><br>
-        <div class="post-event-field col-xs-3">
-            Price:</div>
-        <input class="short-input" name="description" type="text"><br>
-        <div class="post-event-field col-xs-3">
-            Contact:</div>
-        <input class="medium-input" name="contact" type="text"><br>
-        <div class="post-event-field col-xs-3">
+        <div class="col-xs-2">
+            Time:</div>
+        <input class="medium-input" name="time" type="datetime-local"><br>
+        <div class="col-xs-2">
             Media:</div>
         <input name="media" type="file"><br>
         <input class="btn btn-primary" type="submit" value="Post Event"><br>

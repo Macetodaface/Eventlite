@@ -152,6 +152,8 @@ USE_L10N = True
 
 USE_TZ = True
 
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
 STATIC_ROOT = BASE_DIR + 'static/'
 
 #define login urls
