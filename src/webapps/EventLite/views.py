@@ -8,6 +8,12 @@ from EventLite.forms import *
 from django.core.mail import send_mail
 
 from sys import stderr
+from EventLite.forms import *
+from random import choice
+from string import ascii_uppercase
+from django.core.mail import send_mail
+
+
 # Create your views here.
 
 
@@ -32,17 +38,18 @@ def registration(request):
         return render(request, url, context)
 
     form = UserForm(request.POST)
+    context['form'] = form
 
     # Validate the form
     if not form.is_valid():
         return render(request, url, context)
 
-    new_user = User(username=form.cleaned_data['username'],
-                    password=form.cleaned_data['password1'],
-                    first_name=form.cleaned_data['first_name'],
-                    last_name=form.cleaned_data['last_name'],
-                    email=form.cleaned_data['email'],
-                    is_active=False)
+    new_user = User.objects.create(username=form.cleaned_data['username'],
+                                  password=form.cleaned_data['password1'],
+                                  first_name=form.cleaned_data['first_name'],
+                                  last_name=form.cleaned_data['last_name'],
+                                  email=form.cleaned_data['email'],
+                                  is_active=False)
 
     new_user.save()
 
@@ -66,8 +73,8 @@ def registration(request):
 
     send_mail(subject="EventLite Verification",
               message="Go to {} to activate your EventLite account"
-                      .format(activation_url),
-              from_email="cgrabows@andrew.cmu.edu",
+              .format(activation_url),
+              from_email="noreply@EventLite.com",
               recipient_list=[form.cleaned_data['email']])
 
     context = {"messages": ['An activation email has been sent.']}
@@ -77,12 +84,13 @@ def registration(request):
 def view_events(request):
     return render(request, 'view-events.html', {})
 
+
 # social login aftermath
 # need to handle case where user hasn't activated account#
 # Should be atomic
 # 
 def login_next(request):
-    if(UserDetail.objects.filter(user=request.user).count()==0):
+    if (UserDetail.objects.filter(user=request.user).count() == 0):
         print('no user exists')
 
         newProfile = UserDetail(user=request.user, joined=timezone.now())
@@ -91,5 +99,67 @@ def login_next(request):
         print('user exists')
     return render(request, 'loggedin.html', {})
 
-def forgot_password(request):
-    return render(request, 'index.html', {})
+
+def recover_password(request):
+    return render(request, 'recover-password.html', {})
+
+
+def get_random_key():
+    return ''.join(choice(ascii_uppercase) for i in range(30))
+
+
+def new_password(request, key):
+    context = {'key': key}
+    print(key, file=stderr)
+    try:
+        user_detail = UserDetail.objects.get(recovery_key=key)
+    except:
+        return render(request, 'index.html', {'messages': ['Invalid Key']})
+    if request.method == 'GET':
+        return render(request, 'new_password.html', {})
+
+    form = PasswordForm(request.POST)
+    if form.is_valid():
+        password = form.cleaned_data['password1']
+        user = user_detail.user
+        user.set_password(password)
+        user.save()
+    else:
+        context['errors'] = form.errors
+        return render(request, 'new_password.html', context)
+
+    return render(request, 'index.html', {'mesasges':
+                                    ['Your password has been reset']})
+
+
+def recover_password(request):
+    if request.method == 'GET':
+        return render(request, 'recover-password.html', {})
+
+    form = RecoveryForm(request.POST)
+
+    context = {'form': form}
+    if not form.is_valid():
+        return render(request, 'recover-password.html', context)
+
+    else:
+        user = form.get_user()
+        try:
+            user_detail = UserDetail.objects.get(user=user)
+        except:
+            return render(request, 'recover-password.html', {'errors': 'Cannot find user details.'})
+
+        random_key = get_random_key()
+        while UserDetail.objects.filter(recovery_key=random_key).count() > 0:
+            random_key = get_random_key()
+
+        user_detail.recovery_key = random_key
+        user_detail.save()
+        reset_url = 'localhost:8000/new_password/' + random_key
+        send_mail(subject="EventLite Password reset",
+                  message="Go to {} to reset your password".format(reset_url),
+                  from_email="noreply@EventLite.com",
+                  recipient_list=[user.email])
+        return render(request, 'index.html', {'messages': ['An email has been sent ' +
+                                                       'with instructions to ' +
+                                                       'reset your password']})

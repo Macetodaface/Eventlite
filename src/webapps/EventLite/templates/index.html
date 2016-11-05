@@ -2,17 +2,15 @@
 {% load static %}
 {% block body %}
     <div class="center buffer-top">
-    {% block messages %}
         {% for message in messages %}
             {{ message }}
         {% endfor %}
-    {% endblock %}
         <h1>Welcome to EventLite</h1><br>
         <span>The place for all your ticket needs.</span>
-        <form class="login-form" action="">
+        <form class="login-form" action="/login/">
             Username: <input class="login-input" type="text" name="username">
             <br><br>
-            Password: <input class="login-input" type="text" name="password">
+            Password: <input class="login-input" type="password" name="password">
             <br><br>
             <input class="btn btn-primary login-btn" type="submit" value="Log in">
         </form>
@@ -26,7 +24,7 @@
             <img class="login-img" src="{% static 'media/g+-login.png' %}">
         </a>
         <a href="{% url 'registration' %}" %}>Register</a>
-        <a href="{% url 'forgot-password' %}">Forgot Password?</a>
+        <a href="{% url 'recover-password' %}">Forgot Password?</a>
     </div>
 </body>
 {% endblock %}
