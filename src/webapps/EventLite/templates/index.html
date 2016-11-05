@@ -31,6 +31,8 @@
         <a href="{% url 'social:begin' 'google-oauth2' %}?next={% url 'loggedin' %}">
             <img class="login-img" src="{% static 'media/g+-login.png' %}">
         </a>
+        <a href="{% url 'registration' %}" %}>Register</a>
+        <a href="{% url 'forgot-password' %}">Forgot Password?</a>
     </div>
 </body>
 {% endblock %}

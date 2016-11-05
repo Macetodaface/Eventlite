@@ -25,4 +25,5 @@ urlpatterns = [
     url(r'^registration', views.registration, name='registration'),
     url(r'^view-events', views.view_events, name='view-events'),
     url(r'^loggedin', views.login_next, name='loggedin'),
+    url(r'^forgot-password', views.forgot_password, name='forgot-password')
 ]

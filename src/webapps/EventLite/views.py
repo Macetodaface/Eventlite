@@ -90,3 +90,6 @@ def login_next(request):
     else:
         print('user exists')
     return render(request, 'loggedin.html', {})
+
+def forgot_password(request):
+    return render(request, 'index.html', {})
