@@ -11,6 +11,7 @@ class UserDetail(models.Model):
      bio = models.CharField(max_length = 420, default = '', blank = True,null=True)
      joined = models.DateTimeField()
      activation_key = models.CharField(max_length=100)
+     recovery_key = models.CharField(max_length=100, blank=True)
 
 class Seller(models.Model):
     earnings = models.FloatField(default=0.0)

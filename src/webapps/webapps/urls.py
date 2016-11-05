@@ -20,7 +20,8 @@ import django.contrib.auth.views
 from EventLite import views
 
 urlpatterns = [
-    url(r'^$', views.view_events),
+
+    url(r'^$', views.view_events,name='home'),
     url('', include('social.apps.django_app.urls', namespace='social')),
     url(r'^base', views.base, name='base'),
     url(r'^post-event', views.post_event, name='post-event'),
@@ -31,6 +32,7 @@ urlpatterns = [
     url(r'^logout', views.logoutUser, name='logout'),
     url(r'^forgot-password', views.forgot_password, name='forgot-password'),
     url(r'^activate$', views.activate, name='activate'),
-
+    url(r'^recover-password', views.recover_password, name='recover-password'),
+    url(r'^new_password/(?P<key>.+)', views.new_password, name='new-password')
 
 ]
