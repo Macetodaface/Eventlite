@@ -21,8 +21,6 @@ class Buyer(models.Model):
 
 class Event(models.Model):
 	seller = models.ForeignKey(Seller)
-	numOfTickets = models.IntegerField(default = 0)
-	ticketsSold = models.IntegerField(default = 0)
 	description = models.CharField(max_length = 1000, default = '', blank = True)
 	location = models.CharField(max_length = 100, default = '', blank = True)
 	time = models.DateTimeField(default=timezone.now)
@@ -34,6 +32,8 @@ class Ticket(models.Model):
     event = models.ForeignKey(Event)
     price = models.FloatField()
     details = models.CharField(max_length=1000)
+    numOfTickets = models.IntegerField(default=0)
+    ticketsSold = models.IntegerField(default=0)
 
 
 class Review(models.Model):
