@@ -12,13 +12,6 @@
     margin-left: 2%;
 }
 
-.register-input {
-    margin-top: 10px;
-    margin-bottom: 10px;
-    width: 10%;
-    min-width: 150px;
-}
-
 .white-background {
     background-color: white;
 }
@@ -37,7 +30,7 @@
 
 .medium-input {
     margin-bottom: 10px;
-    width: 15%;
+    width: 25%;
     min-width: 200px;
 }
 
@@ -61,6 +54,10 @@
 
 .login-btn {
     width: 10%
+}
+
+.indent {
+    margin-left: 10px;
 }
 
 .login-form {
