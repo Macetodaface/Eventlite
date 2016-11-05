@@ -11,32 +11,33 @@ class UserDetail(models.Model):
      social_login = models.BooleanField()
 
 class Seller(models.Model):
-    eventsHosting = models.ForeignKey("Event",blank=True,null=True)
+    earnings = models.FloatField(default=0.0)
 
 class Buyer(models.Model):
-    ticketsPurchased = models.ForeignKey("Ticket",blank=True,null=True)
-    eventsInterested = models.ForeignKey("Event",blank=True,null=True)
+    ticketsPurchased = models.ManyToManyField("Ticket",blank=True)
+    eventsInterested = models.ManyToManyField("Event",blank=True)
     points = models.IntegerField(default = 0)
 
 class Event(models.Model):
-    numOfTickets = models.IntegerField(default = 0)
-    ticketsSold = models.IntegerField(default = 0)
-    description = models.CharField(max_length = 1000, default = '', blank = True)
-    location = models.CharField(max_length = 100, default = '', blank = True)
-    time = models.DateTimeField(default=timezone.now)
-    media = models.URLField(default = '', blank = True)
-    email = models.EmailField()
+	seller = models.ForeignKey(Seller)
+	numOfTickets = models.IntegerField(default = 0)
+	ticketsSold = models.IntegerField(default = 0)
+	description = models.CharField(max_length = 1000, default = '', blank = True)
+	location = models.CharField(max_length = 100, default = '', blank = True)
+	time = models.DateTimeField(default=timezone.now)
+	media = models.URLField(default = '', blank = True)
+	email = models.EmailField()
 
 class Ticket(models.Model):
-    event = models.ForeignKey("Event")
+    event = models.ForeignKey(Event)
     price = models.FloatField()
     details = models.CharField(max_length = 1000)
 
 class Review(models.Model):
     rating = models.IntegerField()
     review = models.CharField(max_length = 420, default = '', blank = True)
-    event = models.ForeignKey("Event")
+    event = models.ForeignKey(Event)
 
 class Image(models.Model):
-    event = models.ForeignKey("Event")
+    event = models.ForeignKey(Event)
     image = models.ImageField(upload_to = 'images', blank = True)

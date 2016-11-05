@@ -19,7 +19,9 @@ def registration(request):
     return render(request, 'registration.html', {})
 
 # social login aftermath
-# need to handle case where user hasn't activated account
+# need to handle case where user hasn't activated account#
+# Should be atomic
+# 
 def login_next(request):
     if(UserDetail.objects.filter(user=request.user).count()==0):
         print 'no user exists'
