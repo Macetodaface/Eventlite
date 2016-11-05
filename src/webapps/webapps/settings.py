@@ -27,9 +27,21 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+#Facebook Authentication
+SOCIAL_AUTH_FACEBOOK_KEY = "1600673143291618"
+SOCIAL_AUTH_FACEBOOK_SECRET = "bc29299e4346e60c63bf13218adbafa8"
+
+#Google  Authentication
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY= '606003363932-oh0s25eh3h3babctrum0o4njvfniqfrd'
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET='0xe0Lji9mebEPhldpMtjjpF2'
+
+#Authentican backends
+AUTHENTICATION_BACKENDS = (
+    'social.backends.google.GoogleOAuth2',
+    'social.backends.facebook.FacebookOAuth2',
+    'django.contrib.auth.backends.ModelBackend')
 
 # Application definition
-
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -37,6 +49,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'social.apps.django_app.default',
     'EventLite',
 ]
 
@@ -49,6 +62,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
 
 ROOT_URLCONF = 'webapps.urls'
 
@@ -63,6 +77,9 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'social.apps.django_app.context_processors.backends',
+                'social.apps.django_app.context_processors.login_redirect',
+
             ],
         },
     },
@@ -132,7 +149,8 @@ USE_TZ = True
 
 STATIC_ROOT = BASE_DIR + 'static/'
 
-STATIC_URL = '/static/'
+#define login urls
+LOGIN_REDIRECT_URL = '/'
 
 
 # Static files (CSS, JavaScript, Images)
