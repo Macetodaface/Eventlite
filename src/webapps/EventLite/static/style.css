@@ -16,6 +16,10 @@
     background-color: white;
 }
 
+.login-img {
+    width: 200px;
+}
+
 .well-content {
     width: 100%;
     margin-left: auto;
