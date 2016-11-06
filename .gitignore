@@ -10,7 +10,7 @@ src/.idea
 *.pyc
 local_settings.py
 *.py[cod]
-
+migrations
 
 # C extensions
 *.so
