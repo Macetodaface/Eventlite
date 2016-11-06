@@ -8,6 +8,12 @@
     margin-top: 10%;
 }
 
+.vertical-buffer {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    width:1000px;
+}
+
 .buffer-left {
     margin-left: 2%;
 }

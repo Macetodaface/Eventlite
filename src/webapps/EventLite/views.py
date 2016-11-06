@@ -78,7 +78,7 @@ def registration(request):
               recipient_list=[form.cleaned_data['email']])
 
     context = {"messages": ['An activation email has been sent.']}
-    return render(request, 'index.html', context)
+    return index(request)
 
 
 def view_events(request):
