@@ -2,25 +2,16 @@
 {% block title %}View Events{% endblock %}
 {% block left-content %}{% endblock %}
 {% block center-content %}
-<div class="well tall-well well-content">
-    {% for error in errors %}
-        <span class="error">{{ error }}</span>
-    {% endfor %}
-    {% for message in messages %}
-        {{ message }}
-    {% endfor %}
     <h1 class="center">My Events</h1>
-    <br>
-    {% for event in events %}
-        <div class="">
-            <a href="" class="col-xs-2 wells white-background event-listing  no-hyper">
-                <span class="event-detail">{{ event.name }} </span>
-                <br><br>
-                <span class="event-detail">{{ event.time }}</span><br>
-                <span class="event-detail">{{ event.location }}</span><br>
-            </a>
-        </div>
-    {% endfor %}
-</div>
+    <div class="well tall-well well-content">
+        {% for error in errors %}
+            <span class="error">{{ error }}</span>
+        {% endfor %}
+        {% for message in messages %}
+            {{ message }}
+        {% endfor %}
+        {% include 'event-list.html' %}
+        <br>
+    </div>
 {% endblock %}
 {% block right-content %}{% endblock %}

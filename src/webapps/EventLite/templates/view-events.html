@@ -1,16 +1,18 @@
-{% extends 'base-wells.html' %}
+{% extends 'base.html' %}
 {% block title %}View Events{% endblock %}
-{% block left-content %} Filters {% endblock %}
+{% block left-content %}{% endblock %}
 {% block center-content %}
-    {% for event in events %}
-    <div class="well">
-        {{ event.name }}
-        {{ event.description }}
-        {{ event.location }}
-        {{ event.time }}
-        {{ event.media }}
-        {{ event.email }}
+    <h1 class="center">Events</h1>
+    <div class="well tall-well well-content">
+    <form action="" method="post">
+        <div class="search-bar">
+            <input class="btn btn-primary" id="search-btn"
+                   type="submit" value="Search">
+            </input>
+            <input class="search-field" id="search-field" type="text">
+        </div>
+    </form>
+    {% include 'event-list.html' %}
     </div>
-    {% endfor %}
 {% endblock %}
-{% block right-well %}{% endblock %}
+{% block right-content %}{% endblock %}

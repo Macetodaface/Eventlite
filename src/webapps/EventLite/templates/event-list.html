@@ -1,0 +1,17 @@
+{% for error in errors %}
+    <span class="error">{{ error }}</span>
+{% endfor %}
+{% for message in messages %}
+    {{ message }}
+{% endfor %}
+<br>
+{% for event in events %}
+    <div class="">
+        <a href="" class="col-xs-2 wells white-background event-listing  no-hyper">
+            <span class="event-detail">{{ event.name }} </span>
+            <br><br>
+            <span class="event-detail">{{ event.time }}</span><br>
+            <span class="event-detail">{{ event.location }}</span><br>
+        </a>
+    </div>
+{% endfor %}

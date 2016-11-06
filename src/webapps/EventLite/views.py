@@ -120,7 +120,9 @@ def registration(request):
 
 @login_required
 def view_events(request):
-    return render(request, 'view-events.html', {'user':request.user})
+    context = {'user': request.user,
+               'events': Event.objects.all()}
+    return render(request, 'view-events.html', context)
 
 
 @login_required
@@ -131,7 +133,7 @@ def my_events_context(request):
         return {'errors': 'Could not find user details.'}
 
     seller = user_detail.seller
-
+    print(seller.userdetail.user.username, file=stderr)
     context = {'user': request.user,
                'events': Event.objects.filter(seller=seller)}
     return context
@@ -163,7 +165,6 @@ def manual_login(request):
         try:
             storedUser = User.objects.get(username=username)
         except:
-            print('inside storedUser')
             context['messages'] = ['Invalid UserName or Password']
             return index(request,context)
 
@@ -176,7 +177,6 @@ def manual_login(request):
             else:
                 context['messages'] = ['Account not activated. Check email to activate.']
                 return render(request, 'index.html',context)
-        print 'before logging in'
         login(request,user)
         return redirect('/view-events')
 
@@ -186,8 +186,6 @@ def manual_login(request):
 @transaction.atomic
 def social_login(request):
     if(UserDetail.objects.filter(user__email=request.user.email).count()==0):
-        print('user inactive- social login')
-        print('no user exists')
         newBuyer = Buyer()
         newSeller = Seller()
         newBuyer.save()
@@ -195,11 +193,9 @@ def social_login(request):
         newProfile = UserDetail(user=request.user,buyer=newBuyer,seller=newSeller, joined=timezone.now())
         newProfile.save()
     else:
-        print('user exists')
         # check activation
         userDetail = UserDetail.objects.get(user__email=request.user.email)
         if(userDetail.user.is_active==False):
-            print('user inactive- social login')
             context = {"messages": ['Cant use social login while user email activation pending']}
             return render(request,'index.html',context)
 
