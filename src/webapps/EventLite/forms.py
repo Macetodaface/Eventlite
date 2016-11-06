@@ -43,6 +43,17 @@ class UserForm(forms.Form):
         return cleaned_data
 
 
+class LoginForm(forms.Form):
+    username = forms.CharField(max_length=40, label='Username')
+    password = forms.CharField(max_length=40, label='Password:',
+                                widget=forms.PasswordInput)
+    def clean(self):
+        cleaned_data= super(LoginForm,self).clean()
+        return cleaned_data
+
+
+
+
 class RecoveryForm(forms.Form):
     username = forms.CharField(max_length=100, required=False)
     email = forms.CharField(max_length=100, required=False)

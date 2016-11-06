@@ -16,7 +16,7 @@
 
 .post-event-field {
     margin-top: 5px;
-    margin-bottom 5px;
+    margin-bottom: 5px;
 }
 
 .buffer-left {
@@ -46,6 +46,7 @@
 .error {
     color: red;
 }
+
 .medium-input {
     margin-bottom: 10px;
     width: 25%;

@@ -76,6 +76,10 @@
                 </div>
             </div>
             {% csrf_token %}
+
+            {% if form.errors %}
+            <p class="errorText"> Incorrect user name or password </p>
+            {% endif %}
             <br>
             <input class="btn btn-primary register-input" type="submit" value="Sign Up">
         </form>
