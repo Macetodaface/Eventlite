@@ -15,7 +15,7 @@ from django.db import transaction
 # Decorator to use built-in authentication system
 from django.contrib.auth.decorators import login_required
 from sys import stderr
-import django.contrib.auth as dj
+from django.contrib.auth import logout as auth_logout
 
 # Create your views here.
 
@@ -95,7 +95,7 @@ def view_events(request):
 
 @login_required
 def logoutUser(request):
-    logout(request)
+    auth_logout(request)
     return redirect('/')
 
 
@@ -109,14 +109,8 @@ def manual_login(request):
 
         username = form.cleaned_data['username']
         password = form.cleaned_data['password']
-        print 'input UserName:' + username
-        print 'input Password:' + password
+
         userdetail = UserDetail.objects.get(user__username=username)
-
-        print 'stored UserName:'+userdetail.user.username
-        print 'stored Password:'+userdetail.user.password
-
-        print userdetail.user.is_active
 
         user = authenticate(username=username,password=password)
         print user
@@ -142,7 +136,7 @@ def manual_login(request):
 @transaction.atomic
 def social_login(request):
     if(UserDetail.objects.filter(user__email=request.user.email).count()==0):
-
+        print('user inactive- social login')
         print('no user exists')
         newBuyer = Buyer()
         newSeller = Seller()
@@ -154,18 +148,12 @@ def social_login(request):
         print('user exists')
         # check activation
         userDetail = UserDetail.objects.get(user__email=request.user.email)
-        print userDetail
         if(userDetail.user.is_active==False):
-            # User has logged in using social auth without activation from link
-            # 1. invalidate the activation key.
-            # 2. is_active = True
-            # 3. save
-            # Ignore the activation key
-            userDetail.user.is_active=True
-            userDetail.user.save()
-            userDetail.save()
+            print('user inactive- social login')
+            context = {"messages": ['Cant use social login while user email activation pending']}
+            return render(request,'index.html',context)
 
-    return render(request, 'view-events.html', {})
+    return redirect('/view-events')
 
 @transaction.atomic
 def activate(request):
@@ -185,6 +173,7 @@ def activate(request):
             return render(request,'index.html',context)
 
         if(userdetail.user.is_active==True):
+
             context = {"messages": ['User already active']}
             return render(request,'index.html',context)
 

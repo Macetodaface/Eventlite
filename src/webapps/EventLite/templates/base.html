@@ -19,10 +19,6 @@
             </ul>
             <ul class = "nav navbar-nav navbar-right">
                 <li>
-                {% if user and not user.is_anonymous %}
-                <a href="#">{{ user.get_full_name|default:user.username }}</a>
-                {% endif %}
-                </li><li>
                 <a class="pull-right" href="{% url 'logout' %}">Logout</a>
                 </li>
             </ul>
