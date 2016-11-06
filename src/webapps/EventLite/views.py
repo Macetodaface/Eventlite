@@ -125,6 +125,7 @@ def manual_login(request):
     if request.method == 'GET':
         return index(request, {})
     else:
+        context={}
         form = LoginForm(request.POST)
         if not form.is_valid():
             return index(request, {})
@@ -132,23 +133,23 @@ def manual_login(request):
         username = form.cleaned_data['username']
         password = form.cleaned_data['password']
 
-        userdetail = UserDetail.objects.get(user__username=username)
+        try:
+            storedUser = User.objects.get(username=username)
+        except:
+            print 'inside storedUser'
+            context['messages'] = ['Invalid UserName or Password']
+            return index(request,context)
 
         user = authenticate(username=username,password=password)
-        if user is None:
-            context={}
-            context['form'] = LoginForm()
-            return render(request, 'index.html',
-              {'messages': ['User- None Invalid username/password.']})
 
-        if user.is_active:
-            if user is not None:
-                login(request, user)
-                return render(request, 'view-events.html', {})
-        else:
-            context['form'] = LoginForm()
-            return render(request, 'index.html',
-            {'messages': ['Account not activated. Check email to activate.']})
+
+        if user is None:
+            if storedUser.is_active:
+                context['messages'] = ['Invalid UserName or Password']
+                return index(request,context)
+            else:
+                context['messages'] = ['Account not activated. Check email to activate.']
+                return render(request, 'index.html',context)
 
 
 # social login aftermath
@@ -192,7 +193,6 @@ def activate(request):
             return render(request,'index.html',context)
 
         if(userdetail.user.is_active==True):
-
             context = {"messages": ['User already active']}
             return render(request,'index.html',context)
 
