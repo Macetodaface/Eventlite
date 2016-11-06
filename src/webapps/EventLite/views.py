@@ -20,11 +20,9 @@ from django.contrib.auth import logout as auth_logout
 # Create your views here.
 
 
-def index(request):
-    context={}
+def index(request, context):
     context['form'] = LoginForm()
     return render(request, 'index.html',context)
-
 
 
 def base(request):
@@ -85,7 +83,6 @@ def registration(request):
                     email=form.cleaned_data['email'],
                     is_active=False)
 
-
     new_user.save()
 
     random_key = getRandomKey()
@@ -112,7 +109,7 @@ def registration(request):
               recipient_list=[form.cleaned_data['email']])
 
     context = {"messages": ['An activation email has been sent.']}
-    return index(request)
+    return index(request, context)
 
 @login_required
 def view_events(request):
@@ -126,11 +123,11 @@ def logoutUser(request):
 
 def manual_login(request):
     if request.method == 'GET':
-        return index(request)
+        return index(request, {})
     else:
         form = LoginForm(request.POST)
         if not form.is_valid():
-            return index(request)
+            return index(request, {})
 
         username = form.cleaned_data['username']
         password = form.cleaned_data['password']

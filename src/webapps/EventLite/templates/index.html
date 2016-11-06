@@ -1,7 +1,6 @@
 {% extends 'header.html' %}
 {% load static %}
 {% block body %}
-<<<<<<< HEAD
     <div class="center buffer-top">
         {% for message in messages %}
             {{ message }}
@@ -10,8 +9,6 @@
         <span>The place for all your ticket needs.</span>
 
         <form class="login-form" action="{% url 'login' %}" method="post">
-
-        <form class="login-form" action="/login/">
             Username: <input class="login-input" type="text" name="username">
             <br><br>
             Password: <input class="login-input" type="password" name="password">
@@ -21,35 +18,16 @@
             <input type="hidden" name="next" value="{{ next }}" >
             {% csrf_token %}
         </form>
-
-        <br>
-        <div id="status">
-        </div>
+        <br><br>
+        <a href="{% url 'recover-password' %}">Forgot Password?</a>
+        <br><br>
         <a href="{% url 'social:begin' 'facebook' %}?next={% url 'loggedin' %}">
             <img class="login-img" src="{% static 'media/fb-login.png' %}">
         </a>
         <a href="{% url 'social:begin' 'google-oauth2' %}?next={% url 'loggedin' %}">
             <img class="login-img" src="{% static 'media/g+-login.png' %}">
         </a>
-        <a href="{% url 'registration' %}" %}>Register</a>
-
-        <a href="{% url 'recover-password' %}">Forgot Password?</a>
-        <br><br>
-        <input class="btn btn-primary login-btn" type="submit" value="Log in">
         <br><br>
         <a href="{% url 'registration' %}"> Not registered? Sign Up</a>
-    </form>
-    <br>
-    <div id="status">
-    </div>
-    <a href="{% url 'social:begin' 'facebook' %}?next={% url 'loggedin' %}">
-        <img class="login-img" src="{% static 'media/fb-login.png' %}">
-    </a>
-    <a href="{% url 'social:begin' 'google-oauth2' %}?next={% url 'loggedin' %}">
-        <img class="login-img" src="{% static 'media/g+-login.png' %}">
-    </a>
-    <br>
-    <a class="btn btn-primary login-btn"
-       href="{% url 'registration' %}" %}>Register</a>
 </div>
 {% endblock %}
