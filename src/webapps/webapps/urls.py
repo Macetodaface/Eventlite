@@ -32,6 +32,6 @@ urlpatterns = [
     url(r'^logout', views.logoutUser, name='logout'),
     url(r'^activate$', views.activate, name='activate'),
     url(r'^recover-password', views.recover_password, name='recover-password'),
-    url(r'^new_password/(?P<key>.+)', views.new_password, name='new-password')
+    url(r'^new_password/(?P<key>.+)', views.new_password, name='new-password'),
 
 ]

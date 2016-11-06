@@ -87,7 +87,7 @@ def registration(request):
               recipient_list=[form.cleaned_data['email']])
 
     context = {"messages": ['An activation email has been sent.']}
-    return render(request, 'index.html', context)
+    return index(request)
 
 @login_required
 def view_events(request):
@@ -197,16 +197,22 @@ def get_random_key():
 
 def new_password(request, key):
     context = {'key': key}
+
     try:
         user_detail = UserDetail.objects.get(recovery_key=key)
     except:
         return render(request, 'index.html', {'messages': ['Invalid Key']})
+
     if request.method == 'GET':
-        return render(request, 'new_password.html', {})
+        return render(request, 'new_password.html', context)
 
     form = PasswordForm(request.POST)
     if form.is_valid():
         password = form.cleaned_data['password1']
+        try:
+            user_detail = UserDetail.objects.get(recovery_key=key)
+        except:
+            return render(request, 'index.html', {'messages': ['Invalid Key']})
         user = user_detail.user
         user.set_password(password)
         user.save()
@@ -214,7 +220,7 @@ def new_password(request, key):
         context['errors'] = form.errors
         return render(request, 'new_password.html', context)
 
-    return render(request, 'index.html', {'mesasges':
+    return render(request, 'index.html', {'messages':
                                     ['Your password has been reset']})
 
 

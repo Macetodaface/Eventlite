@@ -1,6 +1,7 @@
 {% extends 'header.html' %}
 {% load static %}
 {% block body %}
+<<<<<<< HEAD
     <div class="center buffer-top">
         {% for message in messages %}
             {{ message }}
@@ -31,7 +32,24 @@
             <img class="login-img" src="{% static 'media/g+-login.png' %}">
         </a>
         <a href="{% url 'registration' %}" %}>Register</a>
+
         <a href="{% url 'recover-password' %}">Forgot Password?</a>
+        <br><br>
+        <input class="btn btn-primary login-btn" type="submit" value="Log in">
+        <br><br>
+        <a href="{% url 'registration' %}"> Not registered? Sign Up</a>
+    </form>
+    <br>
+    <div id="status">
     </div>
-</body>
+    <a href="{% url 'social:begin' 'facebook' %}?next={% url 'loggedin' %}">
+        <img class="login-img" src="{% static 'media/fb-login.png' %}">
+    </a>
+    <a href="{% url 'social:begin' 'google-oauth2' %}?next={% url 'loggedin' %}">
+        <img class="login-img" src="{% static 'media/g+-login.png' %}">
+    </a>
+    <br>
+    <a class="btn btn-primary login-btn"
+       href="{% url 'registration' %}" %}>Register</a>
+</div>
 {% endblock %}
