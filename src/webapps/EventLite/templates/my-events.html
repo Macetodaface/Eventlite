@@ -1,0 +1,14 @@
+{% extends 'base-wells.html' %}
+{% block title %}View Events{% endblock %}
+{% block left-well %}{% endblock %}
+{% block center-content %}
+    {% for error in errors %}
+        <span class="error">{{ error }}</span>
+    {% endfor %}
+    {% for event in events %}
+    <a href="" class="well white-background">
+        Name {{ event.name }}
+    </a>
+    {% endfor %}
+{% endblock %}
+{% block right-well %}{% endblock %}

@@ -1,5 +1,16 @@
 {% extends 'base-wells.html' %}
 {% block title %}View Events{% endblock %}
 {% block left-content %} Filters {% endblock %}
-{% block center-content %} Events {% endblock %}
+{% block center-content %}
+    {% for event in events %}
+    <div class="well">
+        {{ event.name }}
+        {{ event.description }}
+        {{ event.location }}
+        {{ event.time }}
+        {{ event.media }}
+        {{ event.email }}
+    </div>
+    {% endfor %}
+{% endblock %}
 {% block right-well %}{% endblock %}

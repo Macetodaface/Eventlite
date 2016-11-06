@@ -32,6 +32,7 @@ def base(request):
 def post_event(request):
     url = 'post-event.html'
     form = PostEventForm()
+
     if request.method == 'GET':
         return render(request, url, {'form': form})
 
@@ -48,18 +49,22 @@ def post_event(request):
         return render(request, url, context)
 
     new_event = Event.objects.create(seller=seller,
+                name = form.cleaned_data['name'],
                 description = form.cleaned_data['description'],
                 location = form.cleaned_data['location'],
                 time = form.cleaned_data['time'],
                 media = form.cleaned_data['media'],
                 email = form.cleaned_data['email'])
     new_event.save()
-    return render(request, 'view-events.html',
-                  {'messages': ['Your event has been posted.']})
+    context = my_events_context(request)
+    context['messages'] = ['Your event has beeen posted']
+    return render(request, 'my-events.html',context)
+
 
 def getRandomKey():
     key_length = 30
     return ''.join(choice(ascii_uppercase) for i in range(key_length))
+
 
 @transaction.atomic
 def registration(request):
@@ -111,9 +116,30 @@ def registration(request):
     context = {"messages": ['An activation email has been sent.']}
     return index(request, context)
 
+
 @login_required
 def view_events(request):
     return render(request, 'view-events.html', {'user':request.user})
+
+
+@login_required
+def my_events_context(request):
+    try:
+        user_detail = UserDetail.objects.get(user=request.user)
+    except:
+        return {'errors': 'Could not find user details.'}
+
+    seller = user_detail.seller
+
+    context = {'user': request.user,
+               'events': Event.objects.filter(seller=seller)}
+    return context
+
+
+@login_required
+def my_events(request):
+    return render(request, 'my-events.html', my_events_context(request))
+
 
 @login_required
 def logoutUser(request):
@@ -131,8 +157,6 @@ def manual_login(request):
 
         username = form.cleaned_data['username']
         password = form.cleaned_data['password']
-
-        userdetail = UserDetail.objects.get(user__username=username)
 
         user = authenticate(username=username,password=password)
         context = {}
