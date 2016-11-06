@@ -5,13 +5,18 @@
 }
 
 .buffer-top {
-    margin-top: 10%;
+    margin-top: 5%;
 }
 
 .vertical-buffer {
     margin-top: 10px;
     margin-bottom: 10px;
     width:1000px;
+}
+
+.post-event-field {
+    margin-top: 5px;
+    margin-bottom 5px;
 }
 
 .buffer-left {
@@ -80,6 +85,14 @@
 .login-btn, .recover-btn {
     width: 10%;
     min-width: 200px;
+}
+
+.post-event-btn {
+    width: 20%;
+    min-width: 100px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 10px;
 }
 
 .indent {

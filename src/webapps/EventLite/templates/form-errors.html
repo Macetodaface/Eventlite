@@ -1,0 +1,16 @@
+{% if not form.non_field_errors %}
+    <br>
+{% endif %}
+{%for error in form.non_field_errors %}
+    <tr>
+    <td class='error'>{{error}}</td>
+    </tr>
+{% endfor %}
+{%for field in form.visible_fields %}
+    <tr>
+    <td class='error'>{{field.errors}}</td>
+    </tr>
+{% endfor %}
+{% for error in errors %}
+    <span class="error">{{ error }}</span>
+{% endfor %}

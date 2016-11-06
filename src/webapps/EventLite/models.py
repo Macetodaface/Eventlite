@@ -22,12 +22,13 @@ class Buyer(models.Model):
     points = models.IntegerField(default = 0)
 
 class Event(models.Model):
-	seller = models.ForeignKey(Seller)
-	description = models.CharField(max_length = 1000, default = '', blank = True)
-	location = models.CharField(max_length = 100, default = '', blank = True)
-	time = models.DateTimeField(default=timezone.now)
-	media = models.URLField(default = '', blank = True)
-	email = models.EmailField()
+    name = models.CharField(max_length = 100)
+    seller = models.ForeignKey(Seller)
+    description = models.CharField(max_length = 1000, default = '', blank = True)
+    location = models.CharField(max_length = 100, default = '', blank = True)
+    time = models.DateTimeField(default=timezone.now)
+    media = models.URLField(default = '', blank = True)
+    email = models.EmailField()
 
 
 class Ticket(models.Model):

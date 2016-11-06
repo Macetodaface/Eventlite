@@ -5,27 +5,35 @@
 {% block left-well %}
 {% endblock %}
 {% block center-content %}
-    <h3 class="well white-background">Post an Event: </h3><br>
+    <h3 class="center">Post an Event: </h3><br>
+    <div class="center">
+        {% for error in errors %}
+            <span class="error">{{ error }}</span>
+        {% endfor %}
+    </div>
     <form action="{% url 'post-event' %}" method="post">
-        <div class="col-xs-2">
-            Name:
-        </div>
-        <input class="medium-input" name="name" type="text"><br>
-        <div class="col-xs-2">
-            Description:</div>
-        <input class="long-input" name="description" type="text"><br>
-        <div class="col-xs-2">
-            Location:</div>
-        <input class="medium-input" name="location" type="text"><br>
-        <div class="col-xs-2">
-            Time:</div>
-        <input class="medium-input" name="time" type="datetime-local"><br>
-        <div class="col-xs-2">
-            Media:</div>
-        <input name="media" type="file"><br>
-        <input class="btn btn-primary" type="submit" value="Post Event"><br>
-        {% csrf_token %}
+        {{ form.non_field_errors }}
+        {% for field in form %}
+            <div class="row">
+                <div class="col-xs-3">
+                    {{ field.errors }}
+                </div>
+                <div class="fieldWrapper col-xs-2">
+                    {{ field.label }}
+                </div>
+                <div class="post-event-field">{{ field }}</div>
+            </div>
+        {% endfor %}
+        <br>
+    <div class="center">
+        <input class="btn btn-primary post-event-btn"
+               type="submit"
+               value="Post Event"><br>
+    </div>
+    {% csrf_token %}
     </form>
+
+</form>
 {% endblock %}
 {% block right-well %}
 {% endblock %}

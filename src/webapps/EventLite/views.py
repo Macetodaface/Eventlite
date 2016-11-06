@@ -26,7 +26,32 @@ def base(request):
 
 
 def post_event(request):
-    return render(request, 'post-event.html', {})
+    url = 'post-event.html'
+    form = PostEventForm()
+    if request.method == 'GET':
+        return render(request, url, {'form': form})
+
+    form = PostEventForm(request.POST)
+    context = {'form': form}
+    if not form.is_valid():
+        return render(request, url, context)
+
+    try:
+        user_detail = UserDetail.objects.get(user=request.user)
+        seller = user_detail.seller
+    except:
+        context['errors'] = ['User details not found.']
+        return render(request, url, context)
+
+    new_event = Event.objects.create(seller=seller,
+                description = form.cleaned_data['description'],
+                location = form.cleaned_data['location'],
+                time = form.cleaned_data['time'],
+                media = form.cleaned_data['media'],
+                email = form.cleaned_data['email'])
+    new_event.save()
+    return render(request, 'view-events.html',
+                  {'messages': ['Your event has been posted.']})
 
 
 @transaction.atomic

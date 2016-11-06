@@ -3,22 +3,10 @@
     Registration
 {% endblock %}
 {% block body %}
-<div class="center">
+<div class="center buffer-top">
     <div class="col-xs-3"></div>
     <div class="well register col-xs-6">
-        {% if not form.non_field_errors %}
-            <br>
-        {% endif %}
-        {%for error in form.non_field_errors %}
-        <tr>
-        <td class='errorText'>{{error}}</td>
-        </tr>
-        {% endfor %}
-        {%for field in form.visible_fields %}
-        <tr>
-        <td class='errorText'>{{field.errors}}</td>
-        </tr>
-        {% endfor %}
+        {% include 'form-errors.html' %}
         <h2 class="signup">Sign up for EventLite</h2><br>
         <form action="{% url 'registration' %}" method="post">
             <div class="row">

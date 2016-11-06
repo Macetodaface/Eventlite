@@ -5,9 +5,10 @@ from sys import stderr
 
 
 class PostEventForm(ModelForm):
+
     class Meta:
         model = Event
-        fields = ['description', 'location', 'time', 'media', 'email']
+        fields = ['name', 'description', 'location', 'time', 'media', 'email']
 
 
 class UserForm(forms.Form):
