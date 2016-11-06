@@ -17,6 +17,7 @@
             <br>
             <input type="hidden" name="next" value="{{ next }}" >
             {% csrf_token %}
+            
         </form>
         <br><br>
         <a href="{% url 'recover-password' %}">Forgot Password?</a>
