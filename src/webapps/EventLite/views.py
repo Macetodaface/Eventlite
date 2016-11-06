@@ -128,7 +128,7 @@ def new_password(request, key):
     else:
         context['errors'] = form.errors
         return render(request, 'new_password.html', context)
-    
+
     return render(request, 'index.html', {'messages':
                                     ['Your password has been reset']})
 
