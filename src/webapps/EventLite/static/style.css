@@ -4,8 +4,45 @@
     padding: 10px;
 }
 
+.tall-well {
+    overflow: hidden;
+}
+
+.center-vertical {
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.event-detail {
+    margin-left: 10px;
+}
+
 .buffer-top {
     margin-top: 5%;
+}
+
+.no-hyper {
+    color: black;
+}
+
+.no-hyper:hover {
+    color: black;
+    text-decoration: none;
+}
+
+.event-listing {
+    width: 200px;
+    height: 200px;
+    padding: 10px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    margin-right: 5px;
+    margin-left: 5px;
+}
+
+.event-listing:hover {
+    background-color: #e7e7e7;
 }
 
 .vertical-buffer {
