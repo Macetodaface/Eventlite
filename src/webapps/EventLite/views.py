@@ -119,6 +119,21 @@ def registration(request):
 
 
 @login_required
+def search_events(request):
+    if request.method == 'GET':
+        return view_events(request)
+
+    if 'search' in request.POST and request.POST['search']:
+        print(request.POST['search'])
+        context = {'user': request.user,
+                   'events': Event.objects.filter(name=request.POST['search'])}
+        return render(request, 'view-events.html', context)
+
+    else:
+        return view_events(request)
+
+
+@login_required
 def view_events(request):
     context = {'user': request.user,
                'events': Event.objects.all()}
@@ -317,12 +332,26 @@ def event_info(request,id):
 
         #if yes, redirect to seller- event views
         if(event.seller == user_detail.seller):
-            return seller_eventInfo(request,id)
+            return event_page(request,id)
         else:
-            return buyer_eventInfo(request,id)
+            return event_page(request,id)
 
-def seller_eventInfo(request,id):
-    return
+def event_page(request, id):
+    url='event.html'
+    context = {}
+    try:
+        event = Event.objects.get(id=id)
+    except:
+        context['errors'] = ['No event found.']
+        return render(request, url, context)
+    seller = event.seller
+    try:
+        user_detail = UserDetail.objects.get(seller=seller)
+    except:
+        context['errors'] = ['User details not found.']
+        return render(request, url, context)
 
-def buyer_eventInfo(request,id):
-    return
+    context['event']= event
+    context['seller_username'] = user_detail.user.username
+    return render(request, url, context)
+

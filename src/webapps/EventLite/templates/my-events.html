@@ -4,12 +4,6 @@
 {% block center-content %}
     <h1 class="center">My Events</h1>
     <div class="well tall-well well-content">
-        {% for error in errors %}
-            <span class="error">{{ error }}</span>
-        {% endfor %}
-        {% for message in messages %}
-            {{ message }}
-        {% endfor %}
         {% include 'event-list.html' %}
         <br>
     </div>

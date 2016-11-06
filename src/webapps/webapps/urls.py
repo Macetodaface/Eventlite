@@ -37,5 +37,5 @@ urlpatterns = [
     url(r'^activate$', views.activate, name='activate'),
     url(r'^recover-password', views.recover_password, name='recover-password'),
     url(r'^new_password/(?P<key>.+)', views.new_password, name='new-password'),
-
+    url(r'^search-events/$', views.search_events, name='search-events'),
 ]

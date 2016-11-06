@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% block center-content %}
+    <span class="event-detail">Name: {{ event.name }} </span>
+    <br><br>
+    <span class="event-detail">Description: {{ event.description }}</span><br>
+    <span class="event-detail">Time: {{ event.time }}</span><br>
+    <span class="event-detail">Location: {{ event.location }}</span><br>
+    <span class="event-detail">Media: {{ event.media }}</span><br>
+    <span class="event-detail">Email: {{ event.email }}</span><br>
+    <span class="event-detail">Host: {{ seller_username }}</span><br>
+    <br>
+    <button class="btn btn-primary">Buy Tickets</button>
+{% endblock %}

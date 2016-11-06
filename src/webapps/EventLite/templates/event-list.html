@@ -7,7 +7,8 @@
 <br>
 {% for event in events %}
     <div class="">
-        <a href="" class="col-xs-2 wells white-background event-listing  no-hyper">
+        <a href="{% url 'event-info' event.id %}"
+           class="col-xs-2 wells white-background event-listing  no-hyper">
             <span class="event-detail">{{ event.name }} </span>
             <br><br>
             <span class="event-detail">{{ event.time }}</span><br>
