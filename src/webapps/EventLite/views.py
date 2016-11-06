@@ -3,6 +3,7 @@ from django.shortcuts import render,redirect
 from django.contrib.auth.models import User
 from django.db import transaction
 from django.core.exceptions import ObjectDoesNotExist
+from django.http import HttpResponseNotFound, Http404,HttpResponse
 
 from string import ascii_uppercase
 from random import choice
@@ -299,3 +300,31 @@ def recover_password(request):
         return render(request, 'index.html', {'messages': ['An email has been sent ' +
                                                        'with instructions to ' +
                                                        'reset your password']})
+
+def event_info(request,id):
+
+    if request.method == "GET":
+        #see if the user is the host of the event
+        try:
+            user_detail = UserDetail.objects.get(user=request.user)
+        except:
+            #user doesn't exist
+            raise Http404
+
+        try:
+            event = Event.objects.get(id=id)
+        except:
+            #event doesn't exist
+            raise Http404
+
+        #if yes, redirect to seller- event views
+        if(event.seller == user_detail.seller):
+            return seller_eventInfo(request,id)
+        else:
+            return buyer_eventInfo(request,id)
+
+def seller_eventInfo(request,id):
+    return
+    
+def buyer_eventInfo(request,id):
+    return
