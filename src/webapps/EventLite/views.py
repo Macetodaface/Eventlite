@@ -176,7 +176,9 @@ def manual_login(request):
             else:
                 context['messages'] = ['Account not activated. Check email to activate.']
                 return render(request, 'index.html',context)
-
+        print 'before logging in'
+        login(request,user)
+        return redirect('/view-events')
 
 # social login aftermath
 # need to handle case where user hasn't activated account#
@@ -325,6 +327,6 @@ def event_info(request,id):
 
 def seller_eventInfo(request,id):
     return
-    
+
 def buyer_eventInfo(request,id):
     return
