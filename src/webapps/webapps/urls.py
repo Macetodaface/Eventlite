@@ -26,5 +26,5 @@ urlpatterns = [
     url(r'^view-events', views.view_events, name='view-events'),
     url(r'^loggedin', views.login_next, name='loggedin'),
     url(r'^recover-password', views.recover_password, name='recover-password'),
-    url(r'^new_password/(?P<key>.+)', views.new_password, name='new-password')
+    url(r'^new_password/(?P<key>.+)', views.new_password, name='new-password'),
 ]

@@ -77,7 +77,7 @@ class PasswordForm(forms.Form):
                                 widget=forms.PasswordInput)
 
     def clean(self):
-        cleaned_data=super(UserForm, self).clean()
+        cleaned_data=super(PasswordForm, self).clean()
         password1 = self.cleaned_data.get('password1')
         password2 = self.cleaned_data.get('password2')
         if password1 != password2:
