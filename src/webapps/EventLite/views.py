@@ -10,11 +10,12 @@ from EventLite.models import *
 from EventLite.forms import *
 from django.core.mail import send_mail
 
-from django.contrib.auth import login, authenticate,logout
+from django.contrib.auth import  login,authenticate,logout
 from django.db import transaction
 # Decorator to use built-in authentication system
 from django.contrib.auth.decorators import login_required
 from sys import stderr
+import django.contrib.auth as dj
 
 # Create your views here.
 
@@ -52,7 +53,7 @@ def registration(request):
     if not form.is_valid():
         return render(request, url, context)
 
-    new_user = User.objects.create(username=form.cleaned_data['username'],
+    new_user = User.objects.create_user(username=form.cleaned_data['username'],
                     password=form.cleaned_data['password1'],
                     first_name=form.cleaned_data['first_name'],
                     last_name=form.cleaned_data['last_name'],
@@ -118,6 +119,7 @@ def manual_login(request):
         print userdetail.user.is_active
 
         user = authenticate(username=username,password=password)
+        print user
         if user is None:
             context={}
             context['form'] = LoginForm()
@@ -206,7 +208,6 @@ def get_random_key():
 
 def new_password(request, key):
     context = {'key': key}
-    print(key, file=stderr)
     try:
         user_detail = UserDetail.objects.get(recovery_key=key)
     except:

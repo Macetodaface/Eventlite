@@ -169,7 +169,7 @@ STATIC_URL = '/static/'
 
 
 #Social Auth pipelines
-(
+SOCIAL_AUTH_PIPELINE =(
     # Get the information we can about the user and return it in a simple
     # format to create the user instance later. On some cases the details are
     # already part of the auth response from the provider, but sometimes this

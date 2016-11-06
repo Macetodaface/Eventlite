@@ -30,7 +30,6 @@ urlpatterns = [
     url(r'^login/$', views.manual_login, name='login'),
     url(r'^loggedin', views.social_login, name='loggedin'),
     url(r'^logout', views.logoutUser, name='logout'),
-    url(r'^forgot-password', views.forgot_password, name='forgot-password'),
     url(r'^activate$', views.activate, name='activate'),
     url(r'^recover-password', views.recover_password, name='recover-password'),
     url(r'^new_password/(?P<key>.+)', views.new_password, name='new-password')
