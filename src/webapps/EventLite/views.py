@@ -135,8 +135,8 @@ def manual_login(request):
         userdetail = UserDetail.objects.get(user__username=username)
 
         user = authenticate(username=username,password=password)
+        context = {}
         if user is None:
-            context={}
             context['form'] = LoginForm()
             return render(request, 'index.html',
               {'messages': ['User- None Invalid username/password.']})
