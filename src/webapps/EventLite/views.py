@@ -256,11 +256,6 @@ def get_random_key():
 def new_password(request, key):
     context = {'key': key}
 
-    try:
-        user_detail = UserDetail.objects.get(recovery_key=key)
-    except:
-        return render(request, 'index.html', {'messages': ['Invalid Key']})
-
     if request.method == 'GET':
         return render(request, 'new_password.html', context)
 
@@ -275,7 +270,7 @@ def new_password(request, key):
         user.set_password(password)
         user.save()
     else:
-        context['errors'] = form.errors
+        context['form'] = form
         return render(request, 'new_password.html', context)
 
     return render(request, 'index.html', {'messages':
