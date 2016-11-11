@@ -2139,6 +2139,7 @@
 	input[type="text"],
 	input[type="password"],
 	input[type="email"],
+	input[type="url"],
 	select,
 	textarea {
 		-moz-appearance: none;
@@ -2159,6 +2160,7 @@
 		input[type="text"]:invalid,
 		input[type="password"]:invalid,
 		input[type="email"]:invalid,
+		input[type="url"],
 		select:invalid,
 		textarea:invalid {
 			box-shadow: none;
@@ -2199,6 +2201,8 @@
 	input[type="text"],
 	input[type="password"],
 	input[type="email"],
+	input[type="url"],
+
 	select {
 		height: 2.75em;
 	}
@@ -2298,6 +2302,7 @@
 	input[type="text"],
 	input[type="password"],
 	input[type="email"],
+	input[type="url"],
 	select,
 	textarea {
 		background: rgba(255, 255, 255, 0.075);
@@ -2307,6 +2312,7 @@
 		input[type="text"]:focus,
 		input[type="password"]:focus,
 		input[type="email"]:focus,
+		input[type="url"]:focus,
 		select:focus,
 		textarea:focus {
 			border-color: #062038;
@@ -2945,6 +2951,7 @@
 			.wrapper.style1 input[type="text"],
 			.wrapper.style1 input[type="password"],
 			.wrapper.style1 input[type="email"],
+			.wrapper.style1 input[type="url"],
 			.wrapper.style1 select,
 			.wrapper.style1 textarea {
 				background: rgba(255, 255, 255, 0.075);
@@ -2954,6 +2961,7 @@
 				.wrapper.style1 input[type="text"]:focus,
 				.wrapper.style1 input[type="password"]:focus,
 				.wrapper.style1 input[type="email"]:focus,
+				.wrapper.style1 input[type="url"]:focus,
 				.wrapper.style1 select:focus,
 				.wrapper.style1 textarea:focus {
 					border-color: #ffffff;

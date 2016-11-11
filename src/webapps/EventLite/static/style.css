@@ -15,12 +15,9 @@
 }
 
 .event-detail {
-    margin-left: 10px;
+    margin-top: 5px !important;
 }
 
-.event-bg {
-    background-color: #063b55
-}
 
 .buffer-top {
     margin-top: 5%;
@@ -28,6 +25,7 @@
 
 .post-label {
     margin-top: 10px;
+    margin-right: 10px;
 }
 
 .login-logo {
@@ -35,8 +33,8 @@
 }
 
 .search-field{
-    width: 80%;
-    margin-left: 10px;
+    margin-left: 10px !important;
+    margin-top: 5px !important;
 }
 
 .no-hyper {
@@ -55,11 +53,13 @@
     margin-top: 5px;
     margin-bottom: 5px;
     margin-right: 5px;
-    margin-left: 5px;
+    margin-left: 5px !important;
+    background-color: #062e48
 }
 
 .event-listing:hover {
-    background-color: #e7e7e7;
+    background-color: #06445f;
+    color: white;
 }
 
 .vertical-buffer {

@@ -3,16 +3,16 @@
 {% block left-content %}{% endblock %}
 {% block center-content %}
     <h1 class="center">Events</h1>
-    <div class="">
     <form action="{% url 'search-events' %}" method="post">
-        <div class="search-bar">
-            <input class="btn btn-primary" id="search-btn"
-                   type="submit">
+        <div class="row">
+            <input class="2u btn btn-primary" id="search-btn"
+                   type="submit" value="Search">
             {% csrf_token %}
-            <input class="search-field" name="search" id="search" type="text">
+            <input class="9u search-field" name="search" type="text"
+                   id="search">
         </div>
     </form>
+    <br>
     {% include 'event-list.html' %}
-    </div>
 {% endblock %}
 {% block right-content %}{% endblock %}

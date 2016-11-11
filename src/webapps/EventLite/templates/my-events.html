@@ -3,9 +3,6 @@
 {% block left-content %}{% endblock %}
 {% block center-content %}
     <h1 class="center">My Events</h1>
-    <div class="well tall-well well-content">
-        {% include 'event-list.html' %}
-        <br>
-    </div>
+    {% include 'event-list.html' %}
 {% endblock %}
 {% block right-content %}{% endblock %}
