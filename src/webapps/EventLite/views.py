@@ -23,7 +23,7 @@ from django.contrib.auth import logout as auth_logout
 
 def index(request, context):
     context['form'] = LoginForm()
-    return render(request, 'index-templated.html',context)
+    return render(request, 'index.html',context)
 
 
 def base(request):
@@ -148,7 +148,6 @@ def my_events_context(request):
         return {'errors': 'Could not find user details.'}
 
     seller = user_detail.seller
-    print(seller.userdetail.user.username, file=stderr)
     context = {'user': request.user,
                'events': Event.objects.filter(seller=seller)}
     return context
@@ -212,7 +211,7 @@ def social_login(request):
         userDetail = UserDetail.objects.get(user__email=request.user.email)
         if(userDetail.user.is_active==False):
             context = {"messages": ['Cant use social login while user email activation pending']}
-            return render(request,'index.html',context)
+            return index(request,context)
 
     return redirect('/view-events')
 
@@ -222,18 +221,18 @@ def activate(request):
         context={}
         if('key' not in request.GET or not request.GET['key'] ):
             context = {"messages": ['Invalid Activation Link']}
-            return render(request,'index.html',context)
+            return index(request,context)
         link = request.GET['key']
 
         try:
             userdetail = UserDetail.objects.get(activation_key=link)
         except ObjectDoesNotExist:
             context = {"messages": ['Invalid Activation Link']}
-            return render(request,'index.html',context)
+            return index(request,context)
 
         if(userdetail.user.is_active==True):
             context = {"messages": ['User already active']}
-            return render(request,'index.html',context)
+            return index(request,context)
 
         userdetail.user.is_active=True
         userdetail.user.save()
@@ -241,7 +240,7 @@ def activate(request):
         userdetail.save()
 
         context = {"messages": ['User activation succeeded. Please login below']}
-        return render(request,'index.html',context)
+        return index(request,context)
 
 
 
@@ -265,7 +264,7 @@ def new_password(request, key):
         try:
             user_detail = UserDetail.objects.get(recovery_key=key)
         except:
-            return render(request, 'index.html', {'messages': ['Invalid Key']})
+            return index(request,{'messages': ['Invalid Key']})
         user = user_detail.user
         user.set_password(password)
         user.save()
@@ -273,8 +272,8 @@ def new_password(request, key):
         context['form'] = form
         return render(request, 'new_password.html', context)
 
-    return render(request, 'index.html', {'messages':
-                                    ['Your password has been reset']})
+    context['messages'] = ['Your password has been reset']
+    return index(request,context)
 
 
 def recover_password(request):
@@ -305,9 +304,11 @@ def recover_password(request):
                   message="Go to {} to reset your password".format(reset_url),
                   from_email="noreply@EventLite.com",
                   recipient_list=[user.email])
-        return render(request, 'index.html', {'messages': ['An email has been sent ' +
-                                                       'with instructions to ' +
-                                                       'reset your password']})
+
+        context = {'messages': ['An email has been sent ' +
+                                'with instructions to ' +
+                                'reset your password']}
+        return index(request,context)
 
 def event_info(request,id):
 
@@ -349,4 +350,3 @@ def event_page(request, id):
     context['event']= event
     context['seller_username'] = user_detail.user.username
     return render(request, url, context)
-

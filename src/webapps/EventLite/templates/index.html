@@ -1,34 +1,73 @@
 {% extends 'header.html' %}
-{% load static %}
-{% block body %}
-    <div class="center buffer-top">
-        {% for message in messages %}
-            {{ message }}
-        {% endfor %}
-        <img class='login-logo' src="{% static 'media/logo.png' %}"><br><br>
-        <span>The place for all your ticket needs.</span>
+<!--
+	Broadcast by TEMPLATED
+	templated.co @templatedco
+	Released for free under the Creative Commons Attribution 3.0 license (templated.co/license)
+-->
 
-        <form class="login-form" action="{% url 'login' %}" method="post">
-            Username: <input class="login-input" type="text" name="username">
+{% block customcss %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'eventlite/css/index.css' %}"/>
+{% endblock %}
+
+{% block body %}
+{% load static %}
+
+<!-- Banner -->
+<!--
+    To use a video as your background, set data-video to the name of your video without
+    its extension (eg. images/banner). Your video must be available in both .mp4 and .webm
+    formats to work correctly.
+-->
+    <section id="banner" data-video="{% static 'media/templated/banner' %}">
+        <div class="inner">
+            <header>
+                <h1>EventLite</h1>
+                <p>The place for all your ticket needs.</p>
+            </header>
+            {% include 'form-errors.html' %}
+            {% for message in messages %}
+                {{ message }}
+            {% endfor %}
+            <form method="post" action="{% url 'login' %}">
+                <div class="row uniform">
+                    <div class="6u 12u$(xsmall)">
+                        <input type="text" name="username" id="username"
+                               value="" placeholder="Username" />
+                    </div>
+                    <div class="6u$ 12u$(xsmall)">
+                        <input type="password" name="password" id="password"
+                               value="" placeholder="Password" />
+                    </div>
+                    <div class="12u$">
+                        <ul class="actions">
+                            <li><input type="submit" value="Login" /></li>
+                        </ul>
+                    </div>
+                    {% csrf_token %}
+                </div>
+            </form>
+
             <br><br>
-            Password: <input class="login-input" type="password" name="password">
+            <p> Login using :
+            <a href="{% url 'social:begin' 'facebook' %}?next={% url 'loggedin' %}"  class ="icon fa-facebook-square social-icon no-hyper-icon" >
+            </a>
+            <a href="{% url 'social:begin' 'google-oauth2' %}?next={% url 'loggedin' %}" class="icon fa-google social-icon no-hyper-icon" >
+            </a>
+            </p>
             <br><br>
-            <input class="btn btn-primary login-btn" type="submit" value="Log in">
+            <a href="{% url 'registration' %}"> Sign Up</a>
             <br>
-            <input type="hidden" name="next" value="{{ next }}" >
-            {% csrf_token %}
-            
-        </form>
-        <br><br>
-        <a href="{% url 'recover-password' %}">Forgot Password?</a>
-        <br><br>
-        <a href="{% url 'social:begin' 'facebook' %}?next={% url 'loggedin' %}">
-            <img class="login-img" src="{% static 'media/fb-login.png' %}">
-        </a>
-        <a href="{% url 'social:begin' 'google-oauth2' %}?next={% url 'loggedin' %}">
-            <img class="login-img" src="{% static 'media/g+-login.png' %}">
-        </a>
-        <br><br>
-        <a href="{% url 'registration' %}"> Not registered? Sign Up</a>
-    </div>
+            <a href="{% url 'recover-password' %}">Forgot Password?</a>
+        </div>
+
+    </section>
+
+<!-- Footer -->
+    <footer id="footer">
+        <div class="copyright">
+            Design: <a href="https://templated.co">TEMPLATED</a>. Images: <a href="https://unsplash.com">Coverr</a>. Video: <a href="https://coverr.co">Coverr</a>.
+        </div>
+    </footer>
+
 {% endblock %}

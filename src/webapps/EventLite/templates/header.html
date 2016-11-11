@@ -11,6 +11,10 @@
 <link rel="stylesheet" type="text/css" href="{%  static 'libs/bootstrap-3.3.7-dist/css/bootstrap.min.css' %}">
 <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
 <link rel="stylesheet" href="{% static 'templated/css/main.css' %}"/>
+{% block customcss %}
+{% endblock %}
+{% block customjs %}
+{% endblock %}
 <!-- Scripts -->
     <script src="{% static 'templated/js/jquery.min.js' %}"></script>
     <script src="{% static 'templated/js/jquery.scrolly.min.js' %}"></script>
