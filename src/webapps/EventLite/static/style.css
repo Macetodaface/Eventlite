@@ -18,6 +18,10 @@
     margin-left: 10px;
 }
 
+.event-bg {
+    background-color: #063b55
+}
+
 .buffer-top {
     margin-top: 5%;
 }

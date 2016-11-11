@@ -5,34 +5,59 @@
 {% block body %}
     {% block messages %}
     {% endblock %}
-    <nav class="navbar navbar-default">
-        <div class="container-fluid">
-            <div class="navbar-header">
-             <a class="navbar-brand" href="#">EventLite</a>
+
+    <!-- Header -->
+    <header id="header">
+        <h1><a href="#">EventLite</a></h1>
+        <a href="{% url 'my-events' %}">My Events</a>
+        <a href="{% url 'view-events' %}">Find Events</a>
+        <a class="pull-right" href="{% url 'logout' %}">Logout</a>
+    </header>
+
+{#    <nav class="navbar navbar-default">#}
+{#        <div class="container-fluid">#}
+{#            <div class="navbar-header">#}
+{#             <a class="navbar-brand" href="#">EventLite</a>#}
+{#            </div>#}
+{#            <ul class="nav navbar-nav">#}
+{#                <li>#}
+{#                <a href="{% url 'my-events' %}">My Events</a>#}
+{#                </li><li>#}
+{#                <a href="{% url 'view-events' %}">Find Events</a>#}
+{#                </li>#}
+{#            </ul>#}
+{#            <ul class = "nav navbar-nav navbar-right">#}
+{#                <li>#}
+{#                <a class="pull-right" href="{% url 'logout' %}">Logout</a>#}
+{#                </li>#}
+{#            </ul>#}
+{#        </div>#}
+{#    </nav>#}
+
+    <div id="main">
+        <section class="wrapper style1">
+            <div class="inner">
+            <div class="row uniform">
+                {% block content %}
+                    <div class="2u">
+                        {% block left-content %}{% endblock %}
+                    </div>
+                    <div class="8u">
+                        {% block center-content %}{% endblock %}
+                    </div>
+                    <div class="2u">
+                        {% block right-content %}{% endblock %}
+                    </div>
+                {% endblock %}
             </div>
-            <ul class="nav navbar-nav">
-                <li>
-                <a href="{% url 'my-events' %}">My Events</a>
-                </li><li>
-                <a href="{% url 'view-events' %}">Find Events</a>
-                </li>
-            </ul>
-            <ul class = "nav navbar-nav navbar-right">
-                <li>
-                <a class="pull-right" href="{% url 'logout' %}">Logout</a>
-                </li>
-            </ul>
+            </div>
+        </section>
+    </div>
+    {% block footer %}
+    <footer id="footer">
+        <div class="copyright">
+            Design: <a href="https://templated.co">TEMPLATED</a>. Images: <a href="https://unsplash.com">Coverr</a>. Video: <a href="https://coverr.co">Coverr</a>.
         </div>
-    </nav>
-    {% block content %}
-        <div class="col-xs-2">
-            {% block left-content %}{% endblock %}
-        </div>
-        <div class="col-xs-8">
-            {% block center-content %}{% endblock %}
-        </div>
-        <div class="col-xs-2">
-            {% block right-content %}{% endblock %}
-        </div>
+    </footer>
     {% endblock %}
 {% endblock %}

@@ -23,7 +23,7 @@ from django.contrib.auth import logout as auth_logout
 
 def index(request, context):
     context['form'] = LoginForm()
-    return render(request, 'index.html',context)
+    return render(request, 'index-templated.html',context)
 
 
 def base(request):
@@ -181,7 +181,7 @@ def manual_login(request):
             storedUser = User.objects.get(username=username)
         except:
             context['messages'] = ['Invalid UserName or Password']
-            return index(request,context)
+            return index(request, context)
 
         user = authenticate(username=username,password=password)
 
@@ -191,7 +191,7 @@ def manual_login(request):
                 return index(request,context)
             else:
                 context['messages'] = ['Account not activated. Check email to activate.']
-                return render(request, 'index.html',context)
+                return index(request, context)
         login(request,user)
         return redirect('/view-events')
 
