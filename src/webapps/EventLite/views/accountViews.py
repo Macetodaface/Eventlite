@@ -1,4 +1,22 @@
+from django.shortcuts import render,redirect
+from django.db import transaction
+from django.contrib.auth.models import User
+from django.core.mail import send_mail
+from django.core.exceptions import ObjectDoesNotExist
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth import logout as auth_logout
 
+from EventLite.models import *
+from EventLite.forms import *
+
+from string import ascii_uppercase
+from random import choice
+
+from django.contrib.auth import  login,authenticate,logout
+
+def index(request, context):
+    context['form'] = LoginForm()
+    return render(request, 'index.html', context)
 
 def manual_login(request):
     if request.method == 'GET':
