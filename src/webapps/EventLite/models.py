@@ -31,13 +31,15 @@ class Event(models.Model):
     email = models.EmailField()
 
 
-class Ticket(models.Model):
+class TicketType(models.Model):
     event = models.ForeignKey(Event)
     price = models.FloatField()
     details = models.CharField(max_length=1000)
     numOfTickets = models.IntegerField(default=0)
     ticketsSold = models.IntegerField(default=0)
 
+class Ticket(models.Model):
+    ticketType = models.ForeignKey(TicketType)
 
 class Review(models.Model):
     rating = models.IntegerField()
