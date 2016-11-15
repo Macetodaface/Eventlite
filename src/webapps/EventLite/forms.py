@@ -4,8 +4,13 @@ from EventLite.models import *
 from sys import stderr
 
 
-class PostEventForm(ModelForm):
+class TicketTypeForm(ModelForm):
+    class Meta:
+        model = TicketType
+        fields = ['name', 'price', 'details', 'numOfTickets']
 
+
+class PostEventForm(ModelForm):
     class Meta:
         model = Event
         fields = ['name', 'description', 'location', 'time', 'media', 'email']

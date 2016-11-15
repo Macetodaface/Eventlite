@@ -33,6 +33,7 @@ urlpatterns = [
     url(r'^view-events', eventViews.view_events, name='view-events'),
     url(r'^my-events', eventViews.my_events, name='my-events'),
     url(r'^event-info/(?P<id>.+)', eventViews.event_info, name='event-info'),
+    url(r'^ticket-type-html', eventViews.ticket_type_html, name='ticket-type-html'),
 
     url(r'^login/$', accountViews.manual_login, name='login'),
     url(r'^loggedin', accountViews.social_login, name='loggedin'),

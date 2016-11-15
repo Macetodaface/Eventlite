@@ -1,0 +1,13 @@
+{% for field in form %}
+    {{ ticketType_form.non_field_errors }}
+    <div class="row">
+        <div class="col-xs-3">
+            {{ field.errors }}
+        </div>
+        <div class="post-label fieldWrapper col-xs-2">
+            {{ field.label }}
+        </div>
+        <div class="post-event-field">{{ field }}</div>
+    </div>
+{% endfor %}
+<br>

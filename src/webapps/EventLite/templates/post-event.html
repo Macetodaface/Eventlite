@@ -5,6 +5,8 @@
 {% block left-well %}
 {% endblock %}
 {% block center-content %}
+    {% load static %}
+    <script src="{% static 'js/postEvent.js' %}"></script>
     <h3 class="center">Post an Event: </h3><br>
     <div class="center">
         {% for error in errors %}
@@ -25,6 +27,10 @@
             </div>
         {% endfor %}
         <br>
+        <ul id="ticket-types"></ul>
+        <div id="add-ticket" class="center btn btn-primary">
+            Add Ticket
+        </div>
     <div class="center">
         <input class="btn btn-primary post-event-btn"
                type="submit"
@@ -32,7 +38,6 @@
     </div>
     {% csrf_token %}
     </form>
-
 </form>
 {% endblock %}
 {% block right-well %}

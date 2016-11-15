@@ -32,6 +32,7 @@ class Event(models.Model):
 
 
 class TicketType(models.Model):
+    name = models.CharField(max_length=100)
     event = models.ForeignKey(Event)
     price = models.FloatField()
     details = models.CharField(max_length=1000)

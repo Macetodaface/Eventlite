@@ -44,7 +44,10 @@ def post_event(request):
     return render(request, 'my-events.html',context)
 
 
-
+@login_required
+def ticket_type_html(request):
+    context = {'form': TicketTypeForm()}
+    return render(request, 'ticketType.html', context)
 
 
 @login_required
