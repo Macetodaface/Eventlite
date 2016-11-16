@@ -12,18 +12,14 @@ function submit() {
         ticketsData.push(getTicketData(id));
     }
 
-    var eventData = {
+    $.post('/post-event', {
         name: $('id_name').val(),
         description: $('description').val(),
         location: $('location').val(),
         time: $('time').val(),
         media: $('media').val(),
-        email: $('email').val()
-    };
-
-    $.post('/post-event', {
+        email: $('email').val(),
         tickets_data: ticketsData,
-        event_data: eventData
     });
 }
 
