@@ -1,13 +1,25 @@
-{% for field in form %}
-    {{ ticketType_form.non_field_errors }}
-    <div class="row">
-        <div class="col-xs-3">
-            {{ field.errors }}
-        </div>
-        <div class="post-label fieldWrapper col-xs-2">
-            {{ field.label }}
-        </div>
-        <div class="post-event-field">{{ field }}</div>
-    </div>
-{% endfor %}
+<div id="ticket-type-{{ id }}" xmlns="http://www.w3.org/1999/html">
 <br>
+    <div class="row">
+        <div class="col-xs-3"></div>
+        <h1 class="" id="ticket-header-{{ id }}">Ticket:</h1>
+        <div id ="delete-btn-{{ id }}" class="btn">X</div>
+    </div>
+    {{ form.non_field_errors }}
+    {% for field in form %}
+        <div class="row">
+            <div class="col-xs-3">
+                {{ field.errors }}
+            </div>
+            <div class="post-label fieldWrapper col-xs-3">
+                {{ field.label }}
+            </div>
+            <div class="post-event-field">
+                <input id="ticket-{{ field.name }}-{{ id }}"
+                       name="{{ field.name }}" max_length="100"
+                       required type="text">
+            </div>
+        </div>
+    {% endfor %}
+<br>
+</div>

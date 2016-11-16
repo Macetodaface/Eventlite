@@ -45,8 +45,8 @@ def post_event(request):
 
 
 @login_required
-def ticket_type_html(request):
-    context = {'form': TicketTypeForm()}
+def ticket_type_html(request, id):
+    context = {'id': id, 'form': TicketTypeForm()}
     return render(request, 'ticketType.html', context)
 
 

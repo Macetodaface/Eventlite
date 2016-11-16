@@ -4,6 +4,11 @@
     padding: 10px;
 }
 
+.no-focus:focus {
+    border-color: #062038;
+    box-shadow: none;
+}
+
 .tall-well {
     overflow: hidden;
 }

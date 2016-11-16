@@ -20,21 +20,26 @@
                 <div class="col-xs-3">
                     {{ field.errors }}
                 </div>
-                <div class="post-label fieldWrapper col-xs-2">
+                <div class="post-label fieldWrapper col-xs-3">
                     {{ field.label }}
                 </div>
                 <div class="post-event-field">{{ field }}</div>
             </div>
         {% endfor %}
         <br>
-        <ul id="ticket-types"></ul>
-        <div id="add-ticket" class="center btn btn-primary">
-            Add Ticket
-        </div>
+        <div id="ticket-types"></div>
     <div class="center">
-        <input class="btn btn-primary post-event-btn"
-               type="submit"
-               value="Post Event"><br>
+        <div id="add-ticket" class="btn btn-primary">
+            New Ticket
+        </div>
+    </div>
+    <br>
+    <div class="center">
+        <div id="post-event"
+             class="btn btn-primary post-event-btn">
+            Post Event
+        </div>
+        <br>
     </div>
     {% csrf_token %}
     </form>
