@@ -14,12 +14,12 @@ function submit() {
 
     $.post('/post-event', {
         name: $('id_name').val(),
-        description: $('description').val(),
-        location: $('location').val(),
-        time: $('time').val(),
-        media: $('media').val(),
-        email: $('email').val(),
-        tickets_data: ticketsData,
+        description: $('id_description').val(),
+        location: $('id_location').val(),
+        time: $('id_time').val(),
+        media: $('id_media').val(),
+        email: $('id_email').val(),
+        tickets_data: ticketsData
     });
 }
 
