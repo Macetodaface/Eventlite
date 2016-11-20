@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.db import transaction
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponseNotFound, Http404, HttpResponse
-
+from django.contrib.gis.geos import Point
 from EventLite.models import *
 from EventLite.forms import *
 from sys import stderr
@@ -20,21 +20,25 @@ def post_event(request):
 
     form = PostEventForm(request.POST)
     context = {'form': form}
+    print(form)
     if not form.is_valid():
-        return render(request, url, context)
+        return HttpResponse('Invalid Event Form',status=400)
 
     try:
         user_detail = UserDetail.objects.get(user=request.user)
         seller = user_detail.seller
     except:
-        context['errors'] = ['User details not found.']
-        return render(request, url, context)
+        return HttpResponse('User Details Not found',status=400)
 
-    #create Point
-    latitude = form.cleaned_data['latitude']
-    longitude = form.cleaned_data['longitude']
+    #create Poin
+    pointForm = PointForm(request.POST)
+    if not pointForm.is_valid():
+        return HttpResponse('Invalid Location Form',status=400)
 
-    point = 
+    latitude = pointForm.cleaned_data['latitude']
+    longitude = pointForm.cleaned_data['longitude']
+
+    point = Point(float(longitude),float(latitude),srid=4326)
 
     new_event = Event.objects.create(seller=seller,
                 name = form.cleaned_data['name'],
@@ -42,13 +46,44 @@ def post_event(request):
                 location = form.cleaned_data['location'],
                 time = form.cleaned_data['time'],
                 media = form.cleaned_data['media'],
-                email = form.cleaned_data['email']
-
+                email = form.cleaned_data['email'],
+                coordinate=point
                 )
     new_event.save()
+    print(request.POST)
+
+    import json
+    result = json.dumps(request.POST['tickets_data'])
+    result = eval(json.loads(result))
+    print(result)
+
+    if not 'tickets_data' in request.POST:
+        context['errors']=['No ticket data found']
+        return render(request,url,context)
+
+    print('ticket data present');
+
+
+    for ticket in result:
+        ticketTypeForm = TicketTypeForm(ticket)
+
+        if not ticketTypeForm.is_valid():
+            return HttpResponse('Invalid Ticket Type Form',status=400)
+
+        ticketData = ticketTypeForm.cleaned_data
+
+        ticket = TicketType.objects.create( name= ticketData['name'],
+                                            event = new_event,
+                                            price =ticketData['price'],
+                                            details =ticketData['details'],
+                                            numOfTickets =ticketData['numOfTickets']
+        )
+        ticket.save()
+
     context = my_events_context(request)
     context['messages'] = ['Your event has beeen posted']
-    return render(request, 'my-events.html',context)
+    print('SUCCESS!!!')
+    return HttpResponse()
 
 
 @login_required

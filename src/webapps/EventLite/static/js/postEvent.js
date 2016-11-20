@@ -9,30 +9,71 @@ var long='default';
 var globalMap = ''
 var geoCoder = ''
 
-function submit() {
+function submit()
+{
     var ticketsData = [];
-    for(var i=0; i < TICKET_IDS; i++){
+    for(var i=0; i < TICKET_IDS.length; i++){
         var id = TICKET_IDS[i];
         ticketsData.push(getTicketData(id));
     }
+
+    console.log(ticketsData)
 
     // just in case
     // if the user attempts to resubmit the form without
     // pressing enter in the location
     geocodeAddress(geoCoder, globalMap);
 
-    $.post('/post-event', {
-        name: $('id_name').val(),
-        description: $('id_description').val(),
-        location: $('id_location').val(),
-        time: $('id_time').val(),
-        media: $('id_media').val(),
-        email: $('id_email').val(),
-        tickets_data: ticketsData,
+    //"22 November 2016 - 13:25"
+    var splits = $('#id_time').val().split(" ");
+    var date = splits[0];
+    var month = splits[1];
+    var year = splits[2];
+    var time = splits[4];
+
+    //change month to number
+    var dict = {
+        'January':1,
+        'February':2,
+        'March':3,
+        'April':4,
+        'May':5,
+        'June':6,
+        'July':7,
+        'August':8,
+        'September':9,
+        'October':10,
+        'November':11,
+        'December':12
+    }
+
+    month = dict[month];
+    var cleanedTime = year+'-'+month+'-'+date+' '+time;
+
+    console.log(cleanedTime);
+
+    var dict = {
+        name: $('#id_name').val(),
+        description: $('#id_description').val(),
+        location: $('#id_location').val(),
+        time: cleanedTime,
+        media: $('#id_media').val(),
+        email: $('#id_email').val(),
+        tickets_data: JSON.stringify(ticketsData),
         latitude: lat,
         longitude:long
-    });
-}
+    }
+    console.log(dict)
+    $.post('/post-event',dict ).done(function(data)
+    {
+        window.location.href="/my-events"
+     })
+     .fail(function(xhr, status, error)
+      {
+          console.log(xhr.responseText)
+      });
+
+ }
 
 function addTicketTypeForm() {
     $.get("/ticket-type-html/" + TICKET_ID)

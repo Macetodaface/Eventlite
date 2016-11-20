@@ -13,8 +13,7 @@ class TicketTypeForm(ModelForm):
 class PostEventForm(ModelForm):
     class Meta:
         model = Event
-        fields = ['name', 'description', 'location', 'time', 'media', 'email','latitude'
-                ,'longitude']
+        fields = ['name', 'description', 'location', 'time', 'media', 'email']
 
 
 class UserForm(forms.Form):
@@ -101,3 +100,12 @@ class PasswordForm(forms.Form):
         if password1 != password2:
             raise forms.ValidationError('Passwords do not match.')
         return cleaned_data
+
+class PointForm(forms.Form):
+    latitude = forms.DecimalField()
+    longitude = forms.DecimalField()
+
+class TicketTypeForm(ModelForm):
+    class Meta:
+        model = TicketType
+        fields = ['name', 'price','details', 'numOfTickets']
