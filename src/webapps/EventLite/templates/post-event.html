@@ -2,6 +2,12 @@
 {% block title %}
     Post an Event!
 {% endblock %}
+
+{% block customcss %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'eventlite/css/post-event.css' %}"/>
+{% endblock %}
+
 {% block left-well %}
 {% endblock %}
 {% block center-content %}
@@ -52,7 +58,7 @@
 {% endblock %}
 
 {% block right-content %}
-    <div id="map" style="height:500px; width:500px; position: absolute;">
+    <div id="map" >
 
     </div>
 
