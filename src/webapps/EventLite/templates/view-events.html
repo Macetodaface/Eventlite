@@ -1,33 +1,27 @@
 {% extends 'base.html' %}
 {% block title %}View Events{% endblock %}
 {% block left-content %}
+    <form action="{% url 'search-events' %}" method="post">
     <div class="filters">
         <div class="inner-filters">
         Filter by Location: <br>
             <div class="row">
                 <span class="filter-label buffer-right">Center</span>
-                <input class="filter-field" id="location" type="text"><br>
+                <input class="filter-field" name="location"
+                       id="location" type="text"><br>
             </div><br>
             <div class="row">
                 <span class="filter-label buffer-right">Radius</span>
-                <input class="filter-field" id="radius" type="number"><br>
+                <input class="filter-field" name="radius"
+                       id="radius" type="number"><br>
             </div>
         </div>
-{#    <div id="map" >#}
-
-{#    </div>#}
-{#        {% load static %}#}
-{#        <script src="{% static 'js/view-events.js' %}"></script>#}
-{#        <script async defer#}
-{#        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAGAfMw23ko_z5TJLg_nfi6PLClCxQ7yqw&callback=initMap">#}
-{#        </script>#}
     </div>
 {% endblock %}
 {% block center-content %}
     <h1 class="center">Events</h1>
-    <form action="{% url 'search-events' %}" method="post">
         <div class="row">
-            <input class="2u btn btn-primary" id="search-btn"
+            <input class="search-btn 2u btn btn-primary" id="search-btn"
                    type="submit" value="Search">
             {% csrf_token %}
             <input class="9u search-field" name="search" type="text"

@@ -109,7 +109,11 @@
 
 .filter-field {
     width: 50% !important;
-    margin-top:5px; 
+    margin-top:5px;
+}
+
+.search-btn {
+    margin-top: 5px;
 }
 
 .event-listing {
