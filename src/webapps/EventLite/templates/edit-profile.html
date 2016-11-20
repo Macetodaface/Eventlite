@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}{{ username }}{% endblock %}
+{% block center-content %}
+<span class="user-title">{{username }}</span><br>
+<div class="info">
+    Joined {{ user_info.joined }}<br>
+    {{ user_info.first_name }} {{ user_info.last_name }}<br>
+    {{ user_info.email }}<br><br>
+    <form enctype="multipart/form-data"
+          action="{% url 'edit_profile' %}" method="post">
+        {% if user_detail.image %}
+            <img src="{{user_detail.image.url}}">
+        {% endif %} <br>
+        {{ form }}
+        <input class="btn btn-primary" type="submit"
+               value="Save Changes">
+    </form>
+</div><br>
+{% endblock %}

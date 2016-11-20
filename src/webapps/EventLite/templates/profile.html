@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %}{{ user.username }}{% endblock %}
+{% block center-content %}
+<span class="user-title">{{ username }}</span><br>
+<div class="info">
+    {% if user_detail.image %}
+        <img src="{{user_detail.image.url}}">
+    {% endif %} <br>
+    Joined {{ user_detail.joined }}<br>
+    Name: {{ user.first_name }} {{ user.last_name }}<br>
+    Email: {{ user_detail.email }}<br>
+    Bio: {{ user_detail.bio }}
+</div><br>
+{% endblock %}

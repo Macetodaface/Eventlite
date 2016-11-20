@@ -100,6 +100,10 @@ def getRandomKey():
     return ''.join(choice(ascii_uppercase) for i in range(key_length))
 
 
+@login_required()
+def profile(request):
+    return render(request, 'profile.html', {})
+
 @transaction.atomic
 def registration(request):
     url = 'registration.html'

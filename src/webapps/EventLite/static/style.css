@@ -102,6 +102,17 @@
     min-width: 20px;
 }
 
+.user-title {
+    margin-left: 15%;
+    font-size: 200%;
+    font-weight: bold;
+}
+
+.info {
+    font-size: 150%;
+    margin-left: 15%;
+}
+
 .error {
     color: red;
 }
@@ -165,4 +176,16 @@
 
 .googlebtn {
     background-color: #2aabd2;
+}
+
+.datetimepicker {
+    color: black !important;
+}
+
+.prev {
+    color: black !important;
+}
+
+.switch {
+    color: black !important;
 }
