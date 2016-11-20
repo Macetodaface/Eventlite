@@ -7,7 +7,6 @@ from django.http import HttpResponseNotFound, Http404, HttpResponse
 
 from EventLite.models import *
 from EventLite.forms import *
-
 from sys import stderr
 
 
@@ -31,13 +30,21 @@ def post_event(request):
         context['errors'] = ['User details not found.']
         return render(request, url, context)
 
+    #create Point
+    latitude = form.cleaned_data['latitude']
+    longitude = form.cleaned_data['longitude']
+
+    point = 
+
     new_event = Event.objects.create(seller=seller,
                 name = form.cleaned_data['name'],
                 description = form.cleaned_data['description'],
                 location = form.cleaned_data['location'],
                 time = form.cleaned_data['time'],
                 media = form.cleaned_data['media'],
-                email = form.cleaned_data['email'])
+                email = form.cleaned_data['email']
+
+                )
     new_event.save()
     context = my_events_context(request)
     context['messages'] = ['Your event has beeen posted']

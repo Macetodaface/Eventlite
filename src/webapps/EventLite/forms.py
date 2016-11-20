@@ -13,7 +13,8 @@ class TicketTypeForm(ModelForm):
 class PostEventForm(ModelForm):
     class Meta:
         model = Event
-        fields = ['name', 'description', 'location', 'time', 'media', 'email']
+        fields = ['name', 'description', 'location', 'time', 'media', 'email','latitude'
+                ,'longitude']
 
 
 class UserForm(forms.Form):

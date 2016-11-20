@@ -28,9 +28,10 @@ class Event(models.Model):
     location = models.CharField(max_length = 100, default = '', blank = True)
     time = models.DateTimeField(default=timezone.now)
     media = models.URLField(default = '', blank = True)
-    email = models.EmailField()
+    email = models.EmailField(max_length=100)
     coordinate = models.PointField(default='')
-
+    latitude = models.DecimalField(max_digits=200, decimal_places=6)
+    longitude = models.DecimalField(max_digits=200, decimal_places=6)
 
 class TicketType(models.Model):
     name = models.CharField(max_length=100)

@@ -19,8 +19,11 @@
             <span class="error">{{ error }}</span>
         {% endfor %}
     </div>
+
+
     <form action="{% url 'post-event' %}" method="post">
         {{ form.non_field_errors }}
+
         {% for field in form %}
             <div class="row">
                 <div class="col-xs-3">
@@ -39,11 +42,13 @@
 
         <br>
         <div id="ticket-types"></div>
+
     <div class="center">
         <div id="add-ticket" class="btn btn-primary">
             New Ticket
         </div>
     </div>
+
     <br>
     <div class="center">
         <div id="post-event"
