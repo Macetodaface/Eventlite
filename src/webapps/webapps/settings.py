@@ -57,6 +57,7 @@ INSTALLED_APPS = [
     'social.apps.django_app.default',
      'django.contrib.gis',
     'EventLite',
+    'mathfilters',
 ]
 
 MIDDLEWARE = [

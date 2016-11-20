@@ -114,8 +114,14 @@ def my_events_context(request):
         return {'errors': 'Could not find user details.'}
 
     seller = user_detail.seller
+    buyer = user_detail.buyer
+    tickets = buyer.ticket_set.all()
+    events_attending = Event.objects.none()
+    for ticket in tickets:
+        events_attending = events_attending | Event.objects.filter(id=ticket.ticketType.event.id)
     context = {'user': request.user,
-               'events': Event.objects.filter(seller=seller)}
+               'events_hosting': Event.objects.filter(seller=seller),
+               'events_attending': events_attending}
     return context
 
 
@@ -153,10 +159,10 @@ def event_info(request,id):
 def buy_ticket(request, id):
     url = 'event.html'
     try:
-        ticketType = TicketType.objects.get(id=id)
+        ticket_type = TicketType.objects.get(id=id)
     except:
         raise Http404
-    event_id = ticketType.event.id
+    event_id = ticket_type.event.id
     context = get_event_page_context(event_id)
     if request.method == 'POST':
         form = BuyTicketsForm(request.POST)
@@ -164,18 +170,25 @@ def buy_ticket(request, id):
 
         if form.is_valid():
             quantity = form.cleaned_data['quantity']
+            print(ticket_type.ticketsSold, file=stderr)
+            tickets_left = ticket_type.numOfTickets - ticket_type.ticketsSold
+            if quantity > tickets_left:
+                context['errors'] = "Not enough tickets available."
+                return render(request, url, context)
             try:
                 user_detail = UserDetail.objects.get(user=request.user)
                 buyer = user_detail.buyer
                 try:
                     tickets = buyer.ticket_set.all()
-                    ticket = tickets.filter(ticketType__id=ticketType.id)[0]
+                    ticket = tickets.filter(ticketType__id=ticket_type.id)[0]
                     ticket.quantity += quantity
                 except:
                     ticket = Ticket.objects.create(buyer=buyer,
-                                                   ticketType=ticketType,
+                                                   ticketType=ticket_type,
                                                    quantity=quantity)
                 finally:
+                    ticket_type.ticketsSold += quantity
+                    ticket_type.save()
                     ticket.save()
             except:
                 context['errors'] = ['User details not found.']

@@ -10,6 +10,7 @@
     <span class="event-detail">Host: {{ seller_username }}</span><br>
     <br>
     <div class="row">
+    {% load mathfilters %}
     {% for ticketType in ticketTypes %}
     <div class="u4 ticket-listing">
         <span class="large event-detail">
@@ -19,7 +20,7 @@
             Price: {{ ticketType.price }}
         </span><br>
         <span class="event-detail">
-            Available: {{ ticketType.numOfTickets }}
+            Available: {{ ticketType.numOfTickets|sub:ticketType.ticketsSold}}
         </span><br>
         <span class="event-detail">
             Description: {{ ticketType.details }}
