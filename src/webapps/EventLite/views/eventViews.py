@@ -23,7 +23,6 @@ def post_event(request):
 
     form = PostEventForm(request.POST)
     context = {'form': form}
-    print(form)
     if not form.is_valid():
         return HttpResponse('Invalid Event Form',status=400)
 
@@ -59,11 +58,6 @@ def post_event(request):
     tickets = eval(json.loads(tickets))
     print(tickets)
 
-    if not 'tickets_data' in request.POST:
-        context['errors']=['No ticket data found']
-        return render(request,url,context)
-
-    print('ticket data present');
 
 
     for ticket in tickets:
@@ -99,6 +93,7 @@ def search_events(request):
         return view_events(request)
 
     if 'search' in request.POST and request.POST['search']:
+
         print(request.POST['search'])
 
         #Enable Full Text Search
@@ -129,7 +124,7 @@ def search_events(request):
 
             point = Point(longitude,latitude,srid=4326)
             events = events.objects.filter(coordinate__distance_lte=(point,D(mi=miles)))
-    
+
 
         context = {
                     'user': request.user,
@@ -157,8 +152,14 @@ def my_events_context(request):
         return {'errors': 'Could not find user details.'}
 
     seller = user_detail.seller
+    buyer = user_detail.buyer
+    tickets = buyer.ticket_set.all()
+    events_attending = Event.objects.none()
+    for ticket in tickets:
+        events_attending = events_attending | Event.objects.filter(id=ticket.ticketType.event.id)
     context = {'user': request.user,
-               'events': Event.objects.filter(seller=seller)}
+               'events_hosting': Event.objects.filter(seller=seller),
+               'events_attending': events_attending}
     return context
 
 
@@ -187,27 +188,76 @@ def event_info(request,id):
 
         #if yes, redirect to seller- event views
         if(event.seller == user_detail.seller):
-            return event_page(request,id)
+            return event_page(request, id)
         else:
-            return event_page(request,id)
+            return event_page(request, id)
 
 @login_required
-def event_page(request, id):
+@transaction.atomic
+def buy_ticket(request, id):
+    url = 'event.html'
+    try:
+        ticket_type = TicketType.objects.get(id=id)
+    except:
+        raise Http404
+    event_id = ticket_type.event.id
+    context = get_event_page_context(event_id)
+    if request.method == 'POST':
+        form = BuyTicketsForm(request.POST)
+        context['form'] = form
 
-    url='event.html'
-    context = {}
+        if form.is_valid():
+            quantity = form.cleaned_data['quantity']
+            print(ticket_type.ticketsSold, file=stderr)
+            tickets_left = ticket_type.numOfTickets - ticket_type.ticketsSold
+            if quantity > tickets_left:
+                context['errors'] = "Not enough tickets available."
+                return render(request, url, context)
+            try:
+                user_detail = UserDetail.objects.get(user=request.user)
+                buyer = user_detail.buyer
+                try:
+                    tickets = buyer.ticket_set.all()
+                    ticket = tickets.filter(ticketType__id=ticket_type.id)[0]
+                    ticket.quantity += quantity
+                except:
+                    ticket = Ticket.objects.create(buyer=buyer,
+                                                   ticketType=ticket_type,
+                                                   quantity=quantity)
+                finally:
+                    ticket_type.ticketsSold += quantity
+                    ticket_type.save()
+                    ticket.save()
+            except:
+                context['errors'] = ['User details not found.']
+                return render(request, url, context)
+        else:
+            return render(request, url, context)
+    return event_page(request, event_id)
+
+
+def get_event_page_context(id):
+    context = {'form': BuyTicketsForm()}
     try:
         event = Event.objects.get(id=id)
     except:
         context['errors'] = ['No event found.']
-        return render(request, url, context)
+        return context
     seller = event.seller
     try:
         user_detail = UserDetail.objects.get(seller=seller)
     except:
         context['errors'] = ['User details not found.']
-        return render(request, url, context)
+        return context
 
-    context['event']= event
+    context['event'] = event
     context['seller_username'] = user_detail.user.username
+    context['ticketTypes'] = event.tickettype_set.all()
+    context['userTickets'] = user_detail.buyer.ticket_set.all()
+    return context
+
+@login_required
+def event_page(request, id):
+    url = 'event.html'
+    context = get_event_page_context(id)
     return render(request, url, context)

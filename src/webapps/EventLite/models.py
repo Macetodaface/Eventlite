@@ -17,7 +17,6 @@ class Seller(models.Model):
     earnings = models.FloatField(default=0.0)
 
 class Buyer(models.Model):
-    ticketsPurchased = models.ManyToManyField("Ticket", blank=True)
     eventsInterested = models.ManyToManyField("Event", blank=True)
     points = models.IntegerField(default = 0)
 
@@ -31,6 +30,7 @@ class Event(models.Model):
     email = models.EmailField(max_length=100)
     coordinate = models.PointField(default='')
 
+
 class TicketType(models.Model):
     name = models.CharField(max_length=100)
     event = models.ForeignKey(Event)
@@ -39,8 +39,12 @@ class TicketType(models.Model):
     numOfTickets = models.IntegerField(default=0)
     ticketsSold = models.IntegerField(default=0)
 
+
 class Ticket(models.Model):
+    buyer = models.ForeignKey(Buyer)
     ticketType = models.ForeignKey(TicketType)
+    quantity = models.IntegerField(default=0)
+
 
 class Review(models.Model):
     rating = models.IntegerField()

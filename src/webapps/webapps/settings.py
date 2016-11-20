@@ -58,6 +58,7 @@ INSTALLED_APPS = [
      'django.contrib.gis',
      'django.contrib.postgres',
     'EventLite',
+    'mathfilters',
 ]
 
 MIDDLEWARE = [

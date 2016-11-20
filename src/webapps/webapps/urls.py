@@ -15,6 +15,8 @@ Including another URLconf
 """
 from django.conf.urls import include, url
 from django.contrib import admin
+
+
 import django.contrib.auth.views
 
 import EventLite.views.eventViews as eventViews

@@ -2,7 +2,33 @@
 {% block title %}View Events{% endblock %}
 {% block left-content %}{% endblock %}
 {% block center-content %}
-    <h1 class="center">My Events</h1>
-    {% include 'event-list.html' %}
+    <div>
+        <h1 class="center">Attending</h1>
+        {% for event in events_attending %}
+        <div class="row">
+            <a href="{% url 'event-info' event.id %}"
+               class="col-xs-2 event-listing no-hyper">
+                <span class="event-detail">{{ event.name }} </span>
+                <br><br>
+                <span class="event-detail">{{ event.time }}</span><br>
+                <span class="event-detail">{{ event.location }}</span><br>
+            </a>
+        </div>
+            {% endfor %}
+    </div><br><br>
+    <div>
+        <h1 class="center">Hosting</h1>
+        {% for event in events_hosting %}
+        <div class="row">
+            <a href="{% url 'event-info' event.id %}"
+               class="col-xs-2 event-listing no-hyper">
+                <span class="event-detail">{{ event.name }} </span>
+                <br><br>
+                <span class="event-detail">{{ event.time }}</span><br>
+                <span class="event-detail">{{ event.location }}</span><br>
+            </a>
+        </div>
+        {% endfor %}
+    </div>
 {% endblock %}
 {% block right-content %}{% endblock %}
