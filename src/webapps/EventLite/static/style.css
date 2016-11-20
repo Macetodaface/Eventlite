@@ -52,6 +52,7 @@
 }
 
 .search-field{
+    width: 80% !important;
     margin-left: 10px !important;
     margin-top: 5px !important;
 }
@@ -95,10 +96,20 @@
     margin-bottom: 5px;
     margin-right: 20px;
     margin-left: 20px;
+    overflow:hidden;
 }
+
+.inner-filters {
+    margin-top: 8px;
+    margin-bottom: 8px;
+    margin-right: 8px;
+    margin-left: 8px;
+}
+
 
 .filter-field {
     width: 50% !important;
+    margin-top:5px; 
 }
 
 .event-listing {
