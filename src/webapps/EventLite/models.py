@@ -24,7 +24,7 @@ class Buyer(models.Model):
 class Event(models.Model):
     name = models.CharField(max_length = 100)
     seller = models.ForeignKey(Seller)
-    description = models.CharField(max_length = 1000, default = '', blank = True)
+    description = models.TextField(max_length = 1000, default = '', blank = True)
     location = models.CharField(max_length = 100, default = '', blank = True)
     time = models.DateTimeField(default=timezone.now)
     media = models.URLField(default = '', blank = True)

@@ -56,6 +56,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'social.apps.django_app.default',
      'django.contrib.gis',
+     'django.contrib.postgres',
     'EventLite',
 ]
 

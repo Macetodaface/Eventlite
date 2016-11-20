@@ -9,6 +9,8 @@ from EventLite.models import *
 from EventLite.forms import *
 from sys import stderr
 
+from django.contrib.postgres.search import SearchQuery, SearchRank, SearchVector
+
 
 @login_required
 def post_event(request):
@@ -50,12 +52,11 @@ def post_event(request):
                 coordinate=point
                 )
     new_event.save()
-    print(request.POST)
 
     import json
-    result = json.dumps(request.POST['tickets_data'])
-    result = eval(json.loads(result))
-    print(result)
+    tickets = json.dumps(request.POST['tickets_data'])
+    tickets = eval(json.loads(tickets))
+    print(tickets)
 
     if not 'tickets_data' in request.POST:
         context['errors']=['No ticket data found']
@@ -64,7 +65,7 @@ def post_event(request):
     print('ticket data present');
 
 
-    for ticket in result:
+    for ticket in tickets:
         ticketTypeForm = TicketTypeForm(ticket)
 
         if not ticketTypeForm.is_valid():
@@ -82,7 +83,6 @@ def post_event(request):
 
     context = my_events_context(request)
     context['messages'] = ['Your event has beeen posted']
-    print('SUCCESS!!!')
     return HttpResponse()
 
 
@@ -99,8 +99,25 @@ def search_events(request):
 
     if 'search' in request.POST and request.POST['search']:
         print(request.POST['search'])
+
+        #Enable Full Text Search
+        #vector = SearchVector('name', 'description')
+        vector = SearchVector('name', weight='A') + SearchVector('description', weight='B')
+        query = SearchQuery(str(request.POST['search']))
+        events = Event.objects.annotate(rank=SearchRank(vector, query)).filter(rank__gte=0.2).order_by('-rank')
+        print(events)
+
+        if not events:
+            nameResult = Event.objects.filter(name__icontains=str(request.POST['search']))
+            nameDesc = Event.objects.filter(description__icontains=str(request.POST['search']))
+            print(nameResult)
+            print(nameDesc)
+            events = nameResult | nameDesc;
+        #events = Event.objects.annotate(search=SearchVector('name','description')).filter(search=request.POST['search'])
+
+
         context = {'user': request.user,
-                   'events': Event.objects.filter(name=request.POST['search'])}
+                   'events': events}
         return render(request, 'view-events.html', context)
 
     else:
@@ -158,6 +175,7 @@ def event_info(request,id):
 
 @login_required
 def event_page(request, id):
+
     url='event.html'
     context = {}
     try:
