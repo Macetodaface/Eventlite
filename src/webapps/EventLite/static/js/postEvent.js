@@ -124,7 +124,16 @@ window.initMap = function () {
       {
           geocodeAddress(geocoder, map);
       }
-});
+  });
+
+  document.getElementById('id_location').addEventListener('focusout', function()
+  {
+
+     geocodeAddress(geocoder, map);
+
+  }
+
+);
 
 }
 
@@ -132,12 +141,16 @@ function geocodeAddress(geocoder, resultsMap) {
   var address = document.getElementById('id_location').value;
   geocoder.geocode({'address': address}, function(results, status) {
     if (status === 'OK') {
+
+        //global
+        lat=results[0].geometry.location.lat()
+        long=results[0].geometry.location.lng()
+
+
       resultsMap.setCenter(results[0].geometry.location);
       var marker = new google.maps.Marker({
         map: resultsMap,
         position: results[0].geometry.location
-        lat=results[0].geometry.location.latitude
-        long=results[0].geometry.location.longitude
       });
     } else {
       alert('Enter a valid location! ');
