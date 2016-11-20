@@ -4,6 +4,10 @@
 
 var TICKET_ID = 0;
 var TICKET_IDS = [];
+var lat='default';
+var long='default';
+var globalMap = ''
+var geoCoder = ''
 
 function submit() {
     var ticketsData = [];
@@ -12,6 +16,11 @@ function submit() {
         ticketsData.push(getTicketData(id));
     }
 
+    // just in case
+    // if the user attempts to resubmit the form without
+    // pressing enter in the location
+    geocodeAddress(geoCoder, globalMap);
+
     $.post('/post-event', {
         name: $('id_name').val(),
         description: $('id_description').val(),
@@ -19,7 +28,9 @@ function submit() {
         time: $('id_time').val(),
         media: $('id_media').val(),
         email: $('id_email').val(),
-        tickets_data: ticketsData
+        tickets_data: ticketsData,
+        latitude: lat,
+        longitude:long
     });
 }
 
@@ -96,7 +107,47 @@ function setCsrf(){
     });
 }
 
+// Map Stuff
+
+window.initMap = function () {
+  var map = new google.maps.Map(document.getElementById('map'), {
+    zoom: 15,
+    center: {lat: -34.397, lng: 150.644}
+  });
+  var geocoder = new google.maps.Geocoder();
+  geoCoder = geocoder;
+  globalMap = map;
+
+  document.getElementById('id_location').addEventListener('keypress', function(e)
+  {
+      if(e.keyCode == 13)
+      {
+          geocodeAddress(geocoder, map);
+      }
+});
+
+}
+
+function geocodeAddress(geocoder, resultsMap) {
+  var address = document.getElementById('id_location').value;
+  geocoder.geocode({'address': address}, function(results, status) {
+    if (status === 'OK') {
+      resultsMap.setCenter(results[0].geometry.location);
+      var marker = new google.maps.Marker({
+        map: resultsMap,
+        position: results[0].geometry.location
+        lat=results[0].geometry.location.latitude
+        long=results[0].geometry.location.longitude
+      });
+    } else {
+      alert('Enter a valid location! ');
+    }
+  });
+}
+
+
 $(document).ready(function () {
     setCsrf();
     addClickHandlers();
+
 });
