@@ -81,6 +81,26 @@
     background-color: #062e48
 }
 
+.buffer-right {
+    margin-right:10px;
+}
+
+.filter-label {
+    margin-top: 10px !important;
+}
+
+.filters {
+    background-color: #062e48;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    margin-right: 20px;
+    margin-left: 20px;
+}
+
+.filter-field {
+    width: 50% !important;
+}
+
 .event-listing {
     width: 200px;
     height: 200px;
