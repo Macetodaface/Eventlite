@@ -109,3 +109,6 @@ class TicketTypeForm(ModelForm):
     class Meta:
         model = TicketType
         fields = ['name', 'price','details', 'numOfTickets']
+
+class BuyTicketsForm(forms.Form):
+    quantity = forms.IntegerField()

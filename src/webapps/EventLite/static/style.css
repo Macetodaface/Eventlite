@@ -19,6 +19,20 @@
     transform: translateY(-50%);
 }
 
+.buy-ticket-label {
+    margin-top: 5px;
+}
+
+.buy-ticket-btn {
+    margin-top: 10px;
+}
+
+.buy-ticket-field {
+    margin-left: 10px;
+    width: 40% !important;
+    margin-top: 0px !important;
+}
+
 .event-detail {
     margin-top: 5px !important;
 }
@@ -49,6 +63,22 @@
 .no-hyper:hover {
     color: black;
     text-decoration: none;
+}
+
+.large {
+    font-size: 120%;
+    font-weight: bold;
+}
+
+.ticket-listing {
+    width: 250px;
+    height: 250px;
+    padding: 10px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    margin-right: 5px;
+    margin-left: 5px !important;
+    background-color: #062e48
 }
 
 .event-listing {

@@ -9,5 +9,39 @@
     <span class="event-detail">Email: {{ event.email }}</span><br>
     <span class="event-detail">Host: {{ seller_username }}</span><br>
     <br>
-    <button class="btn btn-primary">Buy Tickets</button>
+    <div class="row">
+    {% for ticketType in ticketTypes %}
+    <div class="u4 ticket-listing">
+        <span class="large event-detail">
+            {{ ticketType.name }}
+        </span><br>
+        <span class="event-detail">
+            Price: {{ ticketType.price }}
+        </span><br>
+        <span class="event-detail">
+            Available: {{ ticketType.numOfTickets }}
+        </span><br>
+        <span class="event-detail">
+            Description: {{ ticketType.details }}
+        </span><br>
+        <span class="event-detail">
+            {% for ticket in userTickets %}
+                {% if ticket.ticketType.id == ticketType.id %}
+                    Purchased: {{ ticket.quantity }}
+                {% endif %}
+            {% endfor %}
+        </span><br><br>
+        <form action="{% url 'buy-ticket' ticketType.id  %}" method="post">
+            <div class="row quantity-field">
+                {% csrf_token %}
+                <span class="buy-ticket-label">Quantity:</span>
+                <input class="buy-ticket-field"
+                       type="number" name="quantity">
+            </div>
+                <input class="buy-ticket-btn btn btn-primary"
+                       type="submit" value="Buy Tickets">
+        </form>
+    </div>
+    {% endfor %}
+    </div>
 {% endblock %}

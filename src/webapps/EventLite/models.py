@@ -17,7 +17,6 @@ class Seller(models.Model):
     earnings = models.FloatField(default=0.0)
 
 class Buyer(models.Model):
-    ticketsPurchased = models.ManyToManyField("Ticket", blank=True)
     eventsInterested = models.ManyToManyField("Event", blank=True)
     points = models.IntegerField(default = 0)
 
@@ -40,7 +39,9 @@ class TicketType(models.Model):
     ticketsSold = models.IntegerField(default=0)
 
 class Ticket(models.Model):
+    buyer = models.ForeignKey(Buyer)
     ticketType = models.ForeignKey(TicketType)
+    quantity = models.IntegerField(default=0)
 
 class Review(models.Model):
     rating = models.IntegerField()
