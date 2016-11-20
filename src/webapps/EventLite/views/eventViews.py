@@ -10,6 +10,7 @@ from EventLite.forms import *
 from sys import stderr
 
 from django.contrib.postgres.search import SearchQuery, SearchRank, SearchVector
+from django.contrib.gis.measure import D # ``D`` is a shortcut for ``Distance``
 
 
 @login_required
@@ -101,7 +102,6 @@ def search_events(request):
         print(request.POST['search'])
 
         #Enable Full Text Search
-        #vector = SearchVector('name', 'description')
         vector = SearchVector('name', weight='A') + SearchVector('description', weight='B')
         query = SearchQuery(str(request.POST['search']))
         events = Event.objects.annotate(rank=SearchRank(vector, query)).filter(rank__gte=0.2).order_by('-rank')
@@ -113,11 +113,29 @@ def search_events(request):
             print(nameResult)
             print(nameDesc)
             events = nameResult | nameDesc;
-        #events = Event.objects.annotate(search=SearchVector('name','description')).filter(search=request.POST['search'])
 
+        #Add Filters
+        # Location
+        if 'location' in request.POST and request.POST['location']:
 
-        context = {'user': request.user,
-                   'events': events}
+            # gonna contain latitude and longitude
+            latitude = float(request.POST['location']['latitude'])
+            longitude = float(request.POST['location']['longitude'])
+
+            # miles
+            miles = 100000
+            if 'miles' in request.POST['location']:
+                miles = int(request.POST['location'].miles)
+
+            point = Point(longitude,latitude,srid=4326)
+            events = events.objects.filter(coordinate__distance_lte=(point,D(mi=miles)))
+    
+
+        context = {
+                    'user': request.user,
+                    'events': events
+                   }
+
         return render(request, 'view-events.html', context)
 
     else:
