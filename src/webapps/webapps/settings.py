@@ -55,6 +55,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'social.apps.django_app.default',
+     'django.contrib.gis',
     'EventLite',
 ]
 
@@ -106,7 +107,7 @@ DATABASES = {
 
 DATABASES = {
         'default': {
-            'ENGINE': 'django.db.backends.postgresql_psycopg2', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
+             'ENGINE': 'django.contrib.gis.db.backends.postgis',
             'NAME': 'eventlite',                      # Or path to database file if using sqlite3.
             'USER': 'webapps',
             'PASSWORD': 'webapps',

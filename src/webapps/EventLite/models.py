@@ -1,4 +1,4 @@
-from django.db import models
+from django.contrib.gis.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
 
@@ -29,6 +29,7 @@ class Event(models.Model):
     time = models.DateTimeField(default=timezone.now)
     media = models.URLField(default = '', blank = True)
     email = models.EmailField()
+    coordinate = models.PointField(default='')
 
 
 class TicketType(models.Model):
