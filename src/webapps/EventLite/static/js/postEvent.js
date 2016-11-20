@@ -158,9 +158,15 @@ function geocodeAddress(geocoder, resultsMap) {
   });
 }
 
+function setDateTimeSettings(){
+    $(".form_datetime").datetimepicker({
+        format: "dd MM yyyy - hh:ii"
+    });
+}
 
 $(document).ready(function () {
     setCsrf();
     addClickHandlers();
+    setDateTimeSettings();
 
 });

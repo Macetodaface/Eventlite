@@ -177,3 +177,15 @@
 .googlebtn {
     background-color: #2aabd2;
 }
+
+.datetimepicker {
+    color: black !important;
+}
+
+.prev {
+    color: black !important;
+}
+
+.switch {
+    color: black !important;
+}

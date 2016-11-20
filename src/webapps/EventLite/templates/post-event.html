@@ -5,7 +5,8 @@
 
 {% block customcss %}
 {% load static %}
-<link rel="stylesheet" href="{% static 'eventlite/css/post-event.css' %}"/>
+    <link rel="stylesheet" href="{% static 'libs/bootstrap-datetimepicker/css/bootstrap-datetimepicker.css' %}"/>
+    <link rel="stylesheet" href="{% static 'eventlite/css/post-event.css' %}"/>
 {% endblock %}
 
 {% block left-well %}
@@ -27,9 +28,18 @@
                     {{ field.errors }}
                 </div>
                 <div class="post-label fieldWrapper col-xs-3">
-                    {{ field.label }}
+                        {{ field.label }}
                 </div>
-                <div class="post-event-field">{{ field }}</div>
+                <div class="post-event-field">
+                    {% if field.name == "time" %}
+                        <div class="input-append date form_datetime">
+                            <input id="id_time" size="16" type="text" value="" readonly>
+                            <span class="add-on"><i class="icon-th"></i></span>
+                        </div>
+                    {% else %}
+                        {{ field }}
+                    {% endif %}
+                </div>
             </div>
 
             {% if field.name == "location" %}
@@ -63,6 +73,7 @@
     </div>
 
         {% load static %}
+        <script src="{% static 'libs/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js' %}"></script>
         <script src="{% static 'js/postEvent.js' %}"></script>
 
         <script async defer

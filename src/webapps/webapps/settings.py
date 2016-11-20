@@ -104,10 +104,9 @@ DATABASES = {
     }
 }
 """
-
 DATABASES = {
         'default': {
-             'ENGINE': 'django.contrib.gis.db.backends.postgis',
+            'ENGINE': 'django.contrib.gis.db.backends.postgis',
             'NAME': 'eventlite',                      # Or path to database file if using sqlite3.
             'USER': 'webapps',
             'PASSWORD': 'webapps',
