@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "base-twothirds.html" %}
 {% block title %}
     Post an Event!
 {% endblock %}
@@ -9,9 +9,7 @@
     <link rel="stylesheet" href="{% static 'eventlite/css/post-event.css' %}"/>
 {% endblock %}
 
-{% block left-well %}
-{% endblock %}
-{% block center-content %}
+{% block left-content %}
 
 
     <h3 class="center">Post an Event: </h3><br>
@@ -27,13 +25,13 @@
 
         {% for field in form %}
             <div class="row">
-                <div class="col-xs-3">
+                <div class="col-xs-2">
                     {{ field.errors }}
                 </div>
                 <div class="post-label fieldWrapper col-xs-3">
                         {{ field.label }}
                 </div>
-                <div class="post-event-field">
+                <div class="post-event-field col-xs-5">
                     {% if field.name == "time" %}
                         <div class="input-append date form_datetime">
                             <input id="id_time" size="16" type="text" value="" readonly>
@@ -73,6 +71,7 @@
 {% endblock %}
 
 {% block right-content %}
+    <br><br><br>
     <div id="map" >
 
     </div>

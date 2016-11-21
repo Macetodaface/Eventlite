@@ -1,0 +1,42 @@
+{% extends 'header.html' %}
+{% block title %}
+    EventLite
+{% endblock %}
+{% block body %}
+    {% block messages %}
+    {% endblock %}
+
+    <!-- Header -->
+    <header id="header">
+        <h1><a href="#">EventLite</a></h1>
+        <a href="{% url 'my-events' %}">My Events</a>
+        <a href="{% url 'view-events' %}">Find Events</a>
+        <a href="{% url 'post-event' %}">Post Event</a>
+        <a class="pull-right" href="{% url 'logout' %}">Logout</a>
+    </header>
+
+
+    <div id="main">
+        <section class="wrapper style1">
+            <div class="inner">
+            <div class="row uniform">
+                {% block content %}
+                    <div class="8u">
+                        {% block left-content %}{% endblock %}
+                    </div>
+                    <div class="4u">
+                        {% block right-content %}{% endblock %}
+                    </div>
+                {% endblock %}
+            </div>
+            </div>
+        </section>
+    </div>
+    {% block footer %}
+    <footer id="footer">
+        <div class="copyright">
+            Design: <a href="https://templated.co">TEMPLATED</a>. Images: <a href="https://unsplash.com">Coverr</a>. Video: <a href="https://coverr.co">Coverr</a>.
+        </div>
+    </footer>
+    {% endblock %}
+{% endblock %}
