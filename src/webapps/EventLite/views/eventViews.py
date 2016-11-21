@@ -114,16 +114,24 @@ def search_events(request):
         if 'location' in request.POST and request.POST['location']:
 
             # gonna contain latitude and longitude
-            latitude = float(request.POST['location']['latitude'])
-            longitude = float(request.POST['location']['longitude'])
+            location = request.POST['location']
+            dict = getLatLong(location)
+            print (dict)
+            if(dict['result'] == 'not ok'):
+
+                context={'errors':'Invalid Location specified'}
+                return view_events(request)
+
+            latitude = dict['lat']
+            longitude = dict['long']
 
             # miles
-            miles = 100000
-            if 'miles' in request.POST['location']:
-                miles = int(request.POST['location'].miles)
+            miles = 20
+            if 'radius' in request.POST and request.POST['radius']:
+                miles = int(request.POST['radius'])
 
             point = Point(longitude,latitude,srid=4326)
-            events = events.objects.filter(coordinate__distance_lte=(point,D(mi=miles)))
+            events = events.filter(coordinate__distance_lte=(point,D(mi=miles)))
 
 
         context = {
@@ -186,7 +194,7 @@ def event_info(request,id):
             #event doesn't exist
             raise Http404
 
-        
+
         #if yes, redirect to seller- event views
         if(event.seller == user_detail.seller):
             return event_page(request, id)
@@ -262,3 +270,21 @@ def event_page(request, id):
     url = 'event.html'
     context = get_event_page_context(id)
     return render(request, url, context)
+
+
+import requests
+def getLatLong(location):
+    address = location
+    api_key = "AIzaSyAGAfMw23ko_z5TJLg_nfi6PLClCxQ7yqw"
+    api_response = requests.get('https://maps.googleapis.com/maps/api/geocode/json?address={0}&key={1}'.format(address, api_key))
+    api_response_dict = api_response.json()
+
+    if api_response_dict['status'] == 'OK':
+        latitude = api_response_dict['results'][0]['geometry']['location']['lat']
+        longitude = api_response_dict['results'][0]['geometry']['location']['lng']
+
+        print( 'Latitude:', latitude)
+        print ('Longitude:', longitude)
+        return {'result':'ok','lat':float(latitude), 'long':float(longitude)}
+
+    return {'result':'not ok'}
