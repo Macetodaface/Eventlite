@@ -1,4 +1,10 @@
 {% extends 'base.html' %}
+{% block customcss %}
+{% load static %}
+
+    <link rel="stylesheet" href="{% static 'eventlite/css/event-info.css' %}"/>
+{% endblock %}
+
 {% block center-content %}
     <span class="event-detail">Name: {{ event.name }} </span>
     <br><br>
@@ -8,6 +14,8 @@
     <span class="event-detail">Media: {{ event.media }}</span><br>
     <span class="event-detail">Email: {{ event.email }}</span><br>
     <span class="event-detail">Host: {{ seller_username }}</span><br>
+    <input type="hidden"  id="long" value={{event.coordinate.x}}>
+    <input type="hidden"  id="lat" value={{event.coordinate.y}}>
     <br>
     <div class="row">
     {% load mathfilters %}
@@ -45,4 +53,18 @@
     </div>
     {% endfor %}
     </div>
+{% endblock %}
+
+
+{% block right-content %}
+<div id="map" >
+
+</div>
+{% load static %}
+<script src="{% static 'js/event-info.js' %}"></script>
+
+<script async defer
+src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAGAfMw23ko_z5TJLg_nfi6PLClCxQ7yqw&callback=initMap">
+</script>
+
 {% endblock %}

@@ -31,4 +31,14 @@
     <br>
     {% include 'event-list.html' %}
 {% endblock %}
-{% block right-content %}{% endblock %}
+
+{% block right-content %}
+
+{% load static %}
+<script src="{% static 'libs/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js' %}"></script>
+<script src="{% static 'js/search-event.js' %}"></script>
+
+<script async defer
+src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAGAfMw23ko_z5TJLg_nfi6PLClCxQ7yqw&callback=initMap">
+</script>
+{% endblock %}

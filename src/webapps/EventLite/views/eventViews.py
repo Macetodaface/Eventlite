@@ -186,6 +186,7 @@ def event_info(request,id):
             #event doesn't exist
             raise Http404
 
+        
         #if yes, redirect to seller- event views
         if(event.seller == user_detail.seller):
             return event_page(request, id)
