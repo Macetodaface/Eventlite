@@ -118,7 +118,6 @@ def search_events(request):
             dict = getLatLong(location)
             print (dict)
             if(dict['result'] == 'not ok'):
-
                 context={'errors':'Invalid Location specified'}
                 return view_events(request)
 
@@ -129,6 +128,10 @@ def search_events(request):
             miles = 20
             if 'radius' in request.POST and request.POST['radius']:
                 miles = int(request.POST['radius'])
+
+            if(miles<0):
+                context={'errors':'Enter Valid Miles'}
+                return view_events(request)
 
             point = Point(longitude,latitude,srid=4326)
             events = events.filter(coordinate__distance_lte=(point,D(mi=miles)))
