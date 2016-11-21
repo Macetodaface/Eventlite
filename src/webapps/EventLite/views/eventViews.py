@@ -92,6 +92,9 @@ def search_events(request):
     if request.method == 'GET':
         return view_events(request)
 
+    events = Event.objects.all()
+
+    
     if 'search' in request.POST and request.POST['search']:
 
         print(request.POST['search'])
@@ -109,43 +112,41 @@ def search_events(request):
             print(nameDesc)
             events = nameResult | nameDesc;
 
-        #Add Filters
-        # Location
-        if 'location' in request.POST and request.POST['location']:
+    #Add Filters
+    # Location
+    if 'location' in request.POST and request.POST['location']:
 
-            # gonna contain latitude and longitude
-            location = request.POST['location']
-            dict = getLatLong(location)
-            print (dict)
-            if(dict['result'] == 'not ok'):
-                context={'errors':'Invalid Location specified'}
-                return view_events(request)
+        # gonna contain latitude and longitude
+        location = request.POST['location']
+        dict = getLatLong(location)
+        print (dict)
+        if(dict['result'] == 'not ok'):
+            context={'errors':'Invalid Location specified'}
+            return view_events(request)
 
-            latitude = dict['lat']
-            longitude = dict['long']
+        latitude = dict['lat']
+        longitude = dict['long']
 
-            # miles
-            miles = 20
-            if 'radius' in request.POST and request.POST['radius']:
-                miles = int(request.POST['radius'])
+        # miles
+        miles = 20
+        if 'radius' in request.POST and request.POST['radius']:
+            miles = int(request.POST['radius'])
 
-            if(miles<0):
-                context={'errors':'Enter Valid Miles'}
-                return view_events(request)
+        if(miles<0):
+            context={'errors':'Enter Valid Miles'}
+            return view_events(request)
 
-            point = Point(longitude,latitude,srid=4326)
-            events = events.filter(coordinate__distance_lte=(point,D(mi=miles)))
+        point = Point(longitude,latitude,srid=4326)
+        events = events.filter(coordinate__distance_lte=(point,D(mi=miles)))
 
 
-        context = {
-                    'user': request.user,
-                    'events': events
-                   }
+    context = {
+                'user': request.user,
+                'events': events
+               }
 
-        return render(request, 'view-events.html', context)
+    return render(request, 'view-events.html', context)
 
-    else:
-        return view_events(request)
 
 
 @login_required
