@@ -4,12 +4,6 @@ from EventLite.models import *
 from sys import stderr
 
 
-class TicketTypeForm(ModelForm):
-    class Meta:
-        model = TicketType
-        fields = ['name', 'price', 'details', 'numOfTickets']
-
-
 class PostEventForm(ModelForm):
     class Meta:
         model = Event
@@ -108,7 +102,7 @@ class PointForm(forms.Form):
 class TicketTypeForm(ModelForm):
     class Meta:
         model = TicketType
-        fields = ['name', 'price','details', 'numOfTickets']
+        fields = ['name', 'price', 'details', 'numOfTickets']
 
 class BuyTicketsForm(forms.Form):
     quantity = forms.IntegerField()

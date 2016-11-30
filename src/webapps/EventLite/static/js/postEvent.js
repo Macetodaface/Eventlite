@@ -6,18 +6,81 @@ var TICKET_ID = 0;
 var TICKET_IDS = [];
 var lat='default';
 var long='default';
-var globalMap = ''
-var geoCoder = ''
+var globalMap = '';
+var geoCoder = '';
+
+function isValidEvent()
+{
+    var valid = true;
+    var elements = [];
+
+    var email = $('#id_email');
+    //Regexp from http://www.w3resource.com/javascript/form/email-validation.php
+    var emailCheck = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+    if (!validate(email, emailCheck)){
+        valid = false;
+    }
+
+    var media = $('#id_media');
+    //Regexp from http://stackoverflow.com/questions/3809401/what-is-a-good-regular-expression-to-match-a-url
+    var media_check = /[-a-zA-Z0-9@:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_\+.~#?&//=]*)?/gi;
+    if (!validate(media, media_check)){
+        valid = false;
+    }
+
+    elements.push(email);
+    elements.push(media);
+    elements.push($('#id_name'));
+    elements.push($('#id_description'));
+    elements.push($('#id_location'));
+    elements.push($('#id_time'));
+
+    for(var i=0; i < TICKET_IDS.length; i++){
+        var id = TICKET_IDS[i];
+        var name = $('#ticket-name-' + id);
+        var price = $('#ticket-price-' + id);
+        var details = $('#ticket-details-' + id);
+        var numOfTickets = $('#ticket-numOfTickets-' + id);
+
+        elements.push(name);
+        elements.push(price);
+        elements.push(details);
+        elements.push(numOfTickets);
+
+        var priceCheck = /^\$?[0-9]+(\.[0-9][0-9])?$/;
+        if (!validate(price, priceCheck)){
+            valid = false;
+        }
+
+        var numOfTicketsCheck = /^\d+$/;
+        if(!validate(numOfTickets, numOfTicketsCheck)){
+            valid =  false;
+        }
+    }
+
+    for(var i=0; i < elements.length; i++) {
+        element = elements[i];
+        if(!validateEmpty(element)){
+            valid = false;
+        }
+    }
+
+    return valid;
+}
 
 function submit()
-{
+{   console.log('-1');
+    clearErrors();
+    if(!isValidEvent()){
+        console.log(3);
+        return false;
+    }
+    console.log(0);
     var ticketsData = [];
     for(var i=0; i < TICKET_IDS.length; i++){
         var id = TICKET_IDS[i];
         ticketsData.push(getTicketData(id));
     }
-
-    console.log(ticketsData)
 
     // just in case
     // if the user attempts to resubmit the form without
@@ -30,7 +93,7 @@ function submit()
     var month = splits[1];
     var year = splits[2];
     var time = splits[4];
-
+    console.log(1);
     //change month to number
     var dict = {
         'January':1,
@@ -45,12 +108,10 @@ function submit()
         'October':10,
         'November':11,
         'December':12
-    }
+    };
 
     month = dict[month];
     var cleanedTime = year+'-'+month+'-'+date+' '+time;
-
-    console.log(cleanedTime);
 
     var dict = {
         name: $('#id_name').val(),
@@ -62,15 +123,15 @@ function submit()
         tickets_data: JSON.stringify(ticketsData),
         latitude: lat,
         longitude:long
-    }
-    console.log(dict)
+    };
+    console.log(2);
     $.post('/post-event',dict ).done(function(data)
     {
         window.location.href="/my-events"
      })
      .fail(function(xhr, status, error)
       {
-          console.log(xhr.responseText)
+          console.log(xhr);
       });
 
  }
@@ -99,6 +160,37 @@ function deleteTicket(id) {
             TICKET_IDS.splice(i, 1);
         }
     }
+}
+
+function clearErrors() {
+    $('.error').remove();
+}
+
+function getErrorHtml(id, content){
+    var error = $('<div/>', {
+        id: 'error' + id,
+        class: 'error',
+        html: content
+    });
+    return error;
+}
+
+function validate(element, test){
+    if (!test.test(element.val())) {
+        if (element.val() != '') {
+            element.after(getErrorHtml(element.id, 'Invalid Value'));
+        }
+        return false;
+    }
+    return true;
+}
+
+function validateEmpty(element){
+    if(element.val() == '' || element.val() == undefined) {
+        element.after(getErrorHtml(element.id, 'This field is required'));
+        return false;
+    }
+    return true;
 }
 
 function getTicketData(id) {
@@ -176,7 +268,7 @@ window.initMap = function () {
 
 );
 
-}
+};
 
 function geocodeAddress(geocoder, resultsMap) {
   var address = document.getElementById('id_location').value;
