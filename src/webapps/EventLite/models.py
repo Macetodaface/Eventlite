@@ -29,6 +29,7 @@ class Event(models.Model):
     media = models.URLField(default = '', blank = True)
     email = models.EmailField(max_length=100)
     coordinate = models.PointField(default='')
+    seatLayout = models.ImageField(blank=True,upload_to="seat-layout")
 
 
 class TicketType(models.Model):

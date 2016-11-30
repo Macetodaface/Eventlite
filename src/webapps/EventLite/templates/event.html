@@ -5,13 +5,22 @@
     <link rel="stylesheet" href="{% static 'eventlite/css/event-info.css' %}"/>
 {% endblock %}
 
+
+{% block left-content%}
+    {% if event.seatLayout %}
+     <div class ="seat">
+     <img src="{% url 'seatLayout' event.id %}" id = "profile-picture" >
+    </div>
+    {% endif %}
+
+{% endblock %}
+
 {% block center-content %}
     <span class="event-detail">Name: {{ event.name }} </span>
     <br><br>
     <span class="event-detail">Description: {{ event.description }}</span><br>
     <span class="event-detail">Time: {{ event.time }}</span><br>
     <span class="event-detail">Location: {{ event.location }}</span><br>
-    <span class="event-detail">Media: {{ event.media }}</span><br>
     <span class="event-detail">Email: {{ event.email }}</span><br>
     <span class="event-detail">Host: {{ seller_username }}</span><br>
     <input type="hidden"  id="long" value={{event.coordinate.x}}>
@@ -39,7 +48,9 @@
                     Purchased: {{ ticket.quantity }}
                 {% endif %}
             {% endfor %}
+
         </span><br><br>
+
         <form action="{% url 'buy-ticket' ticketType.id  %}" method="post">
             <div class="row quantity-field">
                 {% csrf_token %}
@@ -57,9 +68,12 @@
 
 
 {% block right-content %}
-<div id="map" >
+        <div id="map" >
 
-</div>
+        </div>
+        <iframe width="420" height="315"
+        src={{event.media}}>
+        </iframe>
 {% load static %}
 <script src="{% static 'js/event-info.js' %}"></script>
 
