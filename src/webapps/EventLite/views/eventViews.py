@@ -194,11 +194,11 @@ def my_events_context(request):
     hosted_events = hosted_events & Event.objects.filter(time__gte=datetime.now())
 
 
-    past_events = past_events.filter(time__lte=datetime.now())
+    past_events = past_events.filter(time__lte=datetime.now()).order_by('time').reverse()
 
     context = {'user': request.user,
-               'events_hosting': hosted_events,
-               'events_attending': events_attending,
+               'events_hosting': hosted_events.order_by('time'),
+               'events_attending': events_attending.order_by('time'),
                'past_events':past_events}
     return context
 
