@@ -51,6 +51,10 @@ function submit()
     var cleanedTime = year+'-'+month+'-'+date+' '+time;
 
     console.log(cleanedTime);
+    var file = document.getElementById("id_seatLayout")
+    var files =file.files
+
+    console.log($('#id_seatLayout').val())
 
     var dict = {
         name: $('#id_name').val(),
@@ -61,17 +65,41 @@ function submit()
         email: $('#id_email').val(),
         tickets_data: JSON.stringify(ticketsData),
         latitude: lat,
-        longitude:long
+        longitude:long,
     }
+
+
+
     console.log(dict)
-    $.post('/post-event',dict ).done(function(data)
-    {
-        window.location.href="/my-events"
-     })
-     .fail(function(xhr, status, error)
-      {
-          console.log(xhr.responseText)
-      });
+    var formdata = new FormData()
+    formdata.append("seatLayout",file.files[0])
+    formdata.append("name", $('#id_name').val())
+    formdata.append("description", $('#id_description').val())
+    formdata.append("time",cleanedTime)
+    formdata.append("media", $('#id_media').val())
+    formdata.append("email", $('#id_email').val())
+    formdata.append("tickets_data", JSON.stringify(ticketsData))
+    formdata.append("latitude", lat)
+    formdata.append("longitude", long)
+
+
+    jQuery.ajax({
+              url: "/post-event",
+              type: "POST",
+              data: formdata,
+              processData: false,
+              contentType: false,
+              success:function(){
+                  window.location.href="/my-events"
+              },
+              fail:function(xhr, status, error)
+              {
+                  alert(xhr.responseText)
+              }
+
+          });
+
+
 
  }
 

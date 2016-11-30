@@ -8,9 +8,13 @@ from django.contrib.gis.geos import Point
 from EventLite.models import *
 from EventLite.forms import *
 from sys import stderr
+import json
+import requests
 
 from django.contrib.postgres.search import SearchQuery, SearchRank, SearchVector
 from django.contrib.gis.measure import D # ``D`` is a shortcut for ``Distance``
+from django.shortcuts import get_object_or_404
+from mimetypes import guess_type
 
 
 @login_required
@@ -20,6 +24,11 @@ def post_event(request):
 
     if request.method == 'GET':
         return render(request, url, {'form': form})
+
+
+    print(request)
+    print(request.POST)
+    print(request.FILES)
 
     form = PostEventForm(request.POST)
     context = {'form': form}
@@ -32,7 +41,7 @@ def post_event(request):
     except:
         return HttpResponse('User Details Not found',status=400)
 
-    #create Poin
+    #create Point
     pointForm = PointForm(request.POST)
     if not pointForm.is_valid():
         return HttpResponse('Invalid Location Form',status=400)
@@ -53,11 +62,14 @@ def post_event(request):
                 )
     new_event.save()
 
-    import json
+    if(request.FILES and 'seatLayout' in request.FILES):
+        print("seat Layour saved")
+        new_event.seatLayout=request.FILES['seatLayout']
+        new_event.save()
+
+
     tickets = json.dumps(request.POST['tickets_data'])
     tickets = eval(json.loads(tickets))
-    print(tickets)
-
 
 
     for ticket in tickets:
@@ -275,7 +287,7 @@ def event_page(request, id):
     return render(request, url, context)
 
 
-import requests
+
 def getLatLong(location):
     address = location
     api_key = "AIzaSyAGAfMw23ko_z5TJLg_nfi6PLClCxQ7yqw"
@@ -291,3 +303,15 @@ def getLatLong(location):
         return {'result':'ok','lat':float(latitude), 'long':float(longitude)}
 
     return {'result':'not ok'}
+
+
+
+@login_required
+def getSeatLayout(request,id):
+	event = get_object_or_404(Event,id=id)
+
+	if not event.seatLayout:
+		raise Http404
+
+	contentType = guess_type(event.seatLayout.name)
+	return HttpResponse(event.seatLayout,content_type=contentType)
