@@ -5,6 +5,16 @@
     <link rel="stylesheet" href="{% static 'eventlite/css/event-info.css' %}"/>
 {% endblock %}
 
+
+{% block left-content%}
+    {% if event.seatLayout %}
+     <div class ="seat">
+     <img src="{% url 'seatLayout' event.id %}" id = "profile-picture" >
+    </div>
+    {% endif %}
+
+{% endblock %}
+
 {% block center-content %}
     <span class="event-detail">Name: {{ event.name }} </span>
     <input class="pull-right btn btn-primary" value="Show Interest">
@@ -12,9 +22,9 @@
     <span class="event-detail">Description: {{ event.description }}</span><br>
     <span class="event-detail">Time: {{ event.time }}</span><br>
     <span class="event-detail">Location: {{ event.location }}</span><br>
-    <span class="event-detail">Media: {{ event.media }}</span><br>
     <span class="event-detail">Email: {{ event.email }}</span><br>
     <span class="event-detail">Host: {{ seller_username }}</span><br>
+    <span class="event-detail">Link: {{ event.media }}</span><br>
     <input type="hidden"  id="long" value={{event.coordinate.x}}>
     <input type="hidden"  id="lat" value={{event.coordinate.y}}>
     <br>
@@ -40,7 +50,9 @@
                     Purchased: {{ ticket.quantity }}
                 {% endif %}
             {% endfor %}
+
         </span><br><br>
+
         <form action="{% url 'buy-ticket' ticketType.id  %}" method="post">
             <div class="row quantity-field">
                 {% csrf_token %}
@@ -58,9 +70,10 @@
 
 
 {% block right-content %}
-<div id="map" >
+        <div id="map" >
 
-</div>
+        </div>
+
 {% load static %}
 <script src="{% static 'js/event-info.js' %}"></script>
 

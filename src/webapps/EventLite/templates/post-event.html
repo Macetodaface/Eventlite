@@ -20,7 +20,7 @@
     </div>
 
 
-    <form action="{% url 'post-event' %}" method="post">
+    <form enctype="multipart/form-data" action="{% url 'post-event' %}" method="post">
         {{ form.non_field_errors }}
 
         {% for field in form %}
@@ -28,17 +28,27 @@
                 <div class="col-xs-2">
                     {{ field.errors }}
                 </div>
+
                 <div class="post-label fieldWrapper col-xs-3">
+                    {% if field.name == "media" %}
+                        External Link
+                    {%  else  %}
                         {{ field.label }}
+                    {% endif %}
                 </div>
+
                 <div class="post-event-field col-xs-5">
                     {% if field.name == "time" %}
                         <div class="input-append date form_datetime">
                             <input id="id_time" size="16" type="text" value="" readonly>
                             <span class="add-on"><i class="icon-th"></i></span>
                         </div>
+                    {% elif field.name == "seatLayout" %}
+                        <input id="id_seatLayout" class = "btn  " name="seatLayout" type="file">
+
                     {% else %}
                         {{ field }}
+
                     {% endif %}
                 </div>
             </div>

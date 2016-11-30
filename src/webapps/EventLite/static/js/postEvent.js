@@ -69,13 +69,12 @@ function isValidEvent()
 }
 
 function submit()
-{   console.log('-1');
+{
     clearErrors();
     if(!isValidEvent()){
-        console.log(3);
         return false;
     }
-    console.log(0);
+
     var ticketsData = [];
     for(var i=0; i < TICKET_IDS.length; i++){
         var id = TICKET_IDS[i];
@@ -93,7 +92,6 @@ function submit()
     var month = splits[1];
     var year = splits[2];
     var time = splits[4];
-    console.log(1);
     //change month to number
     var dict = {
         'January':1,
@@ -113,27 +111,38 @@ function submit()
     month = dict[month];
     var cleanedTime = year+'-'+month+'-'+date+' '+time;
 
-    var dict = {
-        name: $('#id_name').val(),
-        description: $('#id_description').val(),
-        location: $('#id_location').val(),
-        time: cleanedTime,
-        media: $('#id_media').val(),
-        email: $('#id_email').val(),
-        tickets_data: JSON.stringify(ticketsData),
-        latitude: lat,
-        longitude:long
-    };
-    console.log(2);
-    $.post('/post-event',dict ).done(function(data)
-    {
-        window.location.href="/my-events"
-     })
-     .fail(function(xhr, status, error)
-      {
-          console.log(xhr);
-      });
 
+
+    var file = document.getElementById("id_seatLayout");
+    var files =file.files;
+
+    var formdata = new FormData();
+    formdata.append("seatLayout",file.files[0]);
+    formdata.append("name", $('#id_name').val());
+    formdata.append("description", $('#id_description').val());
+    formdata.append("time",cleanedTime);
+    formdata.append("media", $('#id_media').val());
+    formdata.append("email", $('#id_email').val());
+    formdata.append("tickets_data", JSON.stringify(ticketsData));
+    formdata.append("latitude", lat);
+    formdata.append("longitude", long);
+
+
+    jQuery.ajax({
+              url: "/post-event",
+              type: "POST",
+              data: formdata,
+              processData: false,
+              contentType: false,
+              success:function(){
+                  window.location.href="/my-events"
+              },
+              fail:function(xhr, status, error)
+              {
+                  alert(xhr.responseText)
+              }
+
+          });
  }
 
 function addTicketTypeForm() {
