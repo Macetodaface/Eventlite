@@ -14,10 +14,24 @@
             <div class="post-label fieldWrapper col-xs-3">
                 {{ field.label }}
             </div>
-            <div class="post-event-field">
+            <div class="post-event-field col-xs-5">
+                {% if field.name ==  'details' %}
+                <textarea id="ticket-{{ field.name }}-{{ id }}"
+                       name="{{ field.name }}" maxlength="100"
+                           type="text" rows="3"></textarea>
+                {% elif field.name ==  'numOfTickets'%}
+                    <input id="ticket-{{ field.name }}-{{ id }}"
+                       name="{{ field.name }}" maxlength="100"
+                       required type="number">
+                {% elif field.name  == 'price' %}
+                    <input id="ticket-{{ field.name }}-{{ id }}"
+                       name="{{ field.name }}" maxlength="100"
+                       required type="number" step=".50">
+                {%  else %}
                 <input id="ticket-{{ field.name }}-{{ id }}"
-                       name="{{ field.name }}" max_length="100"
+                       name="{{ field.name }}" maxlength="100"
                        required type="text">
+                {% endif %}
             </div>
         </div>
     {% endfor %}
