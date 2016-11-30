@@ -15,6 +15,7 @@ from django.contrib.postgres.search import SearchQuery, SearchRank, SearchVector
 from django.contrib.gis.measure import D # ``D`` is a shortcut for ``Distance``
 from django.shortcuts import get_object_or_404
 from mimetypes import guess_type
+from datetime import datetime
 
 
 @login_required
@@ -106,7 +107,7 @@ def search_events(request):
 
     events = Event.objects.all()
 
-    
+
     if 'search' in request.POST and request.POST['search']:
 
         print(request.POST['search'])
@@ -179,11 +180,26 @@ def my_events_context(request):
     buyer = user_detail.buyer
     tickets = buyer.ticket_set.all()
     events_attending = Event.objects.none()
+    past_events =  Event.objects.none()
+
+    #fiter out future events
     for ticket in tickets:
         events_attending = events_attending | Event.objects.filter(id=ticket.ticketType.event.id)
+        past_events = events_attending
+        events_attending = events_attending & Event.objects.filter(time__gte=datetime.now())
+
+    #only contains future events
+    hosted_events = Event.objects.filter(seller=seller)
+    past_events =  past_events | hosted_events
+    hosted_events = hosted_events & Event.objects.filter(time__gte=datetime.now())
+
+
+    past_events = past_events.filter(time__lte=datetime.now())
+
     context = {'user': request.user,
-               'events_hosting': Event.objects.filter(seller=seller),
-               'events_attending': events_attending}
+               'events_hosting': hosted_events,
+               'events_attending': events_attending,
+               'past_events':past_events}
     return context
 
 

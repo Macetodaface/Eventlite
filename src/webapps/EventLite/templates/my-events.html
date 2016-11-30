@@ -31,5 +31,21 @@
         {% endfor %}
         </div>
     </div>
+
+    <div>
+        <h1 class="center">Past Events</h1>
+        <div class="row">
+        {% for event in past_events %}
+            <a href="{% url 'event-info' event.id %}"
+               class="col-xs-2 event-listing no-hyper">
+                <span class="event-detail">{{ event.name }} </span>
+                <br><br>
+                <span class="event-detail">{{ event.time }}</span><br>
+                <span class="event-detail">{{ event.location }}</span><br>
+            </a>
+        {% endfor %}
+        </div>
+    </div>
+
 {% endblock %}
 {% block right-content %}{% endblock %}

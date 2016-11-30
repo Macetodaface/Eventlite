@@ -7,11 +7,7 @@
 
 
 {% block left-content%}
-    {% if event.seatLayout %}
-     <div class ="seat">
-     <img src="{% url 'seatLayout' event.id %}" id = "profile-picture" >
-    </div>
-    {% endif %}
+
 
 {% endblock %}
 
@@ -27,6 +23,11 @@
     <input type="hidden"  id="long" value={{event.coordinate.x}}>
     <input type="hidden"  id="lat" value={{event.coordinate.y}}>
     <br>
+    {% if event.seatLayout %}
+
+     <img src="{% url 'seatLayout' event.id %}" class = "seat" >
+    
+    {% endif %}
     <div class="row">
     {% load mathfilters %}
     {% for ticketType in ticketTypes %}
