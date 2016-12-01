@@ -16,6 +16,7 @@ from django.contrib.gis.measure import D # ``D`` is a shortcut for ``Distance``
 from django.shortcuts import get_object_or_404
 from mimetypes import guess_type
 from datetime import datetime
+from django.utils import timezone
 
 
 @login_required
@@ -291,10 +292,18 @@ def get_event_page_context(id):
         context['errors'] = ['User details not found.']
         return context
 
+    date = timezone.now()
+
+    if(event.time > date):
+        context['reviews'] = False
+    else:
+        context['reviews'] = True
+
     context['event'] = event
     context['seller_username'] = user_detail.user.username
     context['ticketTypes'] = event.tickettype_set.all()
     context['userTickets'] = user_detail.buyer.ticket_set.all()
+
     return context
 
 @login_required

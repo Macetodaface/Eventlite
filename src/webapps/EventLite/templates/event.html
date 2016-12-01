@@ -24,13 +24,14 @@
     <input type="hidden"  id="long" value={{event.coordinate.x}}>
     <input type="hidden"  id="lat" value={{event.coordinate.y}}>
     <br>
-    {% if event.seatLayout %}
-
-     <img src="{% url 'seatLayout' event.id %}" class = "seat" >
-    
-    {% endif %}
     <div class="row">
     {% load mathfilters %}
+    {% if not reviews %}
+
+    {% if event.seatLayout %}
+     <img src="{% url 'seatLayout' event.id %}" class = "seat" >
+    {% endif %}
+
     {% for ticketType in ticketTypes %}
     <div class="u4 ticket-listing">
         <span class="large event-detail">
@@ -66,6 +67,11 @@
         </form>
     </div>
     {% endfor %}
+    {% else %}
+        <div class="reviews">
+            Add your review
+        </div>
+    {% endif %}
     </div>
 {% endblock %}
 

@@ -5,6 +5,7 @@
     <div>
         <h1 class="center">Attending</h1>
         <div class="row">
+        {% if events_attending %}
         {% for event in events_attending %}
 
             <a href="{% url 'event-info' event.id %}"
@@ -15,11 +16,15 @@
                 <span class="event-detail">{{ event.location }}</span><br>
             </a>
             {% endfor %}
+        {% else %}
+            No events to show
+        {% endif %}
         </div>
     </div><br><br>
     <div>
         <h1 class="center">Hosting</h1>
         <div class="row">
+        {% if events_hosting %}
         {% for event in events_hosting %}
             <a href="{% url 'event-info' event.id %}"
                class="col-xs-2 event-listing no-hyper">
@@ -29,12 +34,16 @@
                 <span class="event-detail">{{ event.location }}</span><br>
             </a>
         {% endfor %}
+        {% else %}
+            No events to show
+        {% endif %}
         </div>
     </div>
 
     <div>
         <h1 class="center">Past Events</h1>
         <div class="row">
+        {% if past_events %}
         {% for event in past_events %}
             <a href="{% url 'event-info' event.id %}"
                class="col-xs-2 event-listing no-hyper">
@@ -44,6 +53,9 @@
                 <span class="event-detail">{{ event.location }}</span><br>
             </a>
         {% endfor %}
+        {% else %}
+            No events to show
+        {% endif %}
         </div>
     </div>
 
