@@ -30,6 +30,7 @@ class Event(models.Model):
     email = models.EmailField(max_length=100)
     coordinate = models.PointField(default='')
     seatLayout = models.ImageField(blank=True,upload_to="seat-layout")
+    bannerImage = models.ImageField(upload_to="banner-images",default="banner-images/default.jpg")
 
 
 class TicketType(models.Model):

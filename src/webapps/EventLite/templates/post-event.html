@@ -45,10 +45,10 @@
                         </div>
                     {% elif field.name == "seatLayout" %}
                         <input id="id_seatLayout" class = "btn  " name="seatLayout" type="file">
-
+                    {% elif field.name == "bannerImage" %}
+                        <input id="id_bannerImage" class = "btn  " name="bannerImage" type="file">
                     {% else %}
                         {{ field }}
-
                     {% endif %}
                 </div>
             </div>
