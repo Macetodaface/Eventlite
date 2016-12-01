@@ -4,10 +4,19 @@ from EventLite.models import *
 from sys import stderr
 
 
+class BioForm(forms.Form):
+    content = forms.CharField(max_length=420, label='Bio', required = False)
+
+
+class ImageForm(forms.Form):
+    image = forms.ImageField(required = False)
+
+
 class PostEventForm(ModelForm):
     class Meta:
         model = Event
-        fields = ['name', 'description', 'location', 'time', 'media', 'email','seatLayout']
+        fields = ['name', 'description', 'location', 'time', 'media',
+                  'email', 'seatLayout']
 
 
 class UserForm(forms.Form):

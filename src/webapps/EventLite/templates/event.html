@@ -1,29 +1,33 @@
 {% extends 'base.html' %}
 {% block customcss %}
 {% load static %}
-
+    <script src="{% static 'js/event.js' %}"></script>
     <link rel="stylesheet" href="{% static 'eventlite/css/event-info.css' %}"/>
 {% endblock %}
 
-
 {% block left-content%}
     {% if event.seatLayout %}
-     <div class ="seat">
-     <img src="{% url 'seatLayout' event.id %}" id = "profile-picture" >
-    </div>
+        <div class ="seat">
+         <img src="{% url 'seatLayout' event.id %}" id = "profile-picture" >
+        </div>
     {% endif %}
-
+    <span id='event-id' class="hidden">{{event.id}}</span>
 {% endblock %}
 
 {% block center-content %}
     <span class="event-detail">Name: {{ event.name }} </span>
-    <input id="interest" class="pull-right btn btn-primary">
-    <br><br>
+    <span id="interested" class="pull-right">
+        <strong id="interested-cnt">{{ num_interested }}</strong>
+        <span id="interested-text">people are interested in this event.</span>
+    </span><br>
+    <button id="interest" class="pull-right btn btn-primary"></button><br>
     <span class="event-detail">Description: {{ event.description }}</span><br>
     <span class="event-detail">Time: {{ event.time }}</span><br>
     <span class="event-detail">Location: {{ event.location }}</span><br>
     <span class="event-detail">Email: {{ event.email }}</span><br>
-    <span class="event-detail">Host: {{ seller_username }}</span><br>
+    <span class="event-detail">Host:
+        <a href="{% url 'profile' seller.id %}">{{ seller.username }}</a>
+    </span><br>
     <span class="event-detail">Link: {{ event.media }}</span><br>
     <input type="hidden"  id="long" value={{event.coordinate.x}}>
     <input type="hidden"  id="lat" value={{event.coordinate.y}}>

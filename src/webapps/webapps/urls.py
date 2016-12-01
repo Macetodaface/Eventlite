@@ -45,4 +45,8 @@ urlpatterns = [
     url(r'^recover-password', accountViews.recover_password, name='recover-password'),
     url(r'^new_password/(?P<key>.+)', accountViews.new_password, name='new-password'),
     url(r'^search-events/$', eventViews.search_events, name='search-events'),
+    url(r'^get-interest/(?P<id>.+)', eventViews.get_interest, name='get-interest'),
+    url(r'^show-interest/(?P<id>.+)', eventViews.show_interest, name='show-interest'),
+    url(r'^profile/(?P<user>[\w\.]+)', accountViews.profile, name='profile'),
+
 ]

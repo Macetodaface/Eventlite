@@ -88,7 +88,7 @@ def post_event(request):
         )
         ticket.save()
 
-    context = my_events_context(request)
+    context = events_context(request, request.user)
     context['messages'] = ['Your event has beeen posted']
     return HttpResponse()
 
@@ -169,9 +169,9 @@ def view_events(request):
 
 
 @login_required
-def my_events_context(request):
+def events_context(request, user):
     try:
-        user_detail = UserDetail.objects.get(user=request.user)
+        user_detail = UserDetail.objects.get(user=user)
     except:
         return {'errors': 'Could not find user details.'}
 
@@ -189,7 +189,8 @@ def my_events_context(request):
 
 @login_required
 def my_events(request):
-    return render(request, 'my-events.html', my_events_context(request))
+    return render(request, 'my-events.html',
+                  events_context(request, request.user))
 
 
 
@@ -210,12 +211,44 @@ def event_info(request,id):
             #event doesn't exist
             raise Http404
 
-
         #if yes, redirect to seller- event views
         if(event.seller == user_detail.seller):
             return event_page(request, id)
         else:
             return event_page(request, id)
+
+@login_required
+def show_interest(request, id):
+    try:
+        buyer = UserDetail.objects.get(user=request.user).buyer
+        event = Event.objects.get(id=id)
+    except:
+        raise HttpResponse('User not found', status_code=400)
+    if is_interested(request, id):
+        event.buyer_set.get(id=buyer.id)
+        buyer.eventsInterested.remove(event)
+    else:
+        buyer.eventsInterested.add(event)
+    return HttpResponse()
+
+
+def is_interested(request, id):
+    try:
+        buyer = UserDetail.objects.get(user=request.user).buyer
+        event = Event.objects.get(id=id)
+    except:
+        raise HttpResponse('User not found', status_code=400)
+
+    try:
+        event.buyer_set.get(id=buyer.id)
+        return True
+    except:
+        return False
+
+@login_required
+def get_interest(request, id):
+    return HttpResponse(is_interested(request, id))
+
 
 @login_required
 @transaction.atomic
@@ -233,7 +266,6 @@ def buy_ticket(request, id):
 
         if form.is_valid():
             quantity = form.cleaned_data['quantity']
-            print(ticket_type.ticketsSold, file=stderr)
             tickets_left = ticket_type.numOfTickets - ticket_type.ticketsSold
             if quantity > tickets_left:
                 context['errors'] = "Not enough tickets available."
@@ -275,8 +307,11 @@ def get_event_page_context(id):
         context['errors'] = ['User details not found.']
         return context
 
+    num_interested = event.buyer_set.count();
+
+    context['num_interested'] = num_interested
     context['event'] = event
-    context['seller_username'] = user_detail.user.username
+    context['seller'] = user_detail.user
     context['ticketTypes'] = event.tickettype_set.all()
     context['userTickets'] = user_detail.buyer.ticket_set.all()
     return context

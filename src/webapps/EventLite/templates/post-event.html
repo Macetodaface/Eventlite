@@ -10,15 +10,12 @@
 {% endblock %}
 
 {% block left-content %}
-
-
     <h3 class="center">Post an Event: </h3><br>
     <div class="center">
         {% for error in errors %}
             <span class="error">{{ error }}</span>
         {% endfor %}
     </div>
-
 
     <form enctype="multipart/form-data" action="{% url 'post-event' %}" method="post">
         {{ form.non_field_errors }}
@@ -48,16 +45,12 @@
 
                     {% else %}
                         {{ field }}
-
                     {% endif %}
                 </div>
             </div>
-
             {% if field.name == "location" %}
             {% endif %}
         {% endfor %}
-
-
         <br>
         <div id="ticket-types"></div>
 

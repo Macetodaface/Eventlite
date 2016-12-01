@@ -5,6 +5,8 @@ from django.core.mail import send_mail
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout as auth_logout
+import EventLite.views.eventViews as eventViews
+
 
 from EventLite.models import *
 from EventLite.forms import *
@@ -101,8 +103,41 @@ def getRandomKey():
 
 
 @login_required()
-def profile(request):
-    return render(request, 'profile.html', {})
+def profile(request, user):
+    url = 'profile.html'
+
+    try:
+        user = User.objects.get(id=user)
+        user_detail = UserDetail.objects.get(user=user)
+        context = eventViews.events_context(request, user)
+    except:
+        context = {'errors': ['Cannot find user.']}
+
+    if request.method == 'POST':
+        image_form = ImageForm(request.POST)
+        bio_form = BioForm(request.POST)
+
+        if bio_form.is_valid():
+            bio = bio_form.cleaned_data['content']
+            if bio != '':
+                user_detail.bio = bio
+        else:
+            context['bio_form'] = bio_form
+
+        if image_form.is_valid():
+            image = image_form.cleaned_data['image']
+            if image != '':
+                user_detail.image = image
+        else:
+            context['image_form'] = image_form
+        user_detail.save()
+        context = eventViews.events_context(request, user)
+    context['image_form'] = ImageForm()
+    context['bio_form'] = BioForm()
+    context['profile_user'] = user
+    context['user_detail'] = user_detail
+
+    return render(request, url, context)
 
 @transaction.atomic
 def registration(request):
