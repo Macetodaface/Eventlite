@@ -123,6 +123,7 @@ function submit()
     formdata.append("time",cleanedTime);
     formdata.append("media", $('#id_media').val());
     formdata.append("email", $('#id_email').val());
+    formdata.append("location",$('#id_location').val());
     formdata.append("tickets_data", JSON.stringify(ticketsData));
     formdata.append("latitude", lat);
     formdata.append("longitude", long);

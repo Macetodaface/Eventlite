@@ -106,3 +106,29 @@ class TicketTypeForm(ModelForm):
 
 class BuyTicketsForm(forms.Form):
     quantity = forms.IntegerField()
+
+class ReviewForm(ModelForm):
+    class Meta:
+        model = Review
+        fields = ['rating','review']
+        widgets ={
+            'review': forms.Textarea(attrs={'rows':'4','cols':'400','placeholder':'Enter a Review (420 char max)','class':'form-control'})
+
+        }
+    def clean_rating(self):
+        rating = self.cleaned_data.get('rating')
+
+        if(type(rating) != int):
+            raise forms.ValidationError("Enter an integer between 1 and 5!")
+        if(rating<1 or rating>5):
+            raise forms.ValidationError('Enter an integer between 1 and 5')
+
+        return rating
+
+    def clean_review(self):
+        review = self.cleaned_data.get('review');
+
+        if(len(str(review))<10):
+            raise forms.ValidationError("Review should be atleast 10 characters")
+
+        return review

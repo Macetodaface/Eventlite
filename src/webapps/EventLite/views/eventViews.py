@@ -212,7 +212,6 @@ def my_events(request):
 
 @login_required
 def event_info(request,id):
-
     if request.method == "GET":
         #see if the user is the host of the event
         try:
@@ -227,12 +226,13 @@ def event_info(request,id):
             #event doesn't exist
             raise Http404
 
-
         #if yes, redirect to seller- event views
         if(event.seller == user_detail.seller):
             return event_page(request, id)
         else:
             return event_page(request, id)
+
+
 
 @login_required
 @transaction.atomic
@@ -242,6 +242,8 @@ def buy_ticket(request, id):
         ticket_type = TicketType.objects.get(id=id)
     except:
         raise Http404
+
+
     event_id = ticket_type.event.id
     context = get_event_page_context(event_id)
     if request.method == 'POST':
@@ -296,13 +298,16 @@ def get_event_page_context(id):
 
     if(event.time > date):
         context['reviews'] = False
+
     else:
         context['reviews'] = True
+        context['form'] = ReviewForm()
 
     context['event'] = event
     context['seller_username'] = user_detail.user.username
     context['ticketTypes'] = event.tickettype_set.all()
     context['userTickets'] = user_detail.buyer.ticket_set.all()
+    context['reviews'] = Review.objects.filter(event_id=id)
 
     return context
 
@@ -312,6 +317,43 @@ def event_page(request, id):
     context = get_event_page_context(id)
     return render(request, url, context)
 
+
+@login_required
+@transaction.atomic
+def add_review(request,id):
+    if request.method == 'POST':
+        url = 'event.html'
+        form = ReviewForm(request.POST)
+
+        #see if the user is the host of the event
+        try:
+            user_detail = UserDetail.objects.get(user=request.user)
+        except:
+            #user doesn't exist
+            raise Http404
+
+        try:
+            event = Event.objects.get(id=id)
+        except:
+            #event doesn't exist
+            raise Http404
+
+        context ={}
+        if not form.is_valid():
+
+            context['errors'] = ['Add Review Error']
+            print("Invalid form!")
+            context = get_event_page_context(id)
+            context['form'] = form
+            return render(request, url, context)
+
+        review = Review.objects.create( rating=form.cleaned_data['rating'],
+                                        review = form.cleaned_data['review'],
+                                        event = event ,
+                                        reviewer = user_detail)
+        review.save()
+        print("review saved!")
+        return event_page(request, id)
 
 
 def getLatLong(location):

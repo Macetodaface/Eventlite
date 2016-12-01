@@ -49,7 +49,9 @@ class Ticket(models.Model):
 
 class Review(models.Model):
     rating = models.IntegerField()
-    review = models.CharField(max_length = 420, default = '', blank = True)
+    review = models.CharField(max_length = 420)
+    reviewer = models.ForeignKey(UserDetail)
+    created =  models.DateTimeField(default=timezone.now)
     event = models.ForeignKey(Event)
 
 class Image(models.Model):
