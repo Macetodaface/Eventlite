@@ -30,6 +30,7 @@ class Event(models.Model):
     email = models.EmailField(max_length=100)
     coordinate = models.PointField(default='')
     seatLayout = models.ImageField(blank=True,upload_to="seat-layout")
+    bannerImage = models.ImageField(upload_to="banner-images",default="banner-images/default.jpg")
 
 
 class TicketType(models.Model):
@@ -49,7 +50,9 @@ class Ticket(models.Model):
 
 class Review(models.Model):
     rating = models.IntegerField()
-    review = models.CharField(max_length = 420, default = '', blank = True)
+    review = models.CharField(max_length = 420)
+    reviewer = models.ForeignKey(UserDetail)
+    created =  models.DateTimeField(default=timezone.now)
     event = models.ForeignKey(Event)
 
 class Image(models.Model):

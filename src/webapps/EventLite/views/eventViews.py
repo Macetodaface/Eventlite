@@ -15,6 +15,8 @@ from django.contrib.postgres.search import SearchQuery, SearchRank, SearchVector
 from django.contrib.gis.measure import D # ``D`` is a shortcut for ``Distance``
 from django.shortcuts import get_object_or_404
 from mimetypes import guess_type
+from datetime import datetime
+from django.utils import timezone
 
 
 @login_required
@@ -106,7 +108,7 @@ def search_events(request):
 
     events = Event.objects.all()
 
-    
+
     if 'search' in request.POST and request.POST['search']:
 
         print(request.POST['search'])
@@ -179,11 +181,26 @@ def events_context(request, user):
     buyer = user_detail.buyer
     tickets = buyer.ticket_set.all()
     events_attending = Event.objects.none()
+    past_events =  Event.objects.none()
+
+    #fiter out future events
     for ticket in tickets:
         events_attending = events_attending | Event.objects.filter(id=ticket.ticketType.event.id)
+        past_events = events_attending
+        events_attending = events_attending & Event.objects.filter(time__gte=datetime.now())
+
+    #only contains future events
+    hosted_events = Event.objects.filter(seller=seller)
+    past_events =  past_events | hosted_events
+    hosted_events = hosted_events & Event.objects.filter(time__gte=datetime.now())
+
+
+    past_events = past_events.filter(time__lte=datetime.now()).order_by('time').reverse()
+
     context = {'user': request.user,
-               'events_hosting': Event.objects.filter(seller=seller),
-               'events_attending': events_attending}
+               'events_hosting': hosted_events.order_by('time'),
+               'events_attending': events_attending.order_by('time'),
+               'past_events':past_events}
     return context
 
 
@@ -196,7 +213,6 @@ def my_events(request):
 
 @login_required
 def event_info(request,id):
-
     if request.method == "GET":
         #see if the user is the host of the event
         try:
@@ -216,6 +232,8 @@ def event_info(request,id):
             return event_page(request, id)
         else:
             return event_page(request, id)
+
+
 
 @login_required
 def show_interest(request, id):
@@ -258,6 +276,8 @@ def buy_ticket(request, id):
         ticket_type = TicketType.objects.get(id=id)
     except:
         raise Http404
+
+
     event_id = ticket_type.event.id
     context = get_event_page_context(event_id)
     if request.method == 'POST':
@@ -310,10 +330,21 @@ def get_event_page_context(id):
     num_interested = event.buyer_set.count();
 
     context['num_interested'] = num_interested
+    date = timezone.now()
+
+    if(event.time > date):
+        context['reviews'] = False
+
+    else:
+        context['reviews'] = True
+        context['form'] = ReviewForm()
+
     context['event'] = event
     context['seller'] = user_detail.user
     context['ticketTypes'] = event.tickettype_set.all()
     context['userTickets'] = user_detail.buyer.ticket_set.all()
+    context['reviews'] = Review.objects.filter(event_id=id)
+
     return context
 
 @login_required
@@ -322,6 +353,43 @@ def event_page(request, id):
     context = get_event_page_context(id)
     return render(request, url, context)
 
+
+@login_required
+@transaction.atomic
+def add_review(request,id):
+    if request.method == 'POST':
+        url = 'event.html'
+        form = ReviewForm(request.POST)
+
+        #see if the user is the host of the event
+        try:
+            user_detail = UserDetail.objects.get(user=request.user)
+        except:
+            #user doesn't exist
+            raise Http404
+
+        try:
+            event = Event.objects.get(id=id)
+        except:
+            #event doesn't exist
+            raise Http404
+
+        context ={}
+        if not form.is_valid():
+
+            context['errors'] = ['Add Review Error']
+            print("Invalid form!")
+            context = get_event_page_context(id)
+            context['form'] = form
+            return render(request, url, context)
+
+        review = Review.objects.create( rating=form.cleaned_data['rating'],
+                                        review = form.cleaned_data['review'],
+                                        event = event ,
+                                        reviewer = user_detail)
+        review.save()
+        print("review saved!")
+        return event_page(request, id)
 
 
 def getLatLong(location):

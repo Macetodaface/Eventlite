@@ -8,7 +8,7 @@
 <div class="info">
 <form enctype="multipart/form-data" action="{% url 'profile' user.id %}" method="post">
     {% if user_detail.image %}
-        <img src="{{user_detail.image.url}}">
+        <img src="{{user_detail.image}}">
     {% endif %} <br>
     {% if user == profile_user %}
         {{ image_form }}

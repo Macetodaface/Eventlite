@@ -116,6 +116,9 @@ function submit()
     var file = document.getElementById("id_seatLayout");
     var files =file.files;
 
+    var banner = document.getElementById("id_bannerImage");
+    banner = banner.files;
+
     var formdata = new FormData();
     formdata.append("seatLayout",file.files[0]);
     formdata.append("name", $('#id_name').val());
@@ -123,10 +126,11 @@ function submit()
     formdata.append("time",cleanedTime);
     formdata.append("media", $('#id_media').val());
     formdata.append("email", $('#id_email').val());
+    formdata.append("location",$('#id_location').val());
     formdata.append("tickets_data", JSON.stringify(ticketsData));
     formdata.append("latitude", lat);
     formdata.append("longitude", long);
-
+    formdata.append("bannerImage",banner[0])
 
     jQuery.ajax({
               url: "/post-event",

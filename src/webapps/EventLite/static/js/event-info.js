@@ -19,3 +19,6 @@ window.initMap = function ()
 
 
 }
+
+
+//reviews
