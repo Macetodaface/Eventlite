@@ -59,6 +59,7 @@ INSTALLED_APPS = [
      'django.contrib.postgres',
     'EventLite',
     'mathfilters',
+    'storages'
 ]
 
 MIDDLEWARE = [
@@ -202,11 +203,33 @@ SECURE_HSTS_SECONDS = 1
 
 SECURE_HSTS_INCLUDE_SUBDOMAINS = True
 
-AWS_STORAGE_BUCKET_NAME = os.environ['S3_BUCKET']
+#s3 sstuff
+
+AWS_HEADERS = {  # see http://developer.yahoo.com/performance/rules.html#expires
+    'Expires': 'Thu, 31 Dec 2099 20:00:00 GMT',
+    'Cache-Control': 'max-age=94608000',
+}
+
+
+
 AWS_ACCESS_KEY_ID = os.environ['AWS_ACCESS_KEY_ID']
 AWS_SECRET_ACCESS_KEY = os.environ['AWS_SECRET_ACCESS_KEY']
 
+
+AWS_STORAGE_BUCKET_NAME = 'eventliteteam236'
 AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
 
-MEDIA_URL = "https://%s/" % AWS_S3_CUSTOM_DOMAIN
 DEFAULT_FILE_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
+AWS_S3_HOST = "s3-us-west-2.amazonaws.com"
+
+
+STATICFILES_LOCATION = 'static'
+STATICFILES_STORAGE = 'EventLite.custom_storages.StaticStorage'
+STATIC_URL = "https://%s/%s/" % (AWS_S3_CUSTOM_DOMAIN, STATICFILES_LOCATION)
+
+
+
+
+MEDIAFILES_LOCATION = 'media'
+MEDIA_URL = "https://%s/%s/" % (AWS_S3_CUSTOM_DOMAIN, MEDIAFILES_LOCATION)
+DEFAULT_FILE_STORAGE = 'EventLite.custom_storages.MediaStorage'
