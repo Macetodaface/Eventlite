@@ -12,6 +12,11 @@ https://docs.djangoproject.com/en/1.10/ref/settings/
 
 import os
 
+from os import environ
+
+GEOS_LIBRARY_PATH = environ.get('GEOS_LIBRARY_PATH')
+GDAL_LIBRARY_PATH = environ.get('GDAL_LIBRARY_PATH')
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -25,7 +30,7 @@ SECRET_KEY = 'm59u#d873b21pzk8rt$(w)vbo#o#^bx&2$7-2fhl__(s11w*+%'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 #Facebook Authentication
 SOCIAL_AUTH_FACEBOOK_KEY = "1600673143291618"
@@ -112,12 +117,19 @@ DATABASES = {
             'ENGINE': 'django.contrib.gis.db.backends.postgis',
             'NAME': 'eventlite',                      # Or path to database file if using sqlite3.
             'USER': 'webapps',
-            'PASSWORD': 'webapps',
+            'PASSWORD': '',
             'HOST': 'localhost',                      # Empty for localhost through domain sockets or           '127.0.0.1' for localhost through TCP.
             'PORT': '',                      # Set to empty string for default.
         }
 }
 
+
+
+# Update database configuration with $DATABASE_URL.
+import dj_database_url
+db_from_env = dj_database_url.config(conn_max_age=500)
+DATABASES['default'].update(db_from_env)
+DATABASES['default']['ENGINE'] = 'django.contrib.gis.db.backends.postgis'
 
 # Password validation
 # https://docs.djangoproject.com/en/1.10/ref/settings/#auth-password-validators
@@ -185,23 +197,6 @@ SOCIAL_AUTH_PIPELINE =(
     'social.pipeline.user.user_details',
 )
 
-CSRF_COOKIE_SECURE = True
-
-SESSION_COOKIE_SECURE = True
-
-CSRF_COOKIE_HTTPONLY = False
-
-X_FRAME_OPTIONS = 'DENY'
-
-SECURE_CONTENT_TYPE_NOSNIFF = True
-
-SECURE_BROWSER_XSS_FILTER = True
-
-SECURE_SSL_REDIRECT = True
-
-SECURE_HSTS_SECONDS = 1
-
-SECURE_HSTS_INCLUDE_SUBDOMAINS = True
 
 #s3 sstuff
 
@@ -209,7 +204,6 @@ AWS_HEADERS = {  # see http://developer.yahoo.com/performance/rules.html#expires
     'Expires': 'Thu, 31 Dec 2099 20:00:00 GMT',
     'Cache-Control': 'max-age=94608000',
 }
-
 
 
 AWS_ACCESS_KEY_ID = os.environ['AWS_ACCESS_KEY_ID']
@@ -228,8 +222,21 @@ STATICFILES_STORAGE = 'EventLite.custom_storages.StaticStorage'
 STATIC_URL = "https://%s/%s/" % (AWS_S3_CUSTOM_DOMAIN, STATICFILES_LOCATION)
 
 
-
-
 MEDIAFILES_LOCATION = 'media'
 MEDIA_URL = "https://%s/%s/" % (AWS_S3_CUSTOM_DOMAIN, MEDIAFILES_LOCATION)
 DEFAULT_FILE_STORAGE = 'EventLite.custom_storages.MediaStorage'
+
+
+
+#settings
+SECURE_SSL_REDIRECT=True
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+SESSION_COOKIE_SECURE=True
+CSRF_COOKIE_SECURE=True
+
+#additional sec
+SECURE_HSTS_SECONDS = 31536000
+SECURE_HSTS_INCLUDE_SUBDOMAINS=True
+SECURE_CONTENT_TYPE_NOSNIFF=True
+SECURE_BROWSER_XSS_FILTER=True
+X_FRAME_OPTIONS = 'DENY'
