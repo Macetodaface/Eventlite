@@ -6,11 +6,6 @@
 {% endblock %}
 
 {% block left-content%}
-    {% if event.seatLayout %}
-        <div class ="seat">
-         <img src="{% url 'seatLayout' event.id %}" id = "profile-picture" >
-        </div>
-    {% endif %}
     <span id='event-id' class="hidden">{{event.id}}</span>
 {% endblock %}
 
@@ -35,10 +30,6 @@
     <div class="row">
     {% load mathfilters %}
     {% if not reviews %}
-
-    {% if event.seatLayout %}
-     <img src="{% url 'seatLayout' event.id %}" class = "seat" >
-    {% endif %}
 
     {% for ticketType in ticketTypes %}
     <div class="u4 ticket-listing">
@@ -74,6 +65,9 @@
                        type="submit" value="Buy Tickets">
         </form>
     </div>
+    {% if event.seatLayout %}
+        <img src="{% url 'seatLayout' event.id %}" class = "seat" >
+    {% endif %}
     {% endfor %}
     {% else %}
         <div class="reviews">
