@@ -69,6 +69,10 @@ def post_event(request):
         new_event.seatLayout=request.FILES['seatLayout']
         new_event.save()
 
+    if(request.FILES and 'bannerImage' in request.FILES):
+        print("bannerImage saved")
+        new_event.bannerImage =request.FILES['bannerImage']
+        new_event.save()
 
     tickets = json.dumps(request.POST['tickets_data'])
     tickets = eval(json.loads(tickets))
@@ -310,7 +314,10 @@ def buy_ticket(request, id):
                 return render(request, url, context)
         else:
             return render(request, url, context)
-    return event_page(request, event_id)
+    context = get_event_page_context(event_id)
+    context['message'] = 'You have successfully purchased ' \
+                         'tickets for this event.'
+    return render(request, url, context)
 
 
 def get_event_page_context(id):
@@ -333,10 +340,10 @@ def get_event_page_context(id):
     date = timezone.now()
 
     if(event.time > date):
-        context['reviews'] = False
+        context['reviews_enabled'] = False
 
     else:
-        context['reviews'] = True
+        context['reviews_enabled'] = True
         context['form'] = ReviewForm()
 
     context['event'] = event
@@ -419,3 +426,28 @@ def getSeatLayout(request,id):
 
 	contentType = guess_type(event.seatLayout.name)
 	return HttpResponse(event.seatLayout,content_type=contentType)
+
+
+
+@login_required
+def getUserImage(request,id):
+	user_detail = get_object_or_404(UserDetail,id=id)
+
+	if not user_detail.icon:
+		raise Http404
+
+	contentType = guess_type(user_detail.icon.name)
+	return HttpResponse(user_detail.icon,content_type=contentType)
+
+
+
+@login_required
+def getBannerImage(request,id):
+	event = get_object_or_404(Event,id=id)
+
+	if not event.bannerImage:
+		raise Http404
+
+	contentType = guess_type(event.bannerImage.name)
+	return HttpResponse(event.bannerImage,content_type=contentType)
+

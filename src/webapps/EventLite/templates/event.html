@@ -10,114 +10,89 @@
 {% endblock %}
 
 {% block center-content %}
-    <span class="event-detail">Name: {{ event.name }} </span>
+    <h3>{{ message }}</h3><br>
+    {% if event.bannerImage %}
+        <img class='banner-image' src="{% url 'bannerimage' event.id %}">
+    {% endif %} <br><br>
+    <h2 class="center">{{ event.name }} </h2>
     <span id="interested" class="pull-right">
         <strong id="interested-cnt">{{ num_interested }}</strong>
         <span id="interested-text">people are interested in this event.</span>
     </span><br>
     <button id="interest" class="pull-right btn btn-primary"></button><br>
-    <span class="event-detail">Description: {{ event.description }}</span><br>
-    <span class="event-detail">Time: {{ event.time }}</span><br>
-    <span class="event-detail">Location: {{ event.location }}</span><br>
-    <span class="event-detail">Email: {{ event.email }}</span><br>
-    <span class="event-detail">Host:
-        <a href="{% url 'profile' seller.id %}">{{ seller.username }}</a>
-    </span><br>
-    <span class="event-detail">Link: {{ event.media }}</span><br>
+    <div class="row">
+    <span class="col-xs-3 event-detail"><strong>Description:</strong></span>
+        <span class="col-xs-4">{{ event.description }}</span><br>
+    </div>
+    <div class="row">
+    <span class="col-xs-3 event-detail"><strong>Time:</strong></span>
+        <span class="col-xs-4">{{ event.time }}</span><br>
+    </div>
+    <div class="row">
+    <span class="col-xs-3 event-detail"><strong>Address:</strong></span>
+        <span class="col-xs-4">{{ event.location }}</span><br>
+    </div>
+    <div class="row">
+    <span class="col-xs-3 event-detail"><strong>Email:</strong></span>
+        <span class="col-xs-4">{{ event.email }}</span><br>
+    </div>
+    <div class="row">
+        <span class="col-xs-3 event-detail"><strong>Host:</strong></span>
+        <a class="col-xs-4" href="{% url 'profile' seller.id %}">{{ seller.username }}</a>
+    </div>
+    <div class="row">
+        <span class="col-xs-3 event-detail"><strong>Link:</strong></span>
+        <span class="col-xs-4">{{ event.media }}</span><br>
+    </div>
     <input type="hidden"  id="long" value={{event.coordinate.x}}>
     <input type="hidden"  id="lat" value={{event.coordinate.y}}>
     <br>
     <div class="row">
     {% load mathfilters %}
-    {% if not reviews %}
+    {% if not reviews_enabled %}
 
-    {% for ticketType in ticketTypes %}
-    <div class="u4 ticket-listing">
-        <span class="large event-detail">
-            {{ ticketType.name }}
-        </span><br>
-        <span class="event-detail">
-            Price: {{ ticketType.price }}
-        </span><br>
-        <span class="event-detail">
-            Available: {{ ticketType.numOfTickets|sub:ticketType.ticketsSold}}
-        </span><br>
-        <span class="event-detail">
-            Description: {{ ticketType.details }}
-        </span><br>
-        <span class="event-detail">
-            {% for ticket in userTickets %}
-                {% if ticket.ticketType.id == ticketType.id %}
-                    Purchased: {{ ticket.quantity }}
-                {% endif %}
-            {% endfor %}
+        {% for ticketType in ticketTypes %}
+        <div class="u4 ticket-listing">
+            <span class="large event-detail">
+                <span class="large">{{ ticketType.name }}</span>
+            </span><br>
+            <span class="event-detail">
+                <strong>Price:</strong> {{ ticketType.price }}
+            </span><br>
+            <span class="event-detail">
+                <strong>Available:</strong> {{ ticketType.numOfTickets|sub:ticketType.ticketsSold}}
+            </span><br>
+            <span class="event-detail">
+                <strong>Description:</strong> {{ ticketType.details }}
+            </span><br>
+            <span class="event-detail">
+                {% for ticket in userTickets %}
+                    {% if ticket.ticketType.id == ticketType.id %}
+                        <strong>Purchased:</strong> {{ ticket.quantity }}
+                    {% endif %}
+                {% endfor %}
 
-        </span><br><br>
+            </span><br><br>
 
-        <form action="{% url 'buy-ticket' ticketType.id  %}" method="post">
-            <div class="row quantity-field">
-                {% csrf_token %}
-                <span class="buy-ticket-label">Quantity:</span>
-                <input class="buy-ticket-field"
-                       type="number" name="quantity">
-            </div>
-                <input class="buy-ticket-btn btn btn-primary"
-                       type="submit" value="Buy Tickets">
-        </form>
-    </div>
-    {% if event.seatLayout %}
-        <img src="{% url 'seatLayout' event.id %}" class = "seat" >
-    {% endif %}
-    {% endfor %}
-    {% else %}
-        <div class="reviews">
-            Add your review Below
-
-
-            <div class = "review-form">
-                <form  class ="review-form" method="post" action="{% url 'add-review' event.id %}">
-                     {% csrf_token %}
-                     {%for field in form.visible_fields%}
-                     {% if field.label == 'Rating' %}
-                     Rating (1-5): {{field}}<br>
-                     {% else %}
-                     {{field.label}} {{field}}<br>
-                     {% endif %}
-                     {% endfor%}
-                     <br>
-                     <button class="btn  btn-primary " type="submit">Enter Review</button>
-                     <br>
-                </form>
-            </div>
-
-            <div class ="review-errors">
-            {%for error in form.non_field_errors %}
-
-            <p class='errorText'>{{error}}</p>
-
-            {% endfor %}
-            {%for field in form.visible_fields %}
-
-            <p class='errorText'>{{field.errors}}</p>
-
-            {% endfor %}
-            </div>
-
-            <div class ="past-reviews">
-            {% for reviewx in reviews %}
-            <div class="review">
-                <hr>
-                <p class = "reviewer">{{reviewx.reviewer.user.first_name}} {{reviewx.reviewer.user.last_name}}</p>
-                <p class = "review"> {{ reviewx.review }}</p>
-                <text class ="rating">  Rated: {{reviewx.rating}} </text>
-                <p class="timestamp"> {{reviewx.created}}</p>
-                <hr>
-            </div>
-            {% endfor %}
-
-            </div>
-
+            <form action="{% url 'buy-ticket' ticketType.id  %}" method="post">
+                <div class="row quantity-field">
+                    {% csrf_token %}
+                    <span class="buy-ticket-label">
+                        <strong>Quantity:</strong>
+                    </span>
+                    <input class="buy-ticket-field"
+                           type="number" name="quantity">
+                </div>
+                    <input class="buy-ticket-btn btn btn-primary"
+                           type="submit" value="Buy Tickets">
+            </form>
         </div>
+        {% endfor %}
+        {% if event.seatLayout %}
+            <img src="{% url 'seatLayout' event.id %}" class = "seat" >
+        {% endif %}
+    {% else %}
+        {% include 'reviews.html' %}
     {% endif %}
     </div>
 {% endblock %}

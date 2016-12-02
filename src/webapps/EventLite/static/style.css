@@ -19,8 +19,22 @@
     transform: translateY(-50%);
 }
 
+.profile-image {
+    height: 120px !important;
+}
+
+.banner-image {
+    margin-top: 10px;
+    height: 120px !important;
+    width: 100%;
+}
+
 .buy-ticket-label {
     margin-top: 5px;
+}
+
+.ticket-name {
+    font-size: 150% !important;
 }
 
 .buy-ticket-btn {
@@ -117,8 +131,8 @@
 }
 
 .event-listing {
-    width: 30%;
-    height: 200px;
+    width: 47%;
+    height: 350px;
     padding: 10px;
     margin-top: 5px;
     margin-bottom: 5px;
@@ -168,7 +182,7 @@
 }
 
 .user-title {
-    margin-left: 15%;
+    margin-left: 5%;
     font-size: 200%;
     font-weight: bold;
 }
@@ -216,6 +230,11 @@
     width: 10%;
     min-width: 200px;
     margin-left: 10px;
+}
+
+.bio-field {
+    margin-left: 7%;
+    width: 80%;
 }
 
 .login-btn, .recover-btn {

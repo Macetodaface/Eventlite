@@ -9,79 +9,22 @@
         {% include 'form-errors.html' %}
         <h2 class="signup">Sign up for EventLite</h2><br>
         <form action="{% url 'registration' %}" method="post">
+         {% for field in form %}
             <div class="row">
-                <div class="col-xs-2"></div>
-                <div class="text-left col-xs-3">
-                    Username:
+                <div class="col-xs-2">
+                    {{ field.errors }}
                 </div>
-                <div class="col-xs-5">
-                    <input class="pull-left medium-input"
-                           name="username"
-                           type="text"><br>
+                <div class="post-label fieldWrapper col-xs-3">
+                     {{ field.label }}
+                </div>
+                <div class="post-event-field col-xs-5">
+                    {{ field }}
                 </div>
             </div>
-            <div class="row">
-                <div class="col-xs-2"></div>
-                <div class="text-left col-xs-3">
-                    Password:
-                </div>
-                <div class="col-xs-5">
-                    <input class="pull-left medium-input"
-                           name="password1"
-                           type="password"><br>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-xs-2"></div>
-                <div class="text-left col-xs-3">
-                    Confirm Password:
-                </div>
-                <div class="col-xs-5">
-                    <input class="pull-left medium-input"
-                           name="password2"
-                           type="password"><br>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-xs-2"></div>
-                <div class="text-left col-xs-3">
-                    Email:
-                </div>
-                <div class="col-xs-5">
-                    <input class="pull-left medium-input"
-                           name="email"
-                           type="text"><br>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-xs-2"></div>
-                <div class="text-left col-xs-3">
-                    First Name:
-                </div>
-                <div class="col-xs-5">
-                    <input class="pull-left medium-input"
-                           name="first_name"
-                           type="text"><br>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-xs-2"></div>
-                <div class="text-left col-xs-3">
-                    Last Name:
-                </div>
-                <div class="col-xs-5">
-                    <input class="pull-left medium-input"
-                           name="last_name"
-                           type="text"><br>
-                </div>
-            </div>
-            {% csrf_token %}
-
-            {% if form.errors %}
-            <p class="errorText"> Incorrect user name or password </p>
-            {% endif %}
-            <br>
-            <input class="btn btn-primary register-input" type="submit" value="Sign Up">
+        {% endfor %}
+        {% csrf_token %}
+        <br>
+        <input class="btn btn-primary register-input" type="submit" value="Sign Up">
         </form>
     </div>
 </div>
