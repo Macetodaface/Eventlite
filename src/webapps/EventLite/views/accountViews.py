@@ -114,7 +114,7 @@ def profile(request, user):
         context = {'errors': ['Cannot find user.']}
 
     if request.method == 'POST':
-        image_form = ImageForm(request.POST)
+        image_form = ImageForm(request.POST, request.FILES)
         bio_form = BioForm(request.POST)
 
         if bio_form.is_valid():
@@ -127,7 +127,7 @@ def profile(request, user):
         if image_form.is_valid():
             image = image_form.cleaned_data['image']
             if image != '':
-                user_detail.image = image
+                user_detail.icon = image
         else:
             context['image_form'] = image_form
         user_detail.save()
@@ -142,7 +142,7 @@ def profile(request, user):
 @transaction.atomic
 def registration(request):
     url = 'registration.html'
-    context = {}
+    context = {'form': UserForm()}
 
     if request.method == 'GET':
         return render(request, url, context)

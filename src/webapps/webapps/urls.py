@@ -31,9 +31,9 @@ urlpatterns = [
     url(r'^base', views.base, name='base'),
     url(r'^post-event', eventViews.post_event, name='post-event'),
     url(r'^registration', accountViews.registration, name='registration'),
-
     url(r'^seat-layout/(?P<id>.+)',eventViews.getSeatLayout,name = 'seatLayout'),
-
+    url(r'^user-image/(?P<id>.+)',eventViews.getUserImage,name = 'userimage'),
+    url(r'^banner-image/(?P<id>.+)',eventViews.getBannerImage,name = 'bannerimage'),
     url(r'^view-events', eventViews.view_events, name='view-events'),
     url(r'^my-events', eventViews.my_events, name='my-events'),
     url(r'^event-info/(?P<id>.+)', eventViews.event_info, name='event-info'),
