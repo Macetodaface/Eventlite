@@ -1,56 +1,67 @@
 <div>
-        <h1 class="center">Attending</h1>
-        <div class="row">
-        {% if events_attending %}
-        {% for event in events_attending %}
-
-            <a href="{% url 'event-info' event.id %}"
-               class="col-xs-2 event-listing no-hyper">
-                <span class="event-detail">{{ event.name }} </span>
-                <br><br>
-                <span class="event-detail">{{ event.time }}</span><br>
-                <span class="event-detail">{{ event.location }}</span><br>
-            </a>
-            {% endfor %}
-        {% else %}
-            <span class="center">No events to show</span>
-        {% endif %}
-        </div>
-    </div><br><br>
-    <div>
-        <h1 class="center">Hosting</h1>
-        <div class="row">
-        {% if events_hosting %}
-        {% for event in events_hosting %}
-            <a href="{% url 'event-info' event.id %}"
-               class="col-xs-2 event-listing no-hyper">
-                <span class="event-detail">{{ event.name }} </span>
-                <br><br>
-                <span class="event-detail">{{ event.time }}</span><br>
-                <span class="event-detail">{{ event.location }}</span><br>
-            </a>
+    <h1 class="center">Attending</h1>
+    {% if events_attending %}
+    <div class="row">
+    {% for event in events_attending %}
+        <a href="{% url 'event-info' event.id %}"
+           class="col-xs-2 event-listing no-hyper">
+            {% if event.bannerImage %}
+                <img class='banner-image' src="{% url 'bannerimage' event.id %}">
+            {% endif %} <br>
+            <h1 class="center event-detail">{{ event.name }} </h1>
+            <br>
+            <i class="event-detail">{{ event.time }}</i><br>
+        <br>
+            <span class="event-detail">{{ event.location }}</span><br>
+        </a>
         {% endfor %}
-        {% else %}
-            <span class="center">No events to show</span>
-        {% endif %}
-        </div>
     </div>
+    {% else %}
+    <p class="center">No events to show</p>
+    {% endif %}
+</div><br><br>
+<div>
+    <h1 class="center">Hosting</h1>
+    {% if events_hosting %}
+    <div class="row">
+    {% for event in events_hosting %}
+        <a href="{% url 'event-info' event.id %}"
+           class="col-xs-2 event-listing no-hyper">
+            {% if event.bannerImage %}
+                <img class='banner-image' src="{% url 'bannerimage' event.id %}">
+            {% endif %} <br>
+            <h1 class="center event-detail">{{ event.name }} </h1>
+            <br>
+            <i class="event-detail">{{ event.time }}</i><br>
+        <br>
+            <span class="event-detail">{{ event.location }}</span><br>
+        </a>
+    {% endfor %}
+    </div>
+    {% else %}
+        <p class="center">No events to show</p>
+    {% endif %}
+</div><br><br>
 
-    <div>
-        <h1 class="center">Past Events</h1>
-        <div class="row">
-        {% if past_events %}
-        {% for event in past_events %}
-            <a href="{% url 'event-info' event.id %}"
-               class="col-xs-2 event-listing no-hyper">
-                <span class="event-detail">{{ event.name }} </span>
-                <br><br>
-                <span class="event-detail">{{ event.time }}</span><br>
-                <span class="event-detail">{{ event.location }}</span><br>
-            </a>
-        {% endfor %}
-        {% else %}
-            <span class="center">No events to show</span>
-        {% endif %}
-        </div>
+<div>
+    <h1 class="center">Past Events</h1>
+    {% if past_events %}
+    <div class="row">
+    {% for event in past_events %}
+        <a href="{% url 'event-info' event.id %}"
+           class="col-xs-2 event-listing no-hyper">
+        {% if event.bannerImage %}
+                <img class='banner-image' src="{% url 'bannerimage' event.id %}">
+            {% endif %} <br>
+            <h1 class="center event-detail">{{ event.name }} </h1>
+            <br>
+            <i class="event-detail">{{ event.time }}</i><br>
+        <br>
+            <span class="event-detail">{{ event.location }}</span><br>
+        </a>
+    {% endfor %}
     </div>
+    {% else %}
+        <p class="center">No events to show</p>
+    {% endif %}
+</div>

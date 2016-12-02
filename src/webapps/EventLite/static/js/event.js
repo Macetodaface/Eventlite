@@ -35,35 +35,55 @@ function setId() {
     EVENT_ID = ($('#event-id')[0].innerHTML);
 }
 
-function setInterestedText() {
+function setInterestedText(first) {
     var btn = $('#interest');
     $.get('/get-interest/' + EVENT_ID)
         .success(function(data){
-            var interested = data;
+            var interested = (data=='True');
             btn.empty();
-            if (interested == 'True'){
+            if (interested){
                 newText = 'Remove Interest';
             }
             else {
                 newText = 'Show Interest';
             }
             btn.append(newText);
-            updateInterestedCount(interested);
+            if(!first) {
+                updateInterestedCount(interested);
+            }
         });
 }
 
 function updateInterestedCount(interested) {
-    var count = $('#interested-cnt');
-    var text = $('interested-text');
+    countel = $('#interested-cnt');
+    var count = parseInt(countel.html());
+    countel.empty();
+    if(interested){
+        count += 1;
+    }
+    else {
+        count -= 1;
+    }
+    countel.html(count);
+    var textel = $('#interested-text');
+    textel.empty();
+    console.log(count);
+    if(count == 1) {
+        var text = 'person is interested in this event.';
+    }
+    else {
+        var text = 'people are interested in this event.';
+    }
+    textel.html(text);
 }
 
 function setupInterestBtn() {
-    setInterestedText();
+    setInterestedText(true);
     var btn = $('#interest');
     btn.click(function() {
         $.post('/show-interest/' + EVENT_ID)
             .success(function (data) {
-                setInterestedText();
+                setInterestedText(false);
         })
     })
 }
