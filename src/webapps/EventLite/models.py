@@ -2,7 +2,6 @@ from django.contrib.gis.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
 
-
 class UserDetail(models.Model):
      user = models.OneToOneField(User, on_delete = models.CASCADE)
      seller = models.OneToOneField("Seller", blank=True,null=True)
@@ -31,7 +30,6 @@ class Event(models.Model):
     coordinate = models.PointField(default='')
     seatLayout = models.ImageField(blank=True,upload_to="seat-layout")
     bannerImage = models.ImageField(upload_to="banner-images",default="banner-images/default.jpg")
-
 
 class TicketType(models.Model):
     name = models.CharField(max_length=100)
