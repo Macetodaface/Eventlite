@@ -27,33 +27,28 @@ def post_event(request):
     if request.method == 'GET':
         return render(request, url, {'form': form})
 
-
-    print(request)
-    print(request.POST)
-    print(request.FILES)
-
     form = PostEventForm(request.POST)
-    context = {'form': form}
     if not form.is_valid():
-        return HttpResponse('Invalid Event Form',status=400)
+        return HttpResponse('Invalid Event Form', status=400)
 
     try:
         user_detail = UserDetail.objects.get(user=request.user)
         seller = user_detail.seller
     except:
-        return HttpResponse('User Details Not found',status=400)
+        return HttpResponse('User Details Not found', status=400)
 
     #create Point
-    pointForm = PointForm(request.POST)
-    if not pointForm.is_valid():
-        return HttpResponse('Invalid Location Form',status=400)
+    point_form = PointForm(request.POST)
+    if not point_form.is_valid():
+        return HttpResponse('Invalid Location Form', status=400)
 
-    latitude = pointForm.cleaned_data['latitude']
-    longitude = pointForm.cleaned_data['longitude']
+    latitude = point_form.cleaned_data['latitude']
+    longitude = point_form.cleaned_data['longitude']
 
-    point = Point(float(longitude),float(latitude),srid=4326)
+    point = Point(float(longitude),float(latitude), srid=4326)
 
-    new_event = Event.objects.create(seller=seller,
+    new_event = Event.objects.create(
+                seller=seller,
                 name = form.cleaned_data['name'],
                 description = form.cleaned_data['description'],
                 location = form.cleaned_data['location'],
@@ -64,33 +59,30 @@ def post_event(request):
                 )
     new_event.save()
 
-    if(request.FILES and 'seatLayout' in request.FILES):
-        print("seat Layour saved")
-        new_event.seatLayout=request.FILES['seatLayout']
+    if request.FILES and 'seatLayout' in request.FILES:
+        new_event.seatLayout = request.FILES['seatLayout']
         new_event.save()
 
-    if(request.FILES and 'bannerImage' in request.FILES):
-        print("bannerImage saved")
-        new_event.bannerImage =request.FILES['bannerImage']
+    if request.FILES and 'bannerImage' in request.FILES:
+        new_event.bannerImage = request.FILES['bannerImage']
         new_event.save()
 
     tickets = json.dumps(request.POST['tickets_data'])
     tickets = eval(json.loads(tickets))
 
-
     for ticket in tickets:
-        ticketTypeForm = TicketTypeForm(ticket)
+        ticket_type_form = TicketTypeForm(ticket)
 
-        if not ticketTypeForm.is_valid():
-            return HttpResponse('Invalid Ticket Type Form',status=400)
+        if not ticket_type_form.is_valid():
+            return HttpResponse('Invalid Ticket Type Form', status=400)
 
-        ticketData = ticketTypeForm.cleaned_data
+        ticket_data = ticket_type_form.cleaned_data
 
-        ticket = TicketType.objects.create( name= ticketData['name'],
-                                            event = new_event,
-                                            price =ticketData['price'],
-                                            details =ticketData['details'],
-                                            numOfTickets =ticketData['numOfTickets']
+        ticket = TicketType.objects.create( name=ticket_data['name'],
+                                            event=new_event,
+                                            price=ticket_data['price'],
+                                            details=ticket_data['details'],
+                                            numOfTickets=ticket_data['numOfTickets']
         )
         ticket.save()
 
@@ -112,33 +104,29 @@ def search_events(request):
 
     events = Event.objects.all()
 
-
     if 'search' in request.POST and request.POST['search']:
-
-        print(request.POST['search'])
-
-        #Enable Full Text Search
-        vector = SearchVector('name', weight='A') + SearchVector('description', weight='B')
+        # Enable Full Text Search
+        vector = SearchVector('name', weight='A') + \
+                 SearchVector('description', weight='B')
         query = SearchQuery(str(request.POST['search']))
-        events = Event.objects.annotate(rank=SearchRank(vector, query)).filter(rank__gte=0.2).order_by('-rank')
-        print(events)
+        events = Event.objects.annotate(rank=SearchRank(vector, query))\
+            .filter(rank__gte=0.2).order_by('-rank')
 
         if not events:
-            nameResult = Event.objects.filter(name__icontains=str(request.POST['search']))
-            nameDesc = Event.objects.filter(description__icontains=str(request.POST['search']))
-            print(nameResult)
-            print(nameDesc)
+            nameResult = Event.objects.filter(
+                name__icontains=str(request.POST['search']))
+            nameDesc = Event.objects.filter(
+                description__icontains=str(request.POST['search']))
             events = nameResult | nameDesc;
 
-    #Add Filters
+    # Add Filters
     # Location
     if 'location' in request.POST and request.POST['location']:
 
         # gonna contain latitude and longitude
         location = request.POST['location']
         dict = getLatLong(location)
-        print (dict)
-        if(dict['result'] == 'not ok'):
+        if dict['result'] == 'not ok':
             context={'errors':'Invalid Location specified'}
             return view_events(request)
 
@@ -151,12 +139,11 @@ def search_events(request):
             miles = int(request.POST['radius'])
 
         if(miles<0):
-            context={'errors':'Enter Valid Miles'}
+            context={'errors': 'Enter Valid Miles'}
             return view_events(request)
 
-        point = Point(longitude,latitude,srid=4326)
-        events = events.filter(coordinate__distance_lte=(point,D(mi=miles)))
-
+        point = Point(longitude, latitude, srid=4326)
+        events = events.filter(coordinate__distance_lte=(point, D(mi=miles)))
 
     context = {
                 'user': request.user,
@@ -189,17 +176,19 @@ def events_context(request, user):
 
     #fiter out future events
     for ticket in tickets:
-        events_attending = events_attending | Event.objects.filter(id=ticket.ticketType.event.id)
+        events_attending = events_attending | Event.objects\
+            .filter(id=ticket.ticketType.event.id)
         past_events = events_attending
-        events_attending = events_attending & Event.objects.filter(time__gte=datetime.now())
+        events_attending = events_attending & Event.objects\
+            .filter(time__gte=datetime.now())
 
     #only contains future events
     hosted_events = Event.objects.filter(seller=seller)
-    past_events =  past_events | hosted_events
+    past_events = past_events | hosted_events
     hosted_events = hosted_events & Event.objects.filter(time__gte=datetime.now())
 
-
-    past_events = past_events.filter(time__lte=datetime.now()).order_by('time').reverse()
+    past_events = past_events.filter(time__lte=datetime.now())\
+        .order_by('time').reverse()
 
     context = {'user': request.user,
                'events_hosting': hosted_events.order_by('time'),
@@ -216,23 +205,23 @@ def my_events(request):
 
 
 @login_required
-def event_info(request,id):
+def event_info(request, id):
     if request.method == "GET":
-        #see if the user is the host of the event
+        # see if the user is the host of the event
         try:
             user_detail = UserDetail.objects.get(user=request.user)
         except:
-            #user doesn't exist
+            # user doesn't exist
             raise Http404
 
         try:
             event = Event.objects.get(id=id)
         except:
-            #event doesn't exist
+            # event doesn't exist
             raise Http404
 
-        #if yes, redirect to seller- event views
-        if(event.seller == user_detail.seller):
+        # if yes, redirect to seller- event views
+        if event.seller == user_detail.seller:
             return event_page(request, id)
         else:
             return event_page(request, id)
@@ -267,6 +256,7 @@ def is_interested(request, id):
     except:
         return False
 
+
 @login_required
 def get_interest(request, id):
     return HttpResponse(is_interested(request, id))
@@ -280,7 +270,6 @@ def buy_ticket(request, id):
         ticket_type = TicketType.objects.get(id=id)
     except:
         raise Http404
-
 
     event_id = ticket_type.event.id
     context = get_event_page_context(event_id)
@@ -339,7 +328,7 @@ def get_event_page_context(id):
     context['num_interested'] = num_interested
     date = timezone.now()
 
-    if(event.time > date):
+    if event.time > date:
         context['reviews_enabled'] = False
 
     else:
@@ -363,39 +352,37 @@ def event_page(request, id):
 
 @login_required
 @transaction.atomic
-def add_review(request,id):
+def add_review(request, id):
     if request.method == 'POST':
         url = 'event.html'
         form = ReviewForm(request.POST)
 
-        #see if the user is the host of the event
+        # see if the user is the host of the event
         try:
             user_detail = UserDetail.objects.get(user=request.user)
         except:
-            #user doesn't exist
+            # user doesn't exist
             raise Http404
 
         try:
             event = Event.objects.get(id=id)
         except:
-            #event doesn't exist
+            # event doesn't exist
             raise Http404
 
-        context ={}
+        context = {}
         if not form.is_valid():
 
             context['errors'] = ['Add Review Error']
-            print("Invalid form!")
             context = get_event_page_context(id)
             context['form'] = form
             return render(request, url, context)
 
-        review = Review.objects.create( rating=form.cleaned_data['rating'],
-                                        review = form.cleaned_data['review'],
-                                        event = event ,
-                                        reviewer = user_detail)
+        review = Review.objects.create(rating=form.cleaned_data['rating'],
+                                       review=form.cleaned_data['review'],
+                                       event=event ,
+                                       reviewer=user_detail)
         review.save()
-        print("review saved!")
         return event_page(request, id)
 
 
@@ -409,45 +396,45 @@ def getLatLong(location):
         latitude = api_response_dict['results'][0]['geometry']['location']['lat']
         longitude = api_response_dict['results'][0]['geometry']['location']['lng']
 
-        print( 'Latitude:', latitude)
-        print ('Longitude:', longitude)
-        return {'result':'ok','lat':float(latitude), 'long':float(longitude)}
+        return {'result': 'ok',
+                'lat': float(latitude),
+                'long': float(longitude)}
 
     return {'result':'not ok'}
 
 
 
 @login_required
-def getSeatLayout(request,id):
-	event = get_object_or_404(Event,id=id)
+def get_seat_layout(request, id):
+    event = get_object_or_404(Event, id=id)
 
-	if not event.seatLayout:
-		raise Http404
+    if not event.seatLayout:
+        raise Http404
 
-	contentType = guess_type(event.seatLayout.name)
-	return HttpResponse(event.seatLayout,content_type=contentType)
-
-
-
-@login_required
-def getUserImage(request,id):
-	user_detail = get_object_or_404(UserDetail,id=id)
-
-	if not user_detail.icon:
-		raise Http404
-
-	contentType = guess_type(user_detail.icon.name)
-	return HttpResponse(user_detail.icon,content_type=contentType)
+    content_type = guess_type(event.seatLayout.name)
+    return HttpResponse(event.seatLayout, content_type=content_type)
 
 
 
 @login_required
-def getBannerImage(request,id):
-	event = get_object_or_404(Event,id=id)
+def get_user_image(request, id):
+    user_detail = get_object_or_404(UserDetail, id=id)
 
-	if not event.bannerImage:
-		raise Http404
+    if not user_detail.icon:
+        raise Http404
 
-	contentType = guess_type(event.bannerImage.name)
-	return HttpResponse(event.bannerImage,content_type=contentType)
+    content_type = guess_type(user_detail.icon.name)
+    return HttpResponse(user_detail.icon, content_type=content_type)
+
+
+
+@login_required
+def getBannerImage(request, id):
+    event = get_object_or_404(Event, id=id)
+
+    if not event.bannerImage:
+        raise Http404
+
+    content_type = guess_type(event.bannerImage.name)
+    return HttpResponse(event.bannerImage, content_type=content_type)
 

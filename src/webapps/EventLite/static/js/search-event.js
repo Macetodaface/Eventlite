@@ -26,7 +26,7 @@ window.initMap = function () {
 
 );
 
-}
+};
 
 function geocodeAddress(geocoder, resultsMap) {
   var address = document.getElementById('id_location').value;
@@ -34,8 +34,8 @@ function geocodeAddress(geocoder, resultsMap) {
     if (status === 'OK') {
 
         //global
-        lat=results[0].geometry.location.lat()
-        long=results[0].geometry.location.lng()
+        lat=results[0].geometry.location.lat();
+        long=results[0].geometry.location.lng();
 
 
       resultsMap.setCenter(results[0].geometry.location);

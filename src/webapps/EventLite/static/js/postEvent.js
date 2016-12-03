@@ -58,7 +58,7 @@ function isValidEvent()
         }
     }
 
-    for(var i=0; i < elements.length; i++) {
+    for(i=0; i < elements.length; i++) {
         element = elements[i];
         if(!validateEmpty(element)){
             valid = false;
@@ -130,7 +130,7 @@ function submit()
     formdata.append("tickets_data", JSON.stringify(ticketsData));
     formdata.append("latitude", lat);
     formdata.append("longitude", long);
-    formdata.append("bannerImage",banner[0])
+    formdata.append("bannerImage",banner[0]);
 
     jQuery.ajax({
               url: "/post-event",
@@ -235,7 +235,8 @@ function getCookie(name) {
             var cookie = jQuery.trim(cookies[i]);
             // Does this cookie string begin with the name we want?
             if (cookie.substring(0, name.length + 1) == (name + '=')) {
-                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                cookieValue = decodeURIComponent(
+                    cookie.substring(name.length + 1));
                 break;
             }
         }
@@ -264,7 +265,8 @@ window.initMap = function () {
   geoCoder = geocoder;
   globalMap = map;
 
-  document.getElementById('id_location').addEventListener('keypress', function(e)
+  document.getElementById('id_location')
+      .addEventListener('keypress', function(e)
   {
       if(e.keyCode == 13)
       {
@@ -272,11 +274,10 @@ window.initMap = function () {
       }
   });
 
-  document.getElementById('id_location').addEventListener('focusout', function()
+  document.getElementById('id_location')
+      .addEventListener('focusout', function()
   {
-
      geocodeAddress(geocoder, map);
-
   }
 
 );
@@ -289,8 +290,8 @@ function geocodeAddress(geocoder, resultsMap) {
     if (status === 'OK') {
 
         //global
-        lat=results[0].geometry.location.lat()
-        long=results[0].geometry.location.lng()
+        lat=results[0].geometry.location.lat();
+        long=results[0].geometry.location.lng();
 
 
       resultsMap.setCenter(results[0].geometry.location);
@@ -314,5 +315,4 @@ $(document).ready(function () {
     setCsrf();
     addClickHandlers();
     setDateTimeSettings();
-
 });

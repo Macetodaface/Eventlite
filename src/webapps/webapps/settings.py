@@ -32,7 +32,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
-#Facebook Authentication
+# Facebook Authentication
 SOCIAL_AUTH_FACEBOOK_KEY = "1600673143291618"
 SOCIAL_AUTH_FACEBOOK_SECRET = "bc29299e4346e60c63bf13218adbafa8"
 SOCIAL_AUTH_FACEBOOK_SCOPE = ['email']
@@ -41,11 +41,11 @@ SOCIAL_AUTH_FACEBOOK_PROFILE_EXTRA_PARAMS = {
   'fields': 'name, email, age_range'
 }
 
-#Google  Authentication
+# Google  Authentication
 SOCIAL_AUTH_GOOGLE_OAUTH2_KEY= '606003363932-oh0s25eh3h3babctrum0o4njvfniqfrd'
 SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET='0xe0Lji9mebEPhldpMtjjpF2'
 
-#Authentican backends
+# Authentican backends
 AUTHENTICATION_BACKENDS = (
     'social.backends.google.GoogleOAuth2',
     'social.backends.facebook.FacebookOAuth2',
@@ -101,7 +101,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'webapps.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/1.10/ref/settings/#databases
 """
@@ -115,15 +114,13 @@ DATABASES = {
 DATABASES = {
         'default': {
             'ENGINE': 'django.contrib.gis.db.backends.postgis',
-            'NAME': 'eventlite',                      # Or path to database file if using sqlite3.
+            'NAME': 'eventlite',     # Or path to database file if using sqlite3.
             'USER': 'webapps',
             'PASSWORD': '',
-            'HOST': 'localhost',                      # Empty for localhost through domain sockets or           '127.0.0.1' for localhost through TCP.
-            'PORT': '',                      # Set to empty string for default.
+            'HOST': 'localhost',     # Empty for localhost through domain sockets or           '127.0.0.1' for localhost through TCP.
+            'PORT': '',              # Set to empty string for default.
         }
 }
-
-
 
 # Update database configuration with $DATABASE_URL.
 import dj_database_url
@@ -148,7 +145,6 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
-
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.10/topics/i18n/
@@ -177,7 +173,7 @@ DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 STATIC_ROOT = BASE_DIR + 'static/'
 
-#define login urls
+# define login urls
 LOGIN_URL = '/login/'
 LOGIN_REDIRECT_URL = '/'
 
@@ -189,8 +185,8 @@ STATIC_URL = '/static/'
 
 
 # Taken from Social Auth Pipelines Website
-#Social Auth pipelines
-SOCIAL_AUTH_PIPELINE =(
+# Social Auth pipelines
+SOCIAL_AUTH_PIPELINE = (
     'social.pipeline.social_auth.social_details',
     'social.pipeline.social_auth.social_uid',
     'social.pipeline.social_auth.auth_allowed',
@@ -203,9 +199,7 @@ SOCIAL_AUTH_PIPELINE =(
     'social.pipeline.user.user_details',
 )
 
-
-#s3 sstuff
-
+# s3 stuff
 AWS_HEADERS = {  # see http://developer.yahoo.com/performance/rules.html#expires
     'Expires': 'Thu, 31 Dec 2099 20:00:00 GMT',
     'Cache-Control': 'max-age=94608000',
@@ -232,17 +226,15 @@ MEDIAFILES_LOCATION = 'media'
 MEDIA_URL = "https://%s/%s/" % (AWS_S3_CUSTOM_DOMAIN, MEDIAFILES_LOCATION)
 DEFAULT_FILE_STORAGE = 'EventLite.custom_storages.MediaStorage'
 
-
-
-#settings
-SECURE_SSL_REDIRECT=True
+# settings
+SECURE_SSL_REDIRECT = True
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-SESSION_COOKIE_SECURE=True
-CSRF_COOKIE_SECURE=True
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
 
-#additional sec
+# additional sec
 SECURE_HSTS_SECONDS = 31536000
-SECURE_HSTS_INCLUDE_SUBDOMAINS=True
-SECURE_CONTENT_TYPE_NOSNIFF=True
-SECURE_BROWSER_XSS_FILTER=True
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+SECURE_CONTENT_TYPE_NOSNIFF = True
+SECURE_BROWSER_XSS_FILTER = True
 X_FRAME_OPTIONS = 'DENY'

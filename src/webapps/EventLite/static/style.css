@@ -44,7 +44,6 @@
 .buy-ticket-field {
     margin-left: 10px;
     width: 40% !important;
-    margin-top: 0px !important;
 }
 
 .event-detail {
@@ -106,18 +105,14 @@
 
 .filters {
     background-color: #062e48;
-    margin-top: 5px;
-    margin-bottom: 5px;
+    padding: 5px;
     margin-right: 20px;
     margin-left: 20px;
     overflow:hidden;
 }
 
 .inner-filters {
-    margin-top: 8px;
-    margin-bottom: 8px;
-    margin-right: 8px;
-    margin-left: 8px;
+    padding: 8px;
 }
 
 

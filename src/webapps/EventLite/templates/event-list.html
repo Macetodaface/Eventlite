@@ -14,7 +14,8 @@
         <a href="{% url 'event-info' event.id %}"
            class="col-xs-2 event-listing no-hyper">
             {% if event.bannerImage %}
-                <img class='banner-image' src="{% url 'bannerimage' event.id %}">
+                <img class='banner-image'
+                     src="{% url 'bannerimage' event.id %}">
             {% endif %} <br>
             <h1 class="center event-detail">{{ event.name }} </h1>
             <br>

@@ -1,6 +1,5 @@
 window.initMap = function ()
 {
-
       var lati = document.getElementById('lat').value
       var long = document.getElementById('long').value
 
@@ -16,9 +15,4 @@ window.initMap = function ()
     map:map,
     position: myLatLng
   });
-
-
-}
-
-
-//reviews
+};

@@ -9,14 +9,14 @@ class BioForm(forms.Form):
 
 
 class ImageForm(forms.Form):
-    image = forms.ImageField(required = False)
+    image = forms.ImageField(required=False)
 
 
 class PostEventForm(ModelForm):
     class Meta:
         model = Event
         fields = ['name', 'description', 'location', 'time', 'media',
-                  'email','seatLayout','bannerImage']
+                  'email', 'seatLayout', 'bannerImage']
 
 
 class UserForm(forms.Form):
@@ -24,7 +24,7 @@ class UserForm(forms.Form):
     first_name = forms.CharField(max_length=40, label='First Name')
     last_name = forms.CharField(max_length=40, label='Last Name')
     email = forms.CharField(max_length=40, label='Email',
-                                widget=forms.EmailInput)
+                            widget=forms.EmailInput)
     password1 = forms.CharField(max_length=40, label='Password:',
                                 widget=forms.PasswordInput)
     password2 = forms.CharField(max_length=40, label='Confirm Password:',
@@ -54,12 +54,11 @@ class UserForm(forms.Form):
 class LoginForm(forms.Form):
     username = forms.CharField(max_length=40, label='Username')
     password = forms.CharField(max_length=40, label='Password:',
-                                widget=forms.PasswordInput)
+                               widget=forms.PasswordInput)
+
     def clean(self):
         cleaned_data= super(LoginForm,self).clean()
         return cleaned_data
-
-
 
 
 class RecoveryForm(forms.Form):
@@ -104,32 +103,40 @@ class PasswordForm(forms.Form):
             raise forms.ValidationError('Passwords do not match.')
         return cleaned_data
 
+
 class PointForm(forms.Form):
     latitude = forms.DecimalField()
     longitude = forms.DecimalField()
+
 
 class TicketTypeForm(ModelForm):
     class Meta:
         model = TicketType
         fields = ['name', 'price', 'details', 'numOfTickets']
 
+
 class BuyTicketsForm(forms.Form):
     quantity = forms.IntegerField()
+
 
 class ReviewForm(ModelForm):
     class Meta:
         model = Review
-        fields = ['rating','review']
+        fields = ['rating', 'review']
+        attributes = {'rows': '4',
+                      'cols': '400',
+                      'placeholder': 'Enter a Review (420 char max)',
+                      'class':'form-control'}
         widgets ={
-            'review': forms.Textarea(attrs={'rows':'4','cols':'400','placeholder':'Enter a Review (420 char max)','class':'form-control'})
-
+            'review': forms.Textarea(attrs=attributes)
         }
+
     def clean_rating(self):
         rating = self.cleaned_data.get('rating')
 
-        if(type(rating) != int):
+        if type(rating) != int:
             raise forms.ValidationError("Enter an integer between 1 and 5!")
-        if(rating<1 or rating>5):
+        if rating < 1 or rating > 5:
             raise forms.ValidationError('Enter an integer between 1 and 5')
 
         return rating
@@ -137,7 +144,7 @@ class ReviewForm(ModelForm):
     def clean_review(self):
         review = self.cleaned_data.get('review');
 
-        if(len(str(review))<10):
-            raise forms.ValidationError("Review should be atleast 10 characters")
+        if len(str(review)) < 10:
+            raise forms.ValidationError("Review should be at least 10 characters")
 
         return review

@@ -13,7 +13,8 @@ function getCookie(name) {
             var cookie = jQuery.trim(cookies[i]);
             // Does this cookie string begin with the name we want?
             if (cookie.substring(0, name.length + 1) == (name + '=')) {
-                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                cookieValue = decodeURIComponent(
+                    cookie.substring(name.length + 1));
                 break;
             }
         }
@@ -55,7 +56,7 @@ function setInterestedText(first) {
 }
 
 function updateInterestedCount(interested) {
-    countel = $('#interested-cnt');
+    var countel = $('#interested-cnt');
     var count = parseInt(countel.html());
     countel.empty();
     if(interested){
@@ -67,7 +68,7 @@ function updateInterestedCount(interested) {
     countel.html(count);
     var textel = $('#interested-text');
     textel.empty();
-    console.log(count);
+
     if(count == 1) {
         var text = 'person is interested in this event.';
     }
