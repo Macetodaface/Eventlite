@@ -22,6 +22,7 @@
     <script src="{% static 'templated/js/util.js' %}"></script>
     <script src="{% static 'templated/js/main.js' %}"></script>
 <body>
+{% block header %}
 <!-- Header -->
 <header id="header">
     <h1>EventLite</h1>
@@ -30,6 +31,8 @@
     <a href="{% url 'post-event' %}">Post Event</a>
     <a class="pull-right" href="{% url 'logout' %}">Logout</a>
 </header>
+{% endblock %}
+
 {% block body %}
 {% endblock %}
 </body>
